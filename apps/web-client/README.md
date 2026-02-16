@@ -1,4 +1,12 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# CreativeOS Web Client
+
+This is the Next.js frontend application for CreativeOS, featuring the new design migration.
+
+## Design Migration Status
+- **Pages**: Dashboard, Client DNA, Campaigns, Scheduler, Analytics, Pricing, Login, Register.
+- **Styling**: Tailwind CSS with custom design tokens.
+- **Fonts**: Inter and Space Grotesk.
+
 
 ## Getting Started
 
