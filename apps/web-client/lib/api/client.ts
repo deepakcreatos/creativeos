@@ -155,15 +155,7 @@ export const campaignApi = {
       throw error;
     }
   },
-  delete: async (id: string) => {
-    try {
-      const response = await apiClient.delete(`/campaigns/${id}`);
-      return response.data;
-    } catch (error) {
-      console.error('Delete Campaign Error:', error);
-      throw error;
-    }
-  },
+
 };
 
 // Auth API
