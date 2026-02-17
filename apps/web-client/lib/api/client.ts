@@ -155,4 +155,36 @@ export const campaignApi = {
       throw error;
     }
   },
+  delete: async (id: string) => {
+    try {
+      const response = await apiClient.delete(`/campaigns/${id}`);
+      return response.data;
+    } catch (error) {
+      console.error('Delete Campaign Error:', error);
+      throw error;
+    }
+  },
+};
+
+// Auth API
+export const authApi = {
+  login: async (credentials: any) => {
+    try {
+      const response = await apiClient.post('/auth/login', credentials);
+      return response.data;
+    } catch (error) {
+      console.error('Login Error:', error);
+      throw error;
+    }
+  },
+
+  register: async (data: any) => {
+    try {
+      const response = await apiClient.post('/auth/register', data);
+      return response.data;
+    } catch (error) {
+      console.error('Register Error:', error);
+      throw error;
+    }
+  }
 };

@@ -5,7 +5,7 @@ import { UpdateCampaignDto } from './dto/update-campaign.dto';
 
 @Injectable()
 export class CampaignService {
-  constructor(private prisma: PrismaService) {}
+  constructor(private prisma: PrismaService) { }
 
   async create(createCampaignDto: CreateCampaignDto) {
     // Verify Client DNA exists
@@ -18,7 +18,7 @@ export class CampaignService {
     }
 
     // Generate content pillars if not provided
-    const contentPillars = createCampaignDto.contentPillars || 
+    const contentPillars = createCampaignDto.contentPillars ||
       await this.generateContentPillars(
         createCampaignDto.objective,
         createCampaignDto.platforms,
@@ -72,9 +72,9 @@ export class CampaignService {
 
   async findByClientDna(clientDnaId: string) {
     return this.prisma.campaign.findMany({
-      where: { 
+      where: {
         clientDnaId,
-        isActive: true 
+        isActive: true
       },
       orderBy: { createdAt: 'desc' },
     });
@@ -105,9 +105,42 @@ export class CampaignService {
     platforms: string[],
     clientDna: any
   ): Promise<string[]> {
-    // Demo mode: Rule-based generation
-    // In production: This calls your AI service
+    const prompt = `
+      Act as a Social Media Strategist. Generate 5 unique content pillars for a brand with the following DNA:
+      - Industry: ${clientDna.industry}
+      - Target Audience: ${JSON.stringify(clientDna.targetAudience)}
+      - Brand Tone: ${clientDna.brandTone}
+      - Campaign Objective: ${objective}
+      - Platforms: ${platforms.join(', ')}
 
+      Return ONLY a JSON array of strings, e.g. ["Pillar 1", "Pillar 2"]. No other text.
+    `;
+
+    // 1. Try Ollama (Local LLM)
+    if (process.env.AI_MODE === 'ollama') {
+      try {
+        const response = await fetch('http://localhost:11434/api/generate', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            model: 'mistral',
+            prompt: prompt,
+            stream: false,
+            format: 'json'
+          }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          const pillars = JSON.parse(data.response);
+          if (Array.isArray(pillars)) return pillars.slice(0, 5);
+        }
+      } catch (e) {
+        console.warn('⚠️ Ollama unavailable, falling back to rule-based logic.');
+      }
+    }
+
+    // 2. Fallback: Rule-based generation (Demo Mode)
     const pillars: string[] = [];
 
     // Objective-based pillars

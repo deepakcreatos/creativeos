@@ -1,0 +1,25 @@
+version: '3.8'
+
+services:
+  creativeos-db:
+    image: postgres:15-alpine
+    container_name: creativeos-demo-db
+    restart: always
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: creativeos_demo
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_demo_data:/var/lib/postgresql/data
+
+  creativeos-redis:
+    image: redis:7-alpine
+    container_name: creativeos-demo-redis
+    restart: always
+    ports:
+      - "6379:6379"
+
+volumes:
+  postgres_demo_data:
