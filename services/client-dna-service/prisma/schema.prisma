@@ -19,6 +19,8 @@ model ClientDNA {
   products        Json?
   competitors     Json?
   version         Int      @default(1)
+  embedding       Json?    @map("embedding") // Vector representation (placeholder for pgvector)
+  semanticTags    String[] @default([]) @map("semantic_tags") // Enriched tags
   isActive        Boolean  @default(true) @map("is_active")
   createdAt       DateTime @default(now()) @map("created_at")
   updatedAt       DateTime @updatedAt @map("updated_at")
