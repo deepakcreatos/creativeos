@@ -6,13 +6,33 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { User, Mail, Lock, ArrowRight, Github, Twitter } from 'lucide-react';
 
+import { authApi } from '@/lib/api/client';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { useState } from 'react';
+
 export default function Register() {
     const router = useRouter();
+    const { register } = useAuth();
+    const [isLoading, setIsLoading] = useState(false);
 
-    const handleRegister = (e: React.FormEvent) => {
+    const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
-        // In a real app, handle registration
-        router.push('/dashboard');
+        setIsLoading(true);
+
+        const formData = new FormData(e.target as HTMLFormElement);
+        const name = formData.get('name') as string;
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
+
+        try {
+            await authApi.register({ name, email, password, companyName: 'Demo Agency' });
+            await register(name, email, password); // update global Layout context
+            router.push('/dashboard');
+        } catch (err) {
+            // handle error if needed
+        } finally {
+            setIsLoading(false);
+        }
     };
 
     return (

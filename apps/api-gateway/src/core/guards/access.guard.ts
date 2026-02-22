@@ -25,9 +25,8 @@ export class AccessGuard implements CanActivate {
                 userId: 'anonymous',
                 metadata: { reason: 'Missing Header' }
             });
-            // Allow specific public endpoints if needed, but for now strict block
-            // Mock: allow if path is /auth
-            if (request.path.startsWith('/auth')) return true;
+            // Mock: allow if path is auth or root
+            if (request.path.includes('/auth') || request.path === '/api' || request.path === '/api/') return true;
             throw new UnauthorizedException('Node 0: Missing Credentials');
         }
 

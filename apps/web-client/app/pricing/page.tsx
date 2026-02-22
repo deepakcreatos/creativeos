@@ -63,7 +63,7 @@ export default function Pricing() {
     ];
 
     return (
-        <div className="py-24 px-4 space-y-20 animate-in fade-in duration-500">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-20 animate-in fade-in duration-500 w-full">
             <div className="text-center space-y-4">
                 <h1 className="text-5xl font-bold font-heading text-slate-900">Flexible Pricing Plans</h1>
                 <p className="text-slate-500 max-w-2xl mx-auto text-lg">Choose the perfect plan for your business—whether you're just starting or managing multiple clients.</p>

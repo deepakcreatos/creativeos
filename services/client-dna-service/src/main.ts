@@ -29,7 +29,7 @@ async function bootstrap() {
 
   app.setGlobalPrefix('api');
 
-  const port = process.env.PORT || 3002;
+  const port = 3002;
   await app.listen(port, '0.0.0.0');
   
   console.log(`🚀 CreativeOS Backend running on port ${port}`);

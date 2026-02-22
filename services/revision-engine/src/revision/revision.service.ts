@@ -1,4 +1,5 @@
 
+import * as crypto from 'crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateRevisionDto } from './dto/create-revision.dto';
 

@@ -1,4 +1,4 @@
-
+import * as crypto from 'crypto';
 import { Injectable, Logger, ConflictException } from '@nestjs/common';
 import { CreateScheduleDto } from './dto/create-schedule.dto';
 

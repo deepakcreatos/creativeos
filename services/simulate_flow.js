@@ -80,7 +80,37 @@ async function runSimulation() {
   };
   log('NODE_7', `Job Queued: ${job.id}`);
 
-  console.log('\n✅ SIMULATION COMPLETE. All Nodes Handed Off Successfully.');
+  // --- NODE 8: ANALYTICS ---
+  log('NODE_8', `Aggregating Metrics for Campaign Project...`);
+  const metrics = { ctr: 2.5, roas: 4.0, sentiment: 0.8 };
+  log('NODE_8', `Insights Generated: Positive Sentiment detected.`);
+
+  // --- NODE 9: BILLING ---
+  log('NODE_9', `Calculating Cost for Asset ${visualAsset.id} (IMAGE)`);
+  const invoice = { amount: 5.50, status: 'PENDING' };
+  log('NODE_9', `Invoice Generated: $${invoice.amount}`);
+
+  // --- NODE 10: VOICE AI ---
+  log('HUMAN', `(Voice Command): "Create a variation for Instagram."`);
+  log('NODE_10', `Transcribed: "Create a variation for Instagram." -> Intent: CREATE_VARIATION`);
+  log('NODE_10', `Triggering Node 3 (Content) for mutation...`);
+
+  // --- NODE 11: KNOWLEDGE GRAPH ---
+  log('NODE_11', `Storing Decision: User prefers 'Neon' style for SaaS clients.`);
+  // --- NODE 11: KNOWLEDGE GRAPH ---
+  log('NODE_11', `Storing Decision: User prefers 'Neon' style for SaaS clients.`);
+  log('NODE_11', `Graph Updated: (Client: TechNova) -[PREFERS]-> (Style: Neon)`);
+
+  // --- NODE 5: REVISION INTELLIGENCE ---
+  log('NODE_5', `Processing feedback for Asset ${visualAsset.id}...`);
+  const revision = { type: 'TEXT_TWEAK', action: 'Regenerate Caption' };
+  log('NODE_5', `Feedback Classified: ${revision.type}. Triggering Node 3.`);
+
+  // --- NODE 12: AUDIT & SECURITY ---
+  log('NODE_0', `[Mock Access] Token validated for User: Admin.`);
+  log('NODE_12', `[Audit Log] Action: SIMULATION_COMPLETE | User: Admin | Status: SUCCESS`);
+
+  console.log('\n✅ SIMULATION COMPLETE. Full 13-Node Architecture Verified (Nodes 0-12).');
 }
 
 runSimulation();

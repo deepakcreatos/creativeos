@@ -2,37 +2,54 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateDnaDto } from './dto/create-dna.dto';
 import { UpdateDnaDto } from './dto/update-dna.dto';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class DnaService {
-  constructor(private prisma: PrismaService) { }
+  private mockDnaDb: any[] = [];
+
+  constructor(private prisma: PrismaService) { 
+    this.mockDnaDb.push({
+      id: 'demo-client-id-hardcoded-for-now',
+      clientName: 'Squadra Media',
+      industry: 'Agency',
+      brandTone: 'Professional',
+      targetAudience: { description: 'B2B Tech Companies' },
+      geography: {},
+      psychographics: { story: 'Agile Marketing for Tech', tagline: 'Scale fast' },
+      products: {},
+      competitors: {},
+      semanticTags: ['industry:agency', 'tone:professional'],
+      version: 1,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    });
+  }
 
   async create(createDnaDto: CreateDnaDto) {
-    // Node 1 Step 1: Validate inputs (Handled by DTO Pipe)
-
-    // Node 1 Step 2: Enrich via industry presets
     const enrichedData = this.enrichData(createDnaDto);
-
-    // Node 1 Step 3: Create Semantic Tags & Vector Stub
     const semanticTags = this.generateSemanticTags(enrichedData);
 
-    // Node 1 Step 4: Version & Store
-    const dna = await this.prisma.clientDNA.create({
-      data: {
-        clientName: createDnaDto.clientName,
-        industry: createDnaDto.industry,
-        brandTone: createDnaDto.brandTone,
-        targetAudience: createDnaDto.targetAudience as any, // Cast for Prisma Json
-        geography: createDnaDto.geography as any,
-        psychographics: createDnaDto.psychographics as any,
-        products: createDnaDto.products || {},
-        competitors: createDnaDto.competitors || {},
-        semanticTags: semanticTags,
-        // embedding: [0.1, 0.2...] // Todo: Integrate OpenAI/HuggingFace
-      },
-    });
-
-    console.log('✅ [NODE 1] Client DNA Created & Enriched:', dna.id);
+    const dna = {
+      id: crypto.randomUUID(),
+      clientName: createDnaDto.clientName,
+      industry: createDnaDto.industry,
+      brandTone: createDnaDto.brandTone,
+      targetAudience: createDnaDto.targetAudience,
+      geography: createDnaDto.geography,
+      psychographics: createDnaDto.psychographics,
+      products: createDnaDto.products || {},
+      competitors: createDnaDto.competitors || {},
+      semanticTags: semanticTags,
+      version: 1,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
+    
+    this.mockDnaDb.push(dna);
+    console.log('✅ [NODE 1] Client DNA Created (Mocked):', dna.id);
     return dna;
   }
 
@@ -53,47 +70,38 @@ export class DnaService {
   }
 
   async findAll() {
-    return this.prisma.clientDNA.findMany({
-      where: { isActive: true },
-      orderBy: { createdAt: 'desc' },
-    });
+    return [...this.mockDnaDb].filter(d => d.isActive).sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
   async findOne(id: string) {
-    const dna = await this.prisma.clientDNA.findUnique({
-      where: { id },
-    });
-
+    const dna = this.mockDnaDb.find(d => d.id === id);
     if (!dna) {
       throw new NotFoundException(`Client DNA with ID ${id} not found`);
     }
-
     return dna;
   }
 
   async update(id: string, updateDnaDto: UpdateDnaDto) {
-    const currentDna = await this.findOne(id);
+    const currentDnaIndex = this.mockDnaDb.findIndex(d => d.id === id);
+    if (currentDnaIndex === -1) throw new NotFoundException('Not found');
 
-    return this.prisma.clientDNA.update({
-      where: { id },
-      data: {
-        clientName: updateDnaDto.clientName,
-        industry: updateDnaDto.industry,
-        brandTone: updateDnaDto.brandTone,
-        targetAudience: updateDnaDto.targetAudience as any,
-        geography: updateDnaDto.geography as any,
-        psychographics: updateDnaDto.psychographics as any,
-        products: updateDnaDto.products || {},
-        competitors: updateDnaDto.competitors || {},
-        version: currentDna.version + 1,
-      },
-    });
+    const updated = {
+      ...this.mockDnaDb[currentDnaIndex],
+      clientName: updateDnaDto.clientName || this.mockDnaDb[currentDnaIndex].clientName,
+      industry: updateDnaDto.industry || this.mockDnaDb[currentDnaIndex].industry,
+      brandTone: updateDnaDto.brandTone || this.mockDnaDb[currentDnaIndex].brandTone,
+      version: this.mockDnaDb[currentDnaIndex].version + 1,
+      updatedAt: new Date()
+    };
+    
+    this.mockDnaDb[currentDnaIndex] = updated;
+    return updated;
   }
 
   async remove(id: string) {
-    return this.prisma.clientDNA.update({
-      where: { id },
-      data: { isActive: false },
-    });
+    const currentDnaIndex = this.mockDnaDb.findIndex(d => d.id === id);
+    if (currentDnaIndex > -1) {
+      this.mockDnaDb[currentDnaIndex].isActive = false;
+    }
   }
 }

@@ -2,101 +2,82 @@ import { Injectable, NotFoundException } from '@nestjs/common';
 import { PrismaService } from '../prisma/prisma.service';
 import { CreateCampaignDto } from './dto/create-campaign.dto';
 import { UpdateCampaignDto } from './dto/update-campaign.dto';
+import * as crypto from 'crypto';
 
 @Injectable()
 export class CampaignService {
+  private mockCampaignDb: any[] = [];
+
   constructor(private prisma: PrismaService) { }
 
   async create(createCampaignDto: CreateCampaignDto) {
-    // Verify Client DNA exists
-    const clientDna = await this.prisma.clientDNA.findUnique({
-      where: { id: createCampaignDto.clientDnaId },
-    });
-
-    if (!clientDna) {
-      throw new NotFoundException('Client DNA not found');
-    }
-
     // Generate content pillars if not provided
     const contentPillars = createCampaignDto.contentPillars ||
       await this.generateContentPillars(
         createCampaignDto.objective,
         createCampaignDto.platforms,
-        clientDna
+        { industry: 'General', targetAudience: { description: 'All' }, brandTone: 'Professional' }
       );
 
-    const campaign = await this.prisma.campaign.create({
-      data: {
-        name: createCampaignDto.name,
-        objective: createCampaignDto.objective,
-        clientDnaId: createCampaignDto.clientDnaId,
-        platforms: createCampaignDto.platforms,
-        contentPillars,
-        dateRange: createCampaignDto.dateRange,
-        kpis: createCampaignDto.kpis || this.generateKPIs(createCampaignDto.objective),
-        budget: createCampaignDto.budget,
-      },
-      include: {
-        clientDna: true,
-      },
-    });
+    const campaign = {
+      id: crypto.randomUUID(),
+      name: createCampaignDto.name,
+      objective: createCampaignDto.objective,
+      clientDnaId: createCampaignDto.clientDnaId,
+      platforms: createCampaignDto.platforms,
+      contentPillars,
+      dateRange: createCampaignDto.dateRange,
+      kpis: createCampaignDto.kpis || this.generateKPIs(createCampaignDto.objective),
+      budget: createCampaignDto.budget,
+      isActive: true,
+      createdAt: new Date(),
+      updatedAt: new Date()
+    };
 
-    console.log('✅ Campaign Created:', campaign.id);
+    this.mockCampaignDb.push(campaign);
+    console.log('✅ Campaign Created (Mocked):', campaign.id);
     return campaign;
   }
 
   async findAll() {
-    return this.prisma.campaign.findMany({
-      where: { isActive: true },
-      include: {
-        clientDna: true,
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+    return [...this.mockCampaignDb]
+      .filter(c => c.isActive)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
   async findOne(id: string) {
-    const campaign = await this.prisma.campaign.findUnique({
-      where: { id },
-      include: {
-        clientDna: true,
-      },
-    });
-
+    const campaign = this.mockCampaignDb.find(c => c.id === id);
     if (!campaign) {
       throw new NotFoundException(`Campaign with ID ${id} not found`);
     }
-
     return campaign;
   }
 
   async findByClientDna(clientDnaId: string) {
-    return this.prisma.campaign.findMany({
-      where: {
-        clientDnaId,
-        isActive: true
-      },
-      orderBy: { createdAt: 'desc' },
-    });
+    return this.mockCampaignDb
+      .filter(c => c.clientDnaId === clientDnaId && c.isActive)
+      .sort((a, b) => b.createdAt.getTime() - a.createdAt.getTime());
   }
 
   async update(id: string, updateCampaignDto: UpdateCampaignDto) {
-    await this.findOne(id); // Check exists
+    const currentIndex = this.mockCampaignDb.findIndex(c => c.id === id);
+    if (currentIndex === -1) throw new NotFoundException('Not found');
 
-    return this.prisma.campaign.update({
-      where: { id },
-      data: updateCampaignDto,
-      include: {
-        clientDna: true,
-      },
-    });
+    const updated = {
+      ...this.mockCampaignDb[currentIndex],
+      ...updateCampaignDto,
+      updatedAt: new Date()
+    };
+    
+    this.mockCampaignDb[currentIndex] = updated;
+    return updated;
   }
 
   async remove(id: string) {
-    return this.prisma.campaign.update({
-      where: { id },
-      data: { isActive: false },
-    });
+    const currentIndex = this.mockCampaignDb.findIndex(c => c.id === id);
+    if (currentIndex > -1) {
+      this.mockCampaignDb[currentIndex].isActive = false;
+    }
   }
 
   // AI-POWERED LOGIC: Generate Content Pillars

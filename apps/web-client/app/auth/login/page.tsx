@@ -9,9 +9,11 @@ import { Mail, Lock, ArrowRight, Github, Twitter } from 'lucide-react';
 // ... imports
 import { authApi } from '@/lib/api/client';
 import { useState } from 'react';
+import { useAuth } from '@/lib/auth/AuthContext';
 
 export default function Login() {
     const router = useRouter();
+    const { login } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -21,13 +23,12 @@ export default function Login() {
         setError('');
 
         const formData = new FormData(e.target as HTMLFormElement);
-        const email = formData.get('email');
-        const password = formData.get('password');
+        const email = formData.get('email') as string;
+        const password = formData.get('password') as string;
 
         try {
-            const response = await authApi.login({ email, password });
-            console.log('Login success:', response);
-            // Store token if needed, e.g. localStorage.setItem('token', response.access_token);
+            await authApi.login({ email, password });
+            await login(email, password); // update global Layout context
             router.push('/dashboard');
         } catch (err) {
             setError('Invalid credentials or server error. For Demo: try admin@creativeos.ai / admin');

@@ -10,7 +10,7 @@ export default function Scheduler() {
     const platforms = ['Meta', 'Instagram', 'Google', 'LinkedIn'];
 
     return (
-        <div className="flex flex-col lg:flex-row gap-8 animate-in fade-in duration-500">
+        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in duration-500 w-full">
             <div className="w-full lg:w-72 space-y-6">
                 <div className="bg-white p-6 rounded-xl border border-slate-200 shadow-sm space-y-6">
                     <div>

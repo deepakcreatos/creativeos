@@ -4,6 +4,7 @@
 import React from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import { useAuth } from '@/lib/auth/AuthContext';
 import {
     LayoutDashboard,
     Dna,
@@ -26,6 +27,7 @@ interface LayoutProps {
 
 export const Layout: React.FC<LayoutProps> = ({ children }) => {
     const pathname = usePathname();
+    const { user, isAuthenticated, logout } = useAuth();
 
     const navItems = [
         { id: 'landing', label: 'Home', href: '/' },
@@ -71,18 +73,35 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                         </nav>
 
                         <div className="flex items-center gap-4">
-                            <Link
-                                href="/auth/login"
-                                className="text-sm font-bold text-slate-900 px-5 py-2.5 hover:bg-slate-50 rounded-xl transition-colors"
-                            >
-                                Log In
-                            </Link>
-                            <Link
-                                href="/auth/register"
-                                className="text-sm font-bold text-white bg-[#0061FF] px-6 py-2.5 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
-                            >
-                                Sign Up
-                            </Link>
+                            {isAuthenticated ? (
+                                <>
+                                    <div className="hidden md:flex flex-col items-end mr-2">
+                                        <p className="text-sm font-bold text-slate-900">{user?.name}</p>
+                                        <p className="text-xs text-slate-500">{user?.email}</p>
+                                    </div>
+                                    <button
+                                        onClick={logout}
+                                        className="text-sm font-bold text-slate-900 px-5 py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
+                                    >
+                                        Log Out
+                                    </button>
+                                </>
+                            ) : (
+                                <>
+                                    <Link
+                                        href="/auth/login"
+                                        className="text-sm font-bold text-slate-900 px-5 py-2.5 hover:bg-slate-50 rounded-xl transition-colors"
+                                    >
+                                        Log In
+                                    </Link>
+                                    <Link
+                                        href="/auth/register"
+                                        className="text-sm font-bold text-white bg-[#0061FF] px-6 py-2.5 rounded-xl hover:bg-blue-700 transition-all shadow-lg shadow-blue-200"
+                                    >
+                                        Sign Up
+                                    </Link>
+                                </>
+                            )}
                         </div>
                     </div>
                 </div>
