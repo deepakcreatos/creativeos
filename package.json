@@ -16,6 +16,11 @@
     "install:all": "npm install && cd apps/web-client && npm install && cd ../api-gateway && npm install && cd ../../services/client-dna-service && npm install"
   },
   "devDependencies": {
-    "prettier": "^3.1.0"
+    "@types/node": "^25.3.0",
+    "axios": "^1.13.5",
+    "prettier": "^3.1.0",
+    "ts-node": "^10.9.2",
+    "tslib": "^2.8.1",
+    "typescript": "^5.9.3"
   }
 }

@@ -36,6 +36,7 @@ async function bootstrap() {
         '^/api/billing': '/billing',
         '^/api/voice': '/voice',
         '^/api/knowledge': '/graph',
+        '^/api/audit': '/audit',
     },
   });
 

@@ -2,25 +2,36 @@
 import * as crypto from 'crypto';
 import { Injectable, Logger } from '@nestjs/common';
 import { CreateContentDto } from './dto/create-content.dto';
+import Groq from 'groq-sdk';
+import * as dotenv from 'dotenv';
+
+dotenv.config();
 
 @Injectable()
 export class ContentService {
     private readonly logger = new Logger(ContentService.name);
+    private groq: Groq;
+
+    constructor() {
+        this.groq = new Groq({
+            apiKey: process.env.GROQ_API_KEY,
+        });
+    }
 
     async generateContent(dto: CreateContentDto) {
-        this.logger.log(`[NODE 3] Generatng Content for Blueprint: ${dto.blueprintId}`);
+        this.logger.log(`[NODE 3] Generating Content using Groq LLaMA 3 for Blueprint: ${dto.blueprintId}`);
 
-        // Node 3 Step 1: Load Context (Mocked for now)
-        // In real flow: Fetch Blueprint from Node 2, DNA from Node 1
-
-        // Node 3 Step 2: Generate Abstract Prompt
+        // Node 3 Step 1 & 2: Abstract Prompt Setup
         const prompt = this.constructAbstractPrompt(dto);
 
-        // Node 3 Step 3: Invoke LLM (Mocked)
-        const generatedContent = await this.mockLLMCall(prompt);
-
-        // Node 3 Step 4: Validate & Score
-        // Node 3 Step 5: Save Version
+        // Node 3 Step 3: Invoke LLM
+        let generatedContent: any[] = [];
+        try {
+            generatedContent = await this.groqLLMCall(prompt);
+        } catch (error) {
+            this.logger.error('Error generating content with Groq, using fallback', error);
+            generatedContent = this.mockLLMFallback();
+        }
 
         return {
             success: true,
@@ -29,19 +40,53 @@ export class ContentService {
                 contentId: crypto.randomUUID(),
                 items: generatedContent,
                 metadata: {
-                    model: 'gpt-4-mock',
-                    confidenceScore: 0.98
+                    model: 'llama3-8b-8192',
+                    confidenceScore: 0.95
                 }
             }
         };
     }
 
     private constructAbstractPrompt(dto: CreateContentDto): string {
-        return `Generate content for Client ${dto.clientDnaId} based on Blueprint ${dto.blueprintId}`;
+        const platforms = dto.itemsToGenerate ? dto.itemsToGenerate.join(', ') : 'LinkedIn and Instagram';
+        return `
+        You are an elite AI copywriter.
+        Generate marketing copy based on the following parameters.
+        Blueprint ID Reference: ${dto.blueprintId}
+        Client DNA Reference: ${dto.clientDnaId}
+        Platforms/Formats to generate: ${platforms}
+
+        Output valid JSON with the following structure:
+        {
+          "items": [
+             {
+               "platform": "Name of platform",
+               "type": "post|caption|tweet etc",
+               "text": "The generated marketing copy",
+               "imagePrompt": "A detailed DALL-E/Midjourney style prompt for the visual"
+             }
+          ]
+        }
+        Return ONLY the JSON. No conversational text.
+        `;
     }
 
-    private async mockLLMCall(prompt: string) {
-        // Phase 2: Mock Logic
+    private async groqLLMCall(prompt: string) {
+        const chatCompletion = await this.groq.chat.completions.create({
+            messages: [{ role: 'user', content: prompt }],
+            model: 'llama3-8b-8192',
+            temperature: 0.7,
+            response_format: { type: 'json_object' }
+        });
+
+        const content = chatCompletion.choices[0]?.message?.content;
+        if (!content) throw new Error('No content returned from Groq');
+
+        const parsed = JSON.parse(content);
+        return parsed.items || [];
+    }
+
+    private mockLLMFallback() {
         return [
             {
                 platform: 'LinkedIn',

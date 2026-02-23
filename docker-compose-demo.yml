@@ -2,15 +2,15 @@ version: '3.8'
 
 services:
   creativeos-db:
-    image: postgres:15-alpine
+    image: ankane/pgvector:v0.5.1
     container_name: creativeos-demo-db
     restart: always
     environment:
       POSTGRES_USER: admin
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: creativeos_demo
+      POSTGRES_PASSWORD: demo_password_2025
+      POSTGRES_DB: creativeos
     ports:
-      - "5432:5432"
+      - "5433:5432"
     volumes:
       - postgres_demo_data:/var/lib/postgresql/data
 

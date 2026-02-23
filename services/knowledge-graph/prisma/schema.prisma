@@ -1,0 +1,35 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model GraphNode {
+  id        String   @id // Can be UUID or custom asset string
+  label     String   // e.g. "Asset", "Strategy"
+  properties Json?   // Arbitrary metadata
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  outgoingEdges GraphEdge[] @relation("SourceEdges")
+  incomingEdges GraphEdge[] @relation("TargetEdges")
+}
+
+model GraphEdge {
+  id        String   @id @default(uuid())
+  sourceId  String
+  targetId  String
+  type      String   // e.g. "BELONGS_TO", "IMPLEMENTS"
+  weight    Float?   @default(1.0)
+  createdAt DateTime @default(now())
+
+  source    GraphNode @relation("SourceEdges", fields: [sourceId], references: [id])
+  target    GraphNode @relation("TargetEdges", fields: [targetId], references: [id])
+
+  @@unique([sourceId, targetId, type])
+}

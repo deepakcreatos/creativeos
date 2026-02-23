@@ -180,3 +180,67 @@ export const authApi = {
     }
   }
 };
+
+// Node 3: Content API
+export const contentApi = {
+  generate: async (data: any) => {
+    const response = await apiClient.post('/content/generate', data);
+    return response.data;
+  }
+};
+
+// Node 4: Media API
+export const mediaApi = {
+  generate: async (data: any) => {
+    const response = await apiClient.post('/media/generate', data);
+    return response.data;
+  }
+};
+
+// Node 5: Revision API
+export const revisionApi = {
+  process: async (data: any) => {
+    const response = await apiClient.post('/revision/process', data);
+    return response.data;
+  }
+};
+
+// Node 6: Approval API
+export const approvalApi = {
+  request: async (data: any) => {
+    const response = await apiClient.post('/approval/request', data);
+    return response.data;
+  }
+};
+
+// Node 9: Billing API
+export const billingApi = {
+  invoice: async (data: any) => {
+    const response = await apiClient.post('/billing/invoice', data);
+    return response.data;
+  }
+};
+
+// Node 10: Voice API
+export const voiceApi = {
+  command: async (data: { command: string }) => {
+    const response = await apiClient.post('/voice/command', data);
+    return response.data;
+  }
+};
+
+// Node 11: Knowledge Graph API
+export const knowledgeApi = {
+  query: async () => {
+    // Stub definition mimicking graph nodes
+    return { nodes: [], edges: [] };
+  }
+};
+
+// Node 12: Audit API
+export const auditApi = {
+  getLogs: async () => {
+    // Stub
+    return [];
+  }
+};
