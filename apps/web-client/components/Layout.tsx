@@ -1,7 +1,7 @@
 
 "use client";
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth/AuthContext';
@@ -32,6 +32,11 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
     const [featuresOpen, setFeaturesOpen] = useState(false);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
+    const [mounted, setMounted] = useState(false);
+
+    useEffect(() => {
+        setMounted(true);
+    }, []);
 
     const handleConfirmLogout = () => {
         logout();
@@ -90,7 +95,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                                 Home
                             </Link>
 
-                            {isAuthenticated && (
+                            {mounted && isAuthenticated && (
                                 <>
                                     {mainNavItems.map((item) => (
                                         <Link
@@ -134,7 +139,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                         </nav>
 
                         <div className="flex items-center gap-4 flex-shrink-0">
-                            {isAuthenticated ? (
+                            {!mounted ? (
+                                <div className="w-24 h-9 bg-slate-100 animate-pulse rounded-xl"></div>
+                            ) : isAuthenticated ? (
                                 <>
                                     <div className="hidden md:flex flex-col items-end mr-2">
                                         <p className="text-sm font-bold text-slate-900">{user?.name}</p>

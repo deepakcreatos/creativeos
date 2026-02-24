@@ -51,6 +51,11 @@ export default function Login() {
                 </div>
 
                 <form className="mt-8 space-y-6" onSubmit={handleLogin}>
+                    {error && (
+                        <div className="p-3 text-sm text-red-600 bg-red-50 border border-red-100 rounded-xl">
+                            {error}
+                        </div>
+                    )}
                     <div className="space-y-4">
                         <div>
                             <label htmlFor="email-address" className="sr-only">Email address</label>
