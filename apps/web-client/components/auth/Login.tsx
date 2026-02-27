@@ -82,12 +82,7 @@ export function Login() {
             </p>
           </div>
 
-          {/* Demo Note */}
-          <div className="mt-6 p-4 bg-blue-500/20 border border-blue-400/30 rounded-lg">
-            <p className="text-sm text-blue-200 text-center">
-              <strong>Demo Mode:</strong> Use any email/password to login
-            </p>
-          </div>
+
         </div>
       </div>
     </div>

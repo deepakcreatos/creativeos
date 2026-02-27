@@ -31,7 +31,7 @@ export default function Login() {
             await login(email, password); // update global Layout context
             router.push('/dashboard');
         } catch (err) {
-            setError('Invalid credentials or server error. For Demo: try admin@creativeos.ai / admin');
+            setError('Invalid credentials or server error.');
         } finally {
             setIsLoading(false);
         }

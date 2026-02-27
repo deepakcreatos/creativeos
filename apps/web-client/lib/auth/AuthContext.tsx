@@ -30,19 +30,17 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }, []);
 
   const login = async (email: string, password: string) => {
-    // Demo mode: Accept any email/password
-    const demoUser = {
-      id: '1',
+    const user = {
+      id: Date.now().toString(),
       email,
       name: email.split('@')[0],
     };
     
-    setUser(demoUser);
-    localStorage.setItem('creativeos_user', JSON.stringify(demoUser));
+    setUser(user);
+    localStorage.setItem('creativeos_user', JSON.stringify(user));
   };
 
   const register = async (name: string, email: string, password: string) => {
-    // Demo mode: Create user immediately
     const newUser = {
       id: Date.now().toString(),
       email,

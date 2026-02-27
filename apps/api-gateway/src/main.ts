@@ -5,44 +5,30 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // Eagerly mount proxy before Nest routing to bypass legacy path-to-regexp issues
-  const proxy = createProxyMiddleware({
-    router: {
-        '/api/dna': 'http://localhost:3002',
-        '/api/campaigns': 'http://localhost:3002',
-        '/api/strategy': 'http://localhost:3003',
-        '/api/content': 'http://localhost:3004',
-        '/api/media': 'http://localhost:3005',
-        '/api/revision': 'http://localhost:3006',
-        '/api/approval': 'http://localhost:3007',
-        '/api/scheduler': 'http://localhost:3008',
-        '/api/analytics': 'http://localhost:3009',
-        '/api/billing': 'http://localhost:3010',
-        '/api/voice': 'http://localhost:3011',
-        '/api/knowledge': 'http://localhost:3012',
-        '/api/audit': 'http://localhost:3013',
-    },
-    changeOrigin: true,
-    pathRewrite: {
-        '^/api/dna': '/dna',
-        '^/api/campaigns': '/campaigns',
-        '^/api/strategy': '/strategy',
-        '^/api/content': '/content',
-        '^/api/media': '/media',
-        '^/api/revision': '/revision',
-        '^/api/approval': '/approval',
-        '^/api/scheduler': '/scheduler',
-        '^/api/analytics': '/analytics',
-        '^/api/billing': '/billing',
-        '^/api/voice': '/voice',
-        '^/api/knowledge': '/graph',
-        '^/api/audit': '/audit',
-    },
-  });
+  const routes: Array<{ path: string, target: string, rewrite?: Record<string, string> }> = [
+    { path: '/api/dna', target: 'http://localhost:3002' },
+    { path: '/api/campaigns', target: 'http://localhost:3002' },
+    { path: '/api/strategy', target: 'http://localhost:3003', rewrite: { '^/api/strategy': '/strategy' } },
+    { path: '/api/content', target: 'http://localhost:3004', rewrite: { '^/api/content': '/content' } },
+    { path: '/api/media', target: 'http://localhost:3005', rewrite: { '^/api/media': '/media' } },
+    { path: '/api/revision', target: 'http://localhost:3006', rewrite: { '^/api/revision': '/revision' } },
+    { path: '/api/approval', target: 'http://localhost:3007', rewrite: { '^/api/approval': '/approval' } },
+    { path: '/api/scheduler', target: 'http://localhost:3008', rewrite: { '^/api/scheduler': '/scheduler' } },
+    { path: '/api/analytics', target: 'http://localhost:3009', rewrite: { '^/api/analytics': '/analytics' } },
+    { path: '/api/billing', target: 'http://localhost:3010', rewrite: { '^/api/billing': '/billing' } },
+    { path: '/api/voice', target: 'http://localhost:3011', rewrite: { '^/api/voice': '/voice' } },
+    { path: '/api/knowledge', target: 'http://localhost:3012', rewrite: { '^/api/knowledge': '/graph' } },
+    { path: '/api/audit', target: 'http://localhost:3013' },
+  ];
 
-  // Apply to all known proxy paths
-  const proxyPaths = ['/api/dna', '/api/campaigns', '/api/strategy', '/api/content', '/api/media', '/api/revision', '/api/approval', '/api/scheduler', '/api/analytics', '/api/billing', '/api/voice', '/api/knowledge', '/api/audit'];
-  proxyPaths.forEach(path => app.use(path, proxy));
+  routes.forEach(route => {
+    app.use(createProxyMiddleware({
+      pathFilter: route.path,
+      target: route.target,
+      changeOrigin: true,
+      ...(route.rewrite ? { pathRewrite: route.rewrite } : {}),
+    }));
+  });
 
   app.setGlobalPrefix('api');
   app.enableCors({

@@ -14,6 +14,7 @@ start "Node 8: Analytics" cmd /k "cd services/analytics-engine && npm run start"
 start "Node 9: Billing" cmd /k "cd services/billing-service && npm run start"
 start "Node 10: Voice" cmd /k "cd services/voice-cortex && npm run start"
 start "Node 11: Knowledge" cmd /k "cd services/knowledge-graph && npm run start"
+start "Node 12: Audit" cmd /k "cd services/security-audit && npm run start"
 
 echo Starting API Gateway...
 start "API Gateway" cmd /k "cd apps/api-gateway && npm run start"
@@ -21,5 +22,5 @@ start "API Gateway" cmd /k "cd apps/api-gateway && npm run start"
 echo Starting Web Client...
 start "Web Client" cmd /k "cd apps/web-client && npm run dev"
 
-echo System Started! Access Frontend at http://localhost:3001
-echo API Gateway at http://localhost:3000
+echo System Started! Access Frontend at http://localhost:3000
+echo API Gateway at http://localhost:3001
