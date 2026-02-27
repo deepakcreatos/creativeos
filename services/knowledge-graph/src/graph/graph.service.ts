@@ -13,7 +13,11 @@ export class GraphService implements OnModuleInit, OnModuleDestroy {
   }
 
   async onModuleDestroy() {
-    await this.prisma.$disconnect();
+    try {
+      if (this.prisma) await this.prisma.$disconnect();
+    } catch (error) {
+       this.logger.error('Failed to disconnect Prisma', error);
+    }
   }
 
   async storeRelationship(sourceId: string, targetId: string, type: string) {

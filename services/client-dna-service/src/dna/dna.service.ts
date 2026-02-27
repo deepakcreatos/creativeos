@@ -10,20 +10,24 @@ export class DnaService implements OnModuleInit {
   constructor(private prisma: PrismaService) {}
 
   async onModuleInit() {
-    // Ensure at least one default user exists for Node 1
-    let user = await this.prisma.user.findFirst();
-    if (!user) {
-      user = await this.prisma.user.create({
-        data: {
-          email: 'demo@creativeos.ai',
-          name: 'Demo Admin',
-          passwordHash: 'hashed_pw',
-          role: 'admin',
-        }
-      });
-      console.log('✅ Demo User Created:', user.id);
+    try {
+      // Ensure at least one default user exists for Node 1
+      let user = await this.prisma.user.findFirst();
+      if (!user) {
+        user = await this.prisma.user.create({
+          data: {
+            email: 'demo@creativeos.ai',
+            name: 'Demo Admin',
+            passwordHash: 'hashed_pw',
+            role: 'admin',
+          }
+        });
+        console.log('✅ Demo User Created:', user.id);
+      }
+      this.defaultUserId = user.id;
+    } catch (e) {
+      console.warn('⚠️ Could not verify default user. Database might be down or misconfigured.', e.message);
     }
-    this.defaultUserId = user.id;
   }
 
   async create(createDnaDto: CreateDnaDto) {
