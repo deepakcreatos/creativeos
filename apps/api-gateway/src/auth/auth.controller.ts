@@ -1,24 +1,20 @@
-import { Controller, Post, Body, HttpCode, HttpStatus, UnauthorizedException } from '@nestjs/common';
+import { Controller, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
 
 @Controller('auth')
 export class AuthController {
     @Post('login')
     @HttpCode(HttpStatus.OK)
     login(@Body() body: any) {
-        if (body.email === 'admin@creativeos.ai' && body.password === 'admin') {
-            return {
-                access_token: 'mock-jwt-token',
-                user: {
-                    id: 'admin-user-id',
-                    email: body.email,
-                    name: 'Admin',
-                    role: 'admin',
-                },
-            };
-        }
-        
-        console.log('Failed login attempt:', body.email);
-        throw new UnauthorizedException('Invalid credentials');
+        // Accept any credentials for demo purposes
+        return {
+            access_token: 'mock-jwt-token',
+            user: {
+                id: 'user-' + Date.now(),
+                email: body.email,
+                name: body.email ? body.email.split('@')[0] : 'Demo User',
+                role: body.email === 'admin@creativeos.ai' ? 'admin' : 'user',
+            },
+        };
     }
 
     @Post('register')
