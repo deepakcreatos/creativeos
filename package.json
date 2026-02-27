@@ -10,8 +10,21 @@
     "dev:web": "cd apps/web-client && npm run dev",
     "dev:api": "cd apps/api-gateway && npm run start:dev",
     "dev:dna": "cd services/client-dna-service && npm run start:dev",
-    "build": "cd apps/api-gateway && npm run build",
-    "start": "cd apps/api-gateway && npm run start:prod",
+    "build": "npm run build -w apps/api-gateway -w \"services/*\" --if-present",
+    "start": "concurrently \"npm:start:*\"",
+    "start:analytics": "cd services/analytics-engine && npm run start:prod",
+    "start:approval": "cd services/approval-service && npm run start:prod",
+    "start:billing": "cd services/billing-service && npm run start:prod",
+    "start:dna": "cd services/client-dna-service && npm run start:prod",
+    "start:content": "cd services/content-engine && npm run start:prod",
+    "start:knowledge": "cd services/knowledge-graph && npm run start:prod",
+    "start:media": "cd services/media-engine && npm run start:prod",
+    "start:revision": "cd services/revision-engine && npm run start:prod",
+    "start:scheduler": "cd services/scheduler-service && npm run start:prod",
+    "start:security": "cd services/security-audit && npm run start:prod",
+    "start:strategy": "cd services/strategy-engine && npm run start:prod",
+    "start:voice": "cd services/voice-cortex && npm run start:prod",
+    "start:gateway": "cd apps/api-gateway && npm run start:prod",
     "docker:up": "cd infra/docker && docker-compose up -d",
     "docker:down": "cd infra/docker && docker-compose down",
     "docker:logs": "cd infra/docker && docker-compose logs -f",
@@ -24,5 +37,8 @@
     "ts-node": "^10.9.2",
     "tslib": "^2.8.1",
     "typescript": "^5.9.3"
+  },
+  "dependencies": {
+    "concurrently": "^9.2.1"
   }
 }
