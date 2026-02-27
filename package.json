@@ -10,6 +10,8 @@
     "dev:web": "cd apps/web-client && npm run dev",
     "dev:api": "cd apps/api-gateway && npm run start:dev",
     "dev:dna": "cd services/client-dna-service && npm run start:dev",
+    "build": "cd apps/api-gateway && npm run build",
+    "start": "cd apps/api-gateway && npm run start:prod",
     "docker:up": "cd infra/docker && docker-compose up -d",
     "docker:down": "cd infra/docker && docker-compose down",
     "docker:logs": "cd infra/docker && docker-compose logs -f",
