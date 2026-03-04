@@ -25,8 +25,7 @@ export default function Register() {
         const password = formData.get('password') as string;
 
         try {
-            await authApi.register({ name, email, password, companyName: 'Demo Agency' });
-            await register(name, email, password); // update global Layout context
+            await register(name, email, password); // uses Supabase exclusively
             router.push('/dashboard');
         } catch (err) {
             // handle error if needed

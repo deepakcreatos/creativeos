@@ -10,9 +10,13 @@ export function Navbar() {
   const router = useRouter();
   const { user, logout, isAuthenticated } = useAuth();
 
-  const handleLogout = () => {
-    logout();
-    router.push('/');
+  const handleLogout = async () => {
+    try {
+      await logout();
+      router.push('/');
+    } catch (error) {
+      console.error('Logout failed', error);
+    }
   };
 
   // Don't show navbar on login/register pages

@@ -38,10 +38,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
         setMounted(true);
     }, []);
 
-    const handleConfirmLogout = () => {
-        logout();
-        setShowLogoutModal(false);
-        router.push('/');
+    const handleConfirmLogout = async () => {
+        try {
+            await logout();
+            setShowLogoutModal(false);
+            router.push('/');
+        } catch (error) {
+            console.error('Logout failed', error);
+        }
     };
 
     const mainNavItems = [

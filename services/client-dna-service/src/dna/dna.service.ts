@@ -30,10 +30,13 @@ export class DnaService implements OnModuleInit {
     }
   }
 
-  async create(createDnaDto: CreateDnaDto) {
+  async create(createDnaDto: CreateDnaDto & { userId?: string }) {
     const enrichedData = this.enrichData(createDnaDto);
     const semanticTags = this.generateSemanticTags(enrichedData);
     
+    // Use userId from JWT token or fallback to a default
+    const userId = createDnaDto.userId || this.defaultUserId;
+
     // Simulate embedding generation (Node 2 / 3 task later)
     const emptyEmbedding = new Array(1536).fill(0).map(() => Math.random());
 
@@ -46,7 +49,7 @@ export class DnaService implements OnModuleInit {
     
     const dna = await this.prisma.clientDNA.create({
       data: {
-        userId: this.defaultUserId,
+        userId: userId,
         clientName: createDnaDto.clientName,
         industry: createDnaDto.industry,
         brandTone: createDnaDto.brandTone,
@@ -64,7 +67,7 @@ export class DnaService implements OnModuleInit {
     // Update the vector using pgvector syntax
     await this.prisma.$executeRaw`UPDATE "client_dna" SET embedding = ${emptyEmbedding}::vector WHERE id = ${dna.id}`;
 
-    console.log('✅ [NODE 1] Client DNA Created in Postgres (Free Alternative):', dna.id);
+    console.log('✅ [NODE 1] Client DNA Created in Postgres:', dna.id);
     return dna;
   }
 
@@ -79,6 +82,13 @@ export class DnaService implements OnModuleInit {
     ];
     if (dto.geography?.country) tags.push(`geo:${dto.geography.country.toLowerCase()}`);
     return tags;
+  }
+
+  async findByUser(userId: string) {
+    return this.prisma.clientDNA.findMany({
+      where: { userId, isActive: true },
+      orderBy: { createdAt: 'desc' }
+    });
   }
 
   async findAll() {

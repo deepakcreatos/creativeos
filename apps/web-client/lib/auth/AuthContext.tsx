@@ -1,6 +1,7 @@
 'use client';
 
 import { createContext, useContext, useState, useEffect, ReactNode } from 'react';
+import { createClient } from '@/lib/supabase/client';
 
 interface User {
   id: string;
@@ -12,7 +13,7 @@ interface AuthContextType {
   user: User | null;
   login: (email: string, password: string) => Promise<void>;
   register: (name: string, email: string, password: string) => Promise<void>;
-  logout: () => void;
+  logout: () => Promise<void>;
   isAuthenticated: boolean;
 }
 
@@ -20,40 +21,66 @@ const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
 export function AuthProvider({ children }: { children: ReactNode }) {
   const [user, setUser] = useState<User | null>(null);
+  const supabase = createClient();
 
   useEffect(() => {
-    // Check if user is logged in (from localStorage)
-    const savedUser = localStorage.getItem('creativeos_user');
-    if (savedUser) {
-      setUser(JSON.parse(savedUser));
+    // Check active sessions and sets the user
+    const getSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession();
+      
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || '',
+        });
+      }
     }
+    
+    getSession();
+
+    const { data: { subscription } } = supabase.auth.onAuthStateChange((_event, session) => {
+      if (session?.user) {
+        setUser({
+          id: session.user.id,
+          email: session.user.email || '',
+          name: session.user.user_metadata?.name || session.user.email?.split('@')[0] || '',
+        });
+      } else {
+        setUser(null);
+      }
+    });
+
+    return () => subscription.unsubscribe();
   }, []);
 
   const login = async (email: string, password: string) => {
-    const user = {
-      id: Date.now().toString(),
+    const { error } = await supabase.auth.signInWithPassword({
       email,
-      name: email.split('@')[0],
-    };
+      password,
+    });
     
-    setUser(user);
-    localStorage.setItem('creativeos_user', JSON.stringify(user));
+    if (error) throw error;
   };
 
   const register = async (name: string, email: string, password: string) => {
-    const newUser = {
-      id: Date.now().toString(),
+    const { error } = await supabase.auth.signUp({
       email,
-      name,
-    };
+      password,
+      options: {
+        data: {
+          name,
+        }
+      }
+    });
     
-    setUser(newUser);
-    localStorage.setItem('creativeos_user', JSON.stringify(newUser));
+    if (error) throw error;
   };
 
-  const logout = () => {
+  const logout = async () => {
+    const { error } = await supabase.auth.signOut();
+    if (error) throw error;
     setUser(null);
-    localStorage.removeItem('creativeos_user');
   };
 
   return (

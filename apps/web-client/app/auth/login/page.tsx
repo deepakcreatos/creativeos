@@ -27,8 +27,7 @@ export default function Login() {
         const password = formData.get('password') as string;
 
         try {
-            await authApi.login({ email, password });
-            await login(email, password); // update global Layout context
+            await login(email, password); // uses Supabase exclusively
             router.push('/dashboard');
         } catch (err) {
             setError('Invalid credentials or server error.');
