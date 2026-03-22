@@ -12,7 +12,7 @@ async function bootstrap() {
     origin: [
       'http://localhost:3000',
       'http://localhost:3001',
-      'https://creativeos-demo-web-client-234wahld5-deepaks-projects-f556f02f.vercel.app/', // ← Replace with YOUR Vercel URL
+      'https://creativeos.vercel.app', // ← Replace with YOUR Vercel URL
       /\.vercel\.app$/, // Allow all Vercel preview URLs
     ],
     methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
