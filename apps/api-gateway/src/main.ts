@@ -3,11 +3,20 @@ import { AppModule } from './app.module';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule, {
-    cors: {
-      origin: true, // Dynamically mirror requesting origin to bypass credentials conflict
-      credentials: true,
+  const app = await NestFactory.create(AppModule);
+
+  // Unconditional CORS Interceptor for Vercel/Railway
+  app.use((req: any, res: any, next: any) => {
+    const origin = req.headers.origin || '*';
+    res.header('Access-Control-Allow-Origin', origin);
+    res.header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH');
+    res.header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
+    res.header('Access-Control-Allow-Credentials', 'true');
+    
+    if (req.method === 'OPTIONS') {
+      return res.status(204).end();
     }
+    next();
   });
   const routes: Array<{ path: string, target: string, rewrite?: Record<string, string> }> = [
     { path: '/api/dna', target: 'http://localhost:3002' },
