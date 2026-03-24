@@ -5,7 +5,7 @@ import { createProxyMiddleware } from 'http-proxy-middleware';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule, {
     cors: {
-      origin: '*', // Allow Vercel to connect perfectly
+      origin: true, // Dynamically mirror requesting origin to bypass credentials conflict
       credentials: true,
     }
   });
