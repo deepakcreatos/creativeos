@@ -7,19 +7,7 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log'],
   });
 
-  // CORS - Update with your actual Vercel URL
-  app.enableCors({
-    origin: [
-      'http://localhost:3000',
-      'http://localhost:3001',
-      'https://creativeos.vercel.app', // ← Replace with YOUR Vercel URL
-      /\.vercel\.app$/, // Allow all Vercel preview URLs
-    ],
-    methods: ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'OPTIONS'],
-    credentials: true,
-    allowedHeaders: ['Content-Type', 'Authorization', 'Accept'],
-  });
-
+  // CORS is aggressively handled upstream by the API-Gateway Interceptor.
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,

@@ -4,9 +4,7 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
   
-  // Enable CORS since the web-client needs to talk to this service
-  app.enableCors();
-  
+  // CORS managed globally by API Gateway
   const port = process.env.PORT || 3001;
   await app.listen(port);
   
