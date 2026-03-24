@@ -18,21 +18,36 @@ async function bootstrap() {
     }
     next();
   });
+  const DNA_SERVICE   = process.env.DNA_SERVICE_URL   || 'http://localhost:3002';
+  const AUTH_SERVICE  = process.env.AUTH_SERVICE_URL  || 'http://localhost:3001';
+  const STRAT_SERVICE = process.env.STRAT_SERVICE_URL || 'http://localhost:3003';
+  const CONT_SERVICE  = process.env.CONT_SERVICE_URL  || 'http://localhost:3004';
+  const MEDIA_SERVICE = process.env.MEDIA_SERVICE_URL || 'http://localhost:3005';
+  const REV_SERVICE   = process.env.REV_SERVICE_URL   || 'http://localhost:3006';
+  const APPR_SERVICE  = process.env.APPR_SERVICE_URL  || 'http://localhost:3007';
+  const SCHE_SERVICE  = process.env.SCHE_SERVICE_URL  || 'http://localhost:3008';
+  const ANAL_SERVICE  = process.env.ANAL_SERVICE_URL  || 'http://localhost:3009';
+  const BILL_SERVICE  = process.env.BILL_SERVICE_URL  || 'http://localhost:3010';
+  const VOIC_SERVICE  = process.env.VOIC_SERVICE_URL  || 'http://localhost:3011';
+  const KNOW_SERVICE  = process.env.KNOW_SERVICE_URL  || 'http://localhost:3012';
+  const AUDI_SERVICE  = process.env.AUDI_SERVICE_URL  || 'http://localhost:3013';
+
   const routes: Array<{ path: string, target: string, rewrite?: Record<string, string> }> = [
-    { path: '/api/dna', target: 'http://localhost:3002' },
-    { path: '/api/campaigns', target: 'http://localhost:3002' },
-    { path: '/api/strategy', target: 'http://localhost:3003', rewrite: { '^/api/strategy': '/strategy' } },
-    { path: '/api/content', target: 'http://localhost:3004', rewrite: { '^/api/content': '/content' } },
-    { path: '/api/media', target: 'http://localhost:3005', rewrite: { '^/api/media': '/media' } },
-    { path: '/api/revision', target: 'http://localhost:3006', rewrite: { '^/api/revision': '/revision' } },
-    { path: '/api/approval', target: 'http://localhost:3007', rewrite: { '^/api/approval': '/approval' } },
-    { path: '/api/scheduler', target: 'http://localhost:3008', rewrite: { '^/api/scheduler': '/scheduler' } },
-    { path: '/api/analytics', target: 'http://localhost:3009', rewrite: { '^/api/analytics': '/analytics' } },
-    { path: '/api/billing', target: 'http://localhost:3010', rewrite: { '^/api/billing': '/billing' } },
-    { path: '/api/voice', target: 'http://localhost:3011', rewrite: { '^/api/voice': '/voice' } },
-    { path: '/api/knowledge', target: 'http://localhost:3012', rewrite: { '^/api/knowledge': '/graph' } },
-    { path: '/api/audit', target: 'http://localhost:3013' },
+    { path: '/api/dna', target: DNA_SERVICE },
+    { path: '/api/campaigns', target: DNA_SERVICE },
+    { path: '/api/strategy', target: STRAT_SERVICE, rewrite: { '^/api/strategy': '/strategy' } },
+    { path: '/api/content', target: CONT_SERVICE, rewrite: { '^/api/content': '/content' } },
+    { path: '/api/media', target: MEDIA_SERVICE, rewrite: { '^/api/media': '/media' } },
+    { path: '/api/revision', target: REV_SERVICE, rewrite: { '^/api/revision': '/revision' } },
+    { path: '/api/approval', target: APPR_SERVICE, rewrite: { '^/api/approval': '/approval' } },
+    { path: '/api/scheduler', target: SCHE_SERVICE, rewrite: { '^/api/scheduler': '/scheduler' } },
+    { path: '/api/analytics', target: ANAL_SERVICE, rewrite: { '^/api/analytics': '/analytics' } },
+    { path: '/api/billing', target: BILL_SERVICE, rewrite: { '^/api/billing': '/billing' } },
+    { path: '/api/voice', target: VOIC_SERVICE, rewrite: { '^/api/voice': '/voice' } },
+    { path: '/api/knowledge', target: KNOW_SERVICE, rewrite: { '^/api/knowledge': '/graph' } },
+    { path: '/api/audit', target: AUDI_SERVICE },
   ];
+
 
   routes.forEach(route => {
     app.use(createProxyMiddleware({
