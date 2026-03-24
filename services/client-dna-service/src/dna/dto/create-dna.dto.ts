@@ -1,34 +1,29 @@
-import { IsString, IsNotEmpty, IsOptional, IsEnum, ValidateNested } from 'class-validator';
-import { Type } from 'class-transformer';
-import { TargetAudienceDto, GeographyDto, PsychographicsDto, IndustryType } from './dna-subtypes.dto';
+import { IsString, IsNotEmpty, IsOptional } from 'class-validator';
 
 export class CreateDnaDto {
   @IsString()
   @IsNotEmpty()
   clientName: string;
 
-  @IsEnum(IndustryType)
+  @IsString()
   @IsNotEmpty()
-  industry: IndustryType;
+  industry: string;
 
   @IsString()
   @IsNotEmpty()
   brandTone: string;
 
-  @ValidateNested()
-  @Type(() => TargetAudienceDto)
-  targetAudience: TargetAudienceDto;
-
-  @ValidateNested()
-  @Type(() => GeographyDto)
-  geography: GeographyDto;
-
-  @ValidateNested()
-  @Type(() => PsychographicsDto)
-  psychographics: PsychographicsDto;
+  @IsOptional()
+  targetAudience?: any;
 
   @IsOptional()
-  products?: any; // Todo: Define strict Product Schema
+  geography?: any;
+
+  @IsOptional()
+  psychographics?: any;
+
+  @IsOptional()
+  products?: any;
 
   @IsOptional()
   competitors?: any;

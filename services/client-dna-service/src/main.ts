@@ -7,20 +7,21 @@ async function bootstrap() {
     logger: ['error', 'warn', 'log'],
   });
 
-  // CORS is aggressively handled upstream by the API-Gateway Interceptor.
+  // CORS is handled upstream by the API-Gateway Interceptor.
   app.useGlobalPipes(
     new ValidationPipe({
       whitelist: true,
       transform: true,
+      forbidNonWhitelisted: false, // allow extra fields
     }),
   );
 
   app.setGlobalPrefix('api');
 
-  const port = 3002;
+  const port = process.env.PORT || 3002;
   await app.listen(port, '0.0.0.0');
   
-  console.log(`🚀 CreativeOS Backend running on port ${port}`);
+  console.log(`🚀 Client DNA Service running on port ${port}`);
 }
 
-bootstrap();
+bootstrap();

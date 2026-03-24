@@ -64,11 +64,18 @@ export class DnaService implements OnModuleInit {
       }
     });
 
-    // Update the vector using pgvector syntax
-    await this.prisma.$executeRaw`UPDATE "client_dna" SET embedding = ${emptyEmbedding}::vector WHERE id = ${dna.id}`;
-
     console.log('✅ [NODE 1] Client DNA Created in Postgres:', dna.id);
+
+    // Update the vector using pgvector syntax (non-fatal if extension not enabled)
+    try {
+      const emptyEmbedding = new Array(1536).fill(0).map(() => Math.random());
+      await this.prisma.$executeRaw`UPDATE "client_dna" SET embedding = ${emptyEmbedding}::vector WHERE id = ${dna.id}`;
+    } catch (e) {
+      console.warn('⚠️ Vector embedding skipped (pgvector may not be enabled):', e.message);
+    }
+
     return dna;
+
   }
 
   private enrichData(dto: CreateDnaDto) {

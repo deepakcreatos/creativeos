@@ -10,7 +10,7 @@
     "dev:web": "cd apps/web-client && npm run dev",
     "dev:api": "cd apps/api-gateway && npm run start:dev",
     "dev:dna": "cd services/client-dna-service && npm run start:dev",
-    "build": "npx prisma generate --schema=services/client-dna-service/prisma/schema.prisma && npm run build -w apps/api-gateway -w \"services/*\" --if-present",
+    "build": "npx prisma generate --schema=services/client-dna-service/prisma/schema.prisma && npm run build -w apps/api-gateway && npm run build -w services/client-dna-service",
     "start": "concurrently \"npm:start:gateway\" \"npm:start:dna\"",
     "start:analytics": "cd services/analytics-engine && npm run start:prod",
     "start:approval": "cd services/approval-service && npm run start:prod",

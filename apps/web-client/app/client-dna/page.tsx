@@ -45,22 +45,21 @@ export default function ClientDNA() {
     const handleSave = async () => {
         setIsLoading(true);
         try {
-            // Map simple form state to DTO expected by backend
             const payload = {
                 clientName: formData.clientName || 'Untitled Client',
-                industry: formData.industry || 'General',
-                brandTone: 'Professional', // Default if not captured
-                targetAudience: { description: formData.targetAudience },
+                industry: formData.industry || 'Other',
+                brandTone: 'Professional',
+                targetAudience: { description: formData.targetAudience || 'General audience' },
                 geography: {},
-                psychographics: { story: formData.story, tagline: formData.tagline }
+                psychographics: { story: formData.story || 'No story provided', tagline: formData.tagline || '' }
             };
 
             await dnaApi.create(payload);
             setLastSaved(new Date().toLocaleTimeString());
-            alert('Client DNA Saved Successfully! (Real DB)');
+            alert('✅ Client DNA Saved Successfully!');
         } catch (error) {
             console.error('Failed to save Client DNA', error);
-            alert('Failed to save. Ensure Backend is running (start-demo.bat).');
+            alert('Failed to save. Check console for details.');
         } finally {
             setIsLoading(false);
         }
@@ -143,9 +142,12 @@ export default function ClientDNA() {
                                             onChange={(e) => updateField('industry', e.target.value)}
                                         >
                                             <option value="">Select industry</option>
-                                            <option value="SaaS / Tech">SaaS / Tech</option>
+                                            <option value="SaaS">SaaS / Tech</option>
                                             <option value="E-commerce">E-commerce</option>
                                             <option value="Real Estate">Real Estate</option>
+                                            <option value="Healthcare">Healthcare</option>
+                                            <option value="Agency">Agency</option>
+                                            <option value="Other">Other</option>
                                         </select>
                                     </div>
                                     <div>
