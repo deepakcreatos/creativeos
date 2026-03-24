@@ -1,6 +1,14 @@
 import axios from 'axios';
 
-const API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+let API_BASE_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:4000/api';
+
+// Foolproof the URL in case the user forgets https:// or /api
+if (API_BASE_URL && !API_BASE_URL.startsWith('http') && API_BASE_URL !== 'http://localhost:4000/api') {
+    API_BASE_URL = 'https://' + API_BASE_URL;
+}
+if (API_BASE_URL && !API_BASE_URL.endsWith('/api') && API_BASE_URL !== 'http://localhost:4000/api') {
+    API_BASE_URL = API_BASE_URL + '/api';
+}
 
 console.log('🔗 API Base URL:', API_BASE_URL); // Debug log
 

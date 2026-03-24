@@ -3,8 +3,12 @@ import { AppModule } from './app.module';
 import { createProxyMiddleware } from 'http-proxy-middleware';
 
 async function bootstrap() {
-  const app = await NestFactory.create(AppModule);
-  
+  const app = await NestFactory.create(AppModule, {
+    cors: {
+      origin: '*', // Allow Vercel to connect perfectly
+      credentials: true,
+    }
+  });
   const routes: Array<{ path: string, target: string, rewrite?: Record<string, string> }> = [
     { path: '/api/dna', target: 'http://localhost:3002' },
     { path: '/api/campaigns', target: 'http://localhost:3002' },
@@ -31,10 +35,6 @@ async function bootstrap() {
   });
 
   app.setGlobalPrefix('api');
-  app.enableCors({
-    origin: '*', // Allow Vercel to connect
-    credentials: true,
-  });
   await app.listen(process.env.PORT ?? 4000, '0.0.0.0');
 }
 bootstrap();
