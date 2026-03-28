@@ -1,12 +1,12 @@
-import { Module, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
+import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { AuthController } from './auth/auth.controller';
-import { ReverseProxyMiddleware } from './proxy.middleware';
 import { CoreModule } from './core/core.module';
+import { DnaModule } from './dna/dna.module';
 
 @Module({
-  imports: [CoreModule],
+  imports: [CoreModule, DnaModule],
   controllers: [AppController, AuthController],
   providers: [AppService],
 })

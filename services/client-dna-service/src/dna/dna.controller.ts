@@ -27,6 +27,12 @@ export class DnaController {
     return this.dnaService.create({ ...createDnaDto, userId });
   }
 
+  @Get('ping')
+  ping() {
+    return { status: 'DNA_IS_ALIVE_AND_PROXIED', timestamp: Date.now() };
+  }
+
+
   @Get()
   findAll(@Req() req: any) {
     const userId = req.user?.sub;
