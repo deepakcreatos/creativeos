@@ -4,17 +4,12 @@ import { AppModule } from './app.module';
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
 
-  // Unconditional CORS for Vercel → Railway
-  app.use((req: any, res: any, next: any) => {
-    const origin = (req.headers as any).origin || '*';
-    (res as any).header('Access-Control-Allow-Origin', origin);
-    (res as any).header('Access-Control-Allow-Methods', 'GET,PUT,POST,DELETE,OPTIONS,PATCH');
-    (res as any).header('Access-Control-Allow-Headers', 'Content-Type, Authorization, Accept');
-    (res as any).header('Access-Control-Allow-Credentials', 'true');
-    if ((req as any).method === 'OPTIONS') {
-      return (res as any).status(204).end();
-    }
-    next();
+  // Use NestJS built-in CORS — handles OPTIONS preflights reliably
+  app.enableCors({
+    origin: true,                            // mirrors request origin header
+    methods: 'GET,PUT,POST,DELETE,OPTIONS,PATCH',
+    allowedHeaders: 'Content-Type, Authorization, Accept',
+    credentials: true,
   });
 
   app.setGlobalPrefix('api');
