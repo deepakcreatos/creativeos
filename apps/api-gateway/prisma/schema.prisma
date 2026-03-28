@@ -46,3 +46,50 @@ model Campaign {
 
   @@map("campaigns")
 }
+
+model Strategy {
+  id         String   @id @default(uuid())
+  userId     String?  @map("user_id")
+  campaignId String?  @map("campaign_id")
+  objective  String   @default("Brand Awareness")
+  platforms  Json     @default("[]")
+  budget     Json?
+  pillars    Json     @default("[]")
+  kpis       Json     @default("[]")
+  timeline   String   @default("30 days")
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("strategies")
+}
+
+model ContentItem {
+  id         String   @id @default(uuid())
+  userId     String?  @map("user_id")
+  strategyId String?  @map("strategy_id")
+  platform   String   @default("LinkedIn")
+  copyText   String   @map("copy_text") @db.Text
+  mediaUrl   String?  @map("media_url")
+  status     String   @default("draft")
+  score      Int      @default(0)
+  isActive   Boolean  @default(true) @map("is_active")
+  createdAt  DateTime @default(now()) @map("created_at")
+  updatedAt  DateTime @updatedAt @map("updated_at")
+
+  @@map("content_items")
+}
+
+model ScheduledPost {
+  id           String   @id @default(uuid())
+  userId       String?  @map("user_id")
+  contentId    String?  @map("content_id")
+  platform     String
+  scheduledFor DateTime @map("scheduled_for")
+  status       String   @default("queued")
+  isActive     Boolean  @default(true) @map("is_active")
+  createdAt    DateTime @default(now()) @map("created_at")
+  updatedAt    DateTime @updatedAt @map("updated_at")
+
+  @@map("scheduled_posts")
+}

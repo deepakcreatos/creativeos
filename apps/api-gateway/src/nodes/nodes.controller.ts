@@ -4,15 +4,18 @@
  * All remaining CreativeOS node controllers embedded in the Gateway.
  * Nodes 3-13: Content, Media, Strategy, Revision, Approval, Scheduler, Analytics, Billing, Voice, Knowledge, Audit
  */
-import { Controller, Get, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpCode, HttpStatus, Req, Param, Delete, Patch } from '@nestjs/common';
 import { OpenAI } from 'openai';
+import { PrismaClient } from '@prisma/client';
+
+const prisma = new PrismaClient({ log: ['error', 'warn'] });
 
 // ─── NODE 3: Content Engine ──────────────────────────────────────────────────
 @Controller('content')
 export class ContentController {
   @Post('generate')
   @HttpCode(HttpStatus.CREATED)
-  async generate(@Body() body: any) {
+  async generate(@Req() req: any, @Body() body: any) {
     const prompt = String(body.prompt || 'Generate content');
     const platform = String(body.platform || 'LinkedIn');
     
@@ -33,19 +36,40 @@ export class ContentController {
       console.warn('OpenAI failure, using fallback content.');
     }
 
+    const finalCopy = aiText || `🚀 [AI Generated for ${platform}]\n\n${prompt}\n\n✨ Crafted by CreativeOS to maximize engagement.`;
+
+    // Persist to DB
+    const contentItem = await prisma.contentItem.create({
+      data: {
+        userId: req?.user?.id || 'demo-user',
+        platform,
+        copyText: finalCopy,
+        status: 'draft',
+      }
+    });
+
     return {
       status: 'success',
       node: 'NODE_3_CONTENT_ENGINE',
       data: {
+        id: contentItem.id,
         items: [
           {
             platform,
-            text: aiText || `🚀 [AI Generated for ${platform}]\n\n${prompt}\n\n✨ Crafted by CreativeOS to maximize engagement.`,
+            text: finalCopy,
+            id: contentItem.id
           }
         ],
-        generatedAt: new Date().toISOString(),
+        generatedAt: contentItem.createdAt,
       },
     };
+  }
+
+  @Get()
+  async list(@Req() req: any) {
+    const userId = req?.user?.id || 'demo-user';
+    const items = await prisma.contentItem.findMany({ where: { userId, isActive: true }, orderBy: { createdAt: 'desc' } });
+    return { status: 'success', node: 'NODE_3_CONTENT_ENGINE', data: items };
   }
 }
 
@@ -75,7 +99,7 @@ export class MediaController {
 export class StrategyController {
   @Post('generate')
   @HttpCode(HttpStatus.CREATED)
-  async generate(@Body() body: any) {
+  async generate(@Req() req: any, @Body() body: any) {
     const objective = String(body.objective || 'Brand Awareness');
     const budget = Number(body.budget || 5000);
     const platforms = body.platforms || ['LinkedIn', 'Meta'];
@@ -102,23 +126,42 @@ export class StrategyController {
       console.warn('OpenAI failure, fallback to mock strategy', e);
     }
 
+    const budgetBreakdown = { total: budget, breakdown: { Primary: Math.floor(budget * 0.7), Secondary: Math.floor(budget * 0.3) } };
+    const timeline = body.duration || '30 days';
+
+    // Persist strategy to DB
+    const strat = await prisma.strategy.create({
+      data: {
+        userId: req?.user?.id || 'demo-user',
+        objective,
+        platforms,
+        pillars: finalPillars,
+        kpis: finalKpis,
+        budget: budgetBreakdown,
+        timeline,
+      }
+    });
+
     return {
       status: 'success',
       node: 'NODE_2_STRATEGY_ENGINE',
       data: {
+        id: strat.id,
         pillars: finalPillars,
         channels: platforms,
-        budget: { total: budget, breakdown: { Primary: Math.floor(budget * 0.7), Secondary: Math.floor(budget * 0.3) } },
-        timeline: body.duration || '30 days',
+        budget: budgetBreakdown,
+        timeline,
         kpis: finalKpis,
-        generatedAt: new Date().toISOString(),
+        generatedAt: strat.createdAt,
       },
     };
   }
 
   @Get()
-  list() {
-    return { strategies: [], node: 'NODE_2_STRATEGY_ENGINE' };
+  async list(@Req() req: any) {
+    const userId = req?.user?.id || 'demo-user';
+    const strategies = await prisma.strategy.findMany({ where: { userId, isActive: true }, orderBy: { createdAt: 'desc' } });
+    return { status: 'success', node: 'NODE_2_STRATEGY_ENGINE', data: strategies };
   }
 }
 
