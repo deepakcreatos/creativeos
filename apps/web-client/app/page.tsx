@@ -24,10 +24,10 @@ export default function Landing() {
           <div className="inline-flex items-center gap-2 bg-indigo-50 text-accent px-4 py-2 rounded-full text-sm font-bold animate-bounce">
             <Zap size={16} /> Optimize Campaigns by 30%
           </div>
-          <h1 className="text-5xl md:text-7xl font-bold font-heading text-slate-900 leading-[1.1]">
+          <h1 className="text-5xl md:text-7xl font-bold font-heading text-slate-900 dark:text-white leading-[1.1]">
             Streamline Marketing Operations with a <span className="text-accent">Smart Dashboard</span>
           </h1>
-          <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
+          <p className="text-slate-500 dark:text-slate-400 text-lg max-w-2xl mx-auto leading-relaxed">
             Manage clients, generate creative briefs, and optimize campaigns—all from one intuitive AI-powered dashboard.
           </p>
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
@@ -37,7 +37,7 @@ export default function Landing() {
             >
               Get Started
             </Link>
-            <button className="bg-white border border-slate-200 text-slate-900 px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all w-full sm:w-auto">
+            <button className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 dark:bg-slate-950 transition-all w-full sm:w-auto">
               Get a Demo
             </button>
           </div>
@@ -54,17 +54,17 @@ export default function Landing() {
 
         {/* Hero Visual */}
         <div className="mt-20 max-w-6xl mx-auto relative px-4">
-          <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-4 transform hover:scale-[1.01] transition-transform duration-500">
+          <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 p-4 transform hover:scale-[1.01] transition-transform duration-500">
             <img src="https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80" alt="Dashboard Preview" className="rounded-2xl w-full" />
-            <div className="absolute -bottom-10 -right-10 bg-white p-6 rounded-2xl shadow-xl border border-slate-100 hidden lg:block">
+            <div className="absolute -bottom-10 -right-10 bg-white dark:bg-slate-900 p-6 rounded-2xl shadow-xl border border-slate-100 dark:border-slate-800 hidden lg:block">
               <div className="flex items-center gap-4 mb-4">
                 <div className="bg-green-100 p-2 rounded-lg text-green-600"><Zap size={20} /></div>
                 <div>
                   <p className="text-xs font-bold text-slate-400">AI OPTIMIZATION</p>
-                  <p className="text-sm font-bold text-slate-900">Campaign Ready</p>
+                  <p className="text-sm font-bold text-slate-900 dark:text-white">Campaign Ready</p>
                 </div>
               </div>
-              <div className="w-48 h-2 bg-slate-100 rounded-full overflow-hidden">
+              <div className="w-48 h-2 bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                 <div className="w-4/5 h-full bg-green-500"></div>
               </div>
             </div>
@@ -73,7 +73,7 @@ export default function Landing() {
       </section>
 
       {/* Stats Section */}
-      <section className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-12 text-center border-y border-slate-100 py-16">
+      <section className="max-w-7xl mx-auto px-4 grid grid-cols-2 md:grid-cols-4 gap-12 text-center border-y border-slate-100 dark:border-slate-800 py-16">
         {[
           { label: 'More direct conversions', val: '+30%' },
           { label: 'Client satisfaction rate', val: '98%' },
@@ -81,7 +81,7 @@ export default function Landing() {
           { label: 'Revenue insights tracked', val: '50B' },
         ].map((stat, i) => (
           <div key={i} className="space-y-1">
-            <p className="text-4xl font-bold text-slate-900">{stat.val}</p>
+            <p className="text-4xl font-bold text-slate-900 dark:text-white">{stat.val}</p>
             <p className="text-sm text-slate-400 font-medium">{stat.label}</p>
           </div>
         ))}
@@ -90,8 +90,8 @@ export default function Landing() {
       {/* Advantage Grid */}
       <section className="max-w-7xl mx-auto px-4 space-y-20">
         <div className="text-center space-y-4">
-          <h2 className="text-4xl font-bold text-slate-900">The CreativeOS Advantage</h2>
-          <p className="text-slate-500 max-w-2xl mx-auto">Optimize campaigns, enhance client experiences, and boost ROI with our all-in-one marketing platform.</p>
+          <h2 className="text-4xl font-bold text-slate-900 dark:text-white">The CreativeOS Advantage</h2>
+          <p className="text-slate-500 dark:text-slate-400 max-w-2xl mx-auto">Optimize campaigns, enhance client experiences, and boost ROI with our all-in-one marketing platform.</p>
         </div>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
           {[
@@ -99,12 +99,12 @@ export default function Landing() {
             { title: 'Advanced AI Analytics', desc: 'Get deep insights into campaign performance, audience trends, and ROI.', icon: BarChart3 },
             { title: 'Secure Client Data Management', desc: 'Protect sensitive client DNA with high-grade encryption and access control.', icon: ShieldCheck },
           ].map((item, i) => (
-            <div key={i} className="bg-white p-10 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
+            <div key={i} className="bg-white dark:bg-slate-900 p-10 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
               <div className="bg-blue-50 text-accent w-12 h-12 rounded-xl flex items-center justify-center mb-6">
                 <item.icon size={24} />
               </div>
-              <h3 className="text-xl font-bold text-slate-900 mb-4">{item.title}</h3>
-              <p className="text-slate-500 text-sm leading-relaxed">{item.desc}</p>
+              <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-4">{item.title}</h3>
+              <p className="text-slate-500 dark:text-slate-400 text-sm leading-relaxed">{item.desc}</p>
             </div>
           ))}
         </div>
@@ -116,15 +116,15 @@ export default function Landing() {
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
             <div className="bg-blue-50 text-accent w-10 h-10 rounded-lg flex items-center justify-center"><Sparkles size={20} /></div>
-            <h2 className="text-4xl font-bold text-slate-900 leading-tight">Optimize Staff Productivity & Performance with Insights</h2>
-            <p className="text-slate-500 leading-relaxed">Easily track work hours, completed tasks, and campaign progress in real-time to optimize efficiency, accountability, and seamless team operations.</p>
+            <h2 className="text-4xl font-bold text-slate-900 dark:text-white leading-tight">Optimize Staff Productivity & Performance with Insights</h2>
+            <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Easily track work hours, completed tasks, and campaign progress in real-time to optimize efficiency, accountability, and seamless team operations.</p>
             <button className="bg-accent text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all">Learn More <ArrowRight size={18} /></button>
           </div>
           <div className="relative">
-            <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-8 transform rotate-2">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 p-8 transform rotate-2">
               <div className="flex justify-between items-center mb-8">
-                <h4 className="font-bold text-slate-900">Team Status</h4>
-                <button className="p-2 bg-slate-50 rounded-lg"><Plus size={16} /></button>
+                <h4 className="font-bold text-slate-900 dark:text-white">Team Status</h4>
+                <button className="p-2 bg-slate-50 dark:bg-slate-950 rounded-lg"><Plus size={16} /></button>
               </div>
               <div className="space-y-4">
                 {[
@@ -133,13 +133,13 @@ export default function Landing() {
                   { name: 'Jane Cooper', task: 'Client DNA', progress: 100, color: 'bg-green-500' },
                 ].map((u, i) => (
                   <div key={i} className="flex items-center gap-4">
-                    <div className="w-10 h-10 rounded-full bg-slate-100"></div>
+                    <div className="w-10 h-10 rounded-full bg-slate-100 dark:bg-slate-800"></div>
                     <div className="flex-1 space-y-1">
                       <div className="flex justify-between text-xs font-bold">
                         <span>{u.name}</span>
                         <span>{u.progress}%</span>
                       </div>
-                      <div className="h-1.5 w-full bg-slate-100 rounded-full overflow-hidden">
+                      <div className="h-1.5 w-full bg-slate-100 dark:bg-slate-800 rounded-full overflow-hidden">
                         <div className={`h-full ${u.color}`} style={{ width: `${u.progress}%` }}></div>
                       </div>
                     </div>
@@ -153,14 +153,14 @@ export default function Landing() {
         {/* Feature 2 */}
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="relative order-2 lg:order-1">
-            <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-8 transform -rotate-2">
+            <div className="bg-white dark:bg-slate-900 rounded-3xl shadow-2xl border border-slate-100 dark:border-slate-800 p-8 transform -rotate-2">
               <div className="space-y-6">
-                <h4 className="font-bold text-slate-900">Campaign Timeline</h4>
+                <h4 className="font-bold text-slate-900 dark:text-white">Campaign Timeline</h4>
                 <div className="space-y-4">
                   {[1, 2, 3].map(i => (
-                    <div key={i} className="flex items-center gap-4 p-4 border border-slate-100 rounded-xl">
+                    <div key={i} className="flex items-center gap-4 p-4 border border-slate-100 dark:border-slate-800 rounded-xl">
                       <div className="w-3 h-3 rounded-full bg-blue-500"></div>
-                      <div className="text-sm font-medium text-slate-600">Generated Ad Set #{i}</div>
+                      <div className="text-sm font-medium text-slate-600 dark:text-slate-400">Generated Ad Set #{i}</div>
                       <div className="ml-auto text-xs font-bold text-slate-400">10:45 AM</div>
                     </div>
                   ))}
@@ -170,19 +170,19 @@ export default function Landing() {
           </div>
           <div className="space-y-8 order-1 lg:order-2">
             <div className="bg-blue-50 text-accent w-10 h-10 rounded-lg flex items-center justify-center"><CheckCircle2 size={20} /></div>
-            <h2 className="text-4xl font-bold text-slate-900 leading-tight">Effortless Seamless Client DNA Management</h2>
-            <p className="text-slate-500 leading-relaxed">Effortlessly capture client brand voices, goals, and audiences with an intuitive system that reduces onboarding friction and improves asset relevancy.</p>
+            <h2 className="text-4xl font-bold text-slate-900 dark:text-white leading-tight">Effortless Seamless Client DNA Management</h2>
+            <p className="text-slate-500 dark:text-slate-400 leading-relaxed">Effortlessly capture client brand voices, goals, and audiences with an intuitive system that reduces onboarding friction and improves asset relevancy.</p>
             <button className="bg-accent text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all">Explore DNA <ArrowRight size={18} /></button>
           </div>
         </div>
       </section>
 
       {/* Testimonials */}
-      <section className="bg-slate-50 py-32 px-4">
+      <section className="bg-slate-50 dark:bg-slate-950 py-32 px-4">
         <div className="max-w-7xl mx-auto space-y-20">
           <div className="text-center space-y-4">
-            <h2 className="text-4xl font-bold text-slate-900">What Marketers Say About CreativeOS</h2>
-            <p className="text-slate-500">See how CreativeOS helps teams streamline operations and enhance client results.</p>
+            <h2 className="text-4xl font-bold text-slate-900 dark:text-white">What Marketers Say About CreativeOS</h2>
+            <p className="text-slate-500 dark:text-slate-400">See how CreativeOS helps teams streamline operations and enhance client results.</p>
           </div>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             {[
@@ -195,15 +195,15 @@ export default function Landing() {
               { name: 'Gianni Ferretti', role: 'Director Vistaline Hotels', quote: 'CreativeOS has scaled perfectly across our multiple properties. It is intuitive and reliable.' },
               { name: 'Luca Romano', role: 'CEO Ocean Dune Resort', quote: 'Managing a large team means juggling a lot. CreativeOS keeps everything organized.' },
             ].map((t, i) => (
-              <div key={i} className="bg-white p-6 rounded-2xl border border-slate-100 shadow-sm space-y-4">
+              <div key={i} className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm space-y-4">
                 <div className="flex items-center gap-3">
                   <div className="w-10 h-10 rounded-full bg-slate-200"></div>
                   <div>
-                    <p className="text-sm font-bold text-slate-900">{t.name}</p>
+                    <p className="text-sm font-bold text-slate-900 dark:text-white">{t.name}</p>
                     <p className="text-[10px] font-medium text-slate-400 uppercase tracking-wider">{t.role}</p>
                   </div>
                 </div>
-                <p className="text-xs text-slate-500 leading-relaxed italic">"{t.quote}"</p>
+                <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed italic">"{t.quote}"</p>
               </div>
             ))}
           </div>
@@ -216,8 +216,8 @@ export default function Landing() {
       {/* Final CTA */}
       <section className="max-w-7xl mx-auto px-4 pb-32">
         <div className="bg-accent rounded-3xl p-12 lg:p-20 text-center text-white space-y-8 relative overflow-hidden shadow-2xl shadow-blue-300">
-          <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl"></div>
-          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full -ml-48 -mb-48 blur-3xl"></div>
+          <div className="absolute top-0 right-0 w-96 h-96 bg-white dark:bg-slate-900/10 rounded-full -mr-48 -mt-48 blur-3xl"></div>
+          <div className="absolute bottom-0 left-0 w-96 h-96 bg-white dark:bg-slate-900/10 rounded-full -ml-48 -mb-48 blur-3xl"></div>
 
           <h2 className="text-4xl lg:text-5xl font-bold font-heading relative z-10">Transform the Way You Run Operations</h2>
           <p className="text-blue-100 text-lg max-w-2xl mx-auto relative z-10">Streamline every aspect of your business with powerful tools built for performance, clarity, and growth.</p>
@@ -225,7 +225,7 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
             <Link
               href="/dashboard"
-              className="bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all w-full sm:w-auto shadow-lg inline-block"
+              className="bg-white dark:bg-slate-900 text-accent px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 dark:bg-slate-950 transition-all w-full sm:w-auto shadow-lg inline-block"
             >
               Start Free Trial
             </Link>

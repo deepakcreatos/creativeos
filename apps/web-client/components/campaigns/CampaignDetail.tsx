@@ -95,7 +95,7 @@ export function CampaignDetail({ id }: CampaignDetailProps) {
         </div>
 
         {/* Campaign Header */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 mb-8">
           <div className="flex items-start justify-between mb-6">
             <div>
               <h1 className="text-4xl font-bold text-gray-900 mb-2">
@@ -145,7 +145,7 @@ export function CampaignDetail({ id }: CampaignDetailProps) {
         </div>
 
         {/* Campaign Blueprint */}
-        <div className="bg-white rounded-2xl shadow-lg p-8 mb-8">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8 mb-8">
           <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
             <span className="mr-3">🎯</span>
             Campaign Blueprint
@@ -233,7 +233,7 @@ export function CampaignDetail({ id }: CampaignDetailProps) {
 
         {/* KPIs Section */}
         {campaign.kpis && (
-          <div className="bg-white rounded-2xl shadow-lg p-8">
+          <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-lg p-8">
             <h2 className="text-2xl font-bold text-gray-900 mb-6 flex items-center">
               <span className="mr-3">📊</span>
               Key Performance Indicators

@@ -28,31 +28,31 @@ export default function AuditLogs() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full animate-in fade-in duration-500 space-y-8">
             <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold font-heading text-slate-900 flex items-center gap-3">
+                    <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-3">
                         <ShieldAlert className="text-rose-500" size={32} />
                         Audit Control
                     </h1>
-                    <p className="text-slate-500 mt-2">Global system observability, RBAC logging, and security tracking.</p>
+                    <p className="text-slate-500 dark:text-slate-400 mt-2">Global system observability, RBAC logging, and security tracking.</p>
                 </div>
             </div>
 
             <div className="grid grid-cols-1 md:grid-cols-4 gap-6">
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
                     <div className="w-12 h-12 bg-green-50 text-green-500 rounded-xl flex items-center justify-center font-bold">
                         <Activity size={24} />
                     </div>
                     <div>
-                        <div className="text-2xl font-bold text-slate-900">4,120</div>
-                        <div className="text-xs font-bold text-slate-500 uppercase">Requests (24h)</div>
+                        <div className="text-2xl font-bold text-slate-900 dark:text-white">4,120</div>
+                        <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Requests (24h)</div>
                     </div>
                 </div>
-                <div className="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm flex items-center gap-4">
+                <div className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 shadow-sm flex items-center gap-4">
                     <div className="w-12 h-12 bg-rose-50 text-rose-500 rounded-xl flex items-center justify-center font-bold">
                         <Shield size={24} />
                     </div>
                     <div>
-                        <div className="text-2xl font-bold text-slate-900">12</div>
-                        <div className="text-xs font-bold text-slate-500 uppercase">Blocked Actions</div>
+                        <div className="text-2xl font-bold text-slate-900 dark:text-white">12</div>
+                        <div className="text-xs font-bold text-slate-500 dark:text-slate-400 uppercase">Blocked Actions</div>
                     </div>
                 </div>
                 <div className="md:col-span-2 bg-slate-900 p-6 rounded-2xl shadow-lg border border-slate-800 flex items-center gap-4 text-white">
@@ -66,13 +66,13 @@ export default function AuditLogs() {
                 </div>
             </div>
 
-            <div className="bg-white border border-slate-200 shadow-sm rounded-2xl overflow-hidden">
-                <div className="p-4 bg-slate-50 border-b border-slate-100 font-bold text-slate-700 text-sm">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm rounded-2xl overflow-hidden">
+                <div className="p-4 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800 font-bold text-slate-700 dark:text-slate-300 text-sm">
                     Live System Trace Log
                 </div>
                 <div className="overflow-x-auto">
                     <table className="w-full text-sm text-left">
-                        <thead className="bg-white border-b border-slate-100 text-xs uppercase text-slate-500 font-bold">
+                        <thead className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 text-xs uppercase text-slate-500 dark:text-slate-400 font-bold">
                             <tr>
                                 <th className="px-6 py-4">Timestamp</th>
                                 <th className="px-6 py-4">Action</th>
@@ -83,19 +83,19 @@ export default function AuditLogs() {
                         </thead>
                         <tbody className="divide-y divide-slate-100">
                             {logs.map((log) => (
-                                <tr key={log.id} className="hover:bg-slate-50 transition-colors pointer-events-none">
-                                    <td className="px-6 py-4 text-slate-500 font-mono text-xs">
+                                <tr key={log.id} className="hover:bg-slate-50 dark:bg-slate-950 transition-colors pointer-events-none">
+                                    <td className="px-6 py-4 text-slate-500 dark:text-slate-400 font-mono text-xs">
                                         {log.time.toISOString()}
                                     </td>
                                     <td className="px-6 py-4">
-                                        <span className={`font-bold px-2 py-1 rounded text-[10px] ${log.action === 'WRITE' ? 'bg-indigo-100 text-indigo-700' : log.action === 'DELETE' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 text-slate-700'}`}>
+                                        <span className={`font-bold px-2 py-1 rounded text-[10px] ${log.action === 'WRITE' ? 'bg-indigo-100 text-indigo-700' : log.action === 'DELETE' ? 'bg-rose-100 text-rose-700' : 'bg-slate-100 dark:bg-slate-800 text-slate-700 dark:text-slate-300'}`}>
                                             {log.action}
                                         </span>
                                     </td>
-                                    <td className="px-6 py-4 font-mono text-slate-700">
+                                    <td className="px-6 py-4 font-mono text-slate-700 dark:text-slate-300">
                                         {log.endpoint}
                                     </td>
-                                    <td className="px-6 py-4 font-bold text-slate-600">
+                                    <td className="px-6 py-4 font-bold text-slate-600 dark:text-slate-400">
                                         {log.user}
                                     </td>
                                     <td className="px-6 py-4">

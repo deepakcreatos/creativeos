@@ -100,7 +100,7 @@ export function CreateCampaign() {
     return (
       <div className="min-h-screen bg-gray-50 py-12 px-4">
         <div className="max-w-4xl mx-auto">
-          <div className="bg-white rounded-xl shadow-sm p-12 text-center">
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-12 text-center">
             <div className="text-6xl mb-4">🧬</div>
             <h2 className="text-2xl font-bold text-gray-900 mb-2">
               No Client DNA Found
@@ -137,7 +137,7 @@ export function CreateCampaign() {
         </div>
 
         {/* Form */}
-        <form onSubmit={handleSubmit} className="bg-white rounded-2xl shadow-xl p-8">
+        <form onSubmit={handleSubmit} className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-8">
           <div className="space-y-6">
             {/* Campaign Name */}
             <Input

@@ -52,11 +52,11 @@ export default function SystemStatus() {
         <div className="max-w-5xl mx-auto p-8 animate-in fade-in duration-500">
             <div className="flex justify-between items-center mb-10">
                 <div>
-                    <h1 className="text-3xl font-bold font-heading text-slate-900 flex items-center gap-3">
+                    <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-3">
                         <Activity className="text-indigo-600" />
                         System Status
                     </h1>
-                    <p className="text-slate-500 mt-2">Real-time connectivity check for CreativeOS Microservices.</p>
+                    <p className="text-slate-500 dark:text-slate-400 mt-2">Real-time connectivity check for CreativeOS Microservices.</p>
                 </div>
                 <button 
                     onClick={checkStatus} 
@@ -72,22 +72,22 @@ export default function SystemStatus() {
                 {/* Gateway Status */}
                 <div className={`p-6 rounded-2xl border-2 ${status?.gateway ? 'border-green-100 bg-green-50/50' : 'border-red-100 bg-red-50/50'}`}>
                     <div className="flex justify-between items-start mb-4">
-                        <div className="p-3 bg-white rounded-xl shadow-sm">
+                        <div className="p-3 bg-white dark:bg-slate-900 rounded-xl shadow-sm">
                             <Server className={status?.gateway ? "text-green-600" : "text-red-600"} size={24} />
                         </div>
                         <div className={`px-3 py-1 rounded-full text-xs font-bold ${status?.gateway ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'}`}>
                             {status?.gateway ? 'ONLINE' : 'OFFLINE'}
                         </div>
                     </div>
-                    <h3 className="text-lg font-bold text-slate-900">API Gateway</h3>
-                    <p className="text-sm text-slate-500 mt-1">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white">API Gateway</h3>
+                    <p className="text-sm text-slate-500 dark:text-slate-400 mt-1">
                         {status?.gateway ? 'Successfully connected to http://localhost:3000' : 'Connection failed. Check terminal.'}
                     </p>
                 </div>
 
                 {/* Nodes Status */}
                 {status?.nodes?.map((node: any, idx: number) => (
-                    <div key={idx} className="bg-white p-6 rounded-2xl border border-slate-200 hover:shadow-md transition-all">
+                    <div key={idx} className="bg-white dark:bg-slate-900 p-6 rounded-2xl border border-slate-200 dark:border-slate-800 hover:shadow-md transition-all">
                         <div className="flex justify-between items-start mb-3">
                             <div className="flex items-center gap-2">
                                 <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse"></span>
@@ -95,8 +95,8 @@ export default function SystemStatus() {
                             </div>
                             <CheckCircle size={16} className="text-green-500" />
                         </div>
-                        <h4 className="font-bold text-slate-800">{node.name}</h4>
-                        <p className="text-xs text-slate-500 mt-2 flex items-center gap-1">
+                        <h4 className="font-bold text-slate-800 dark:text-slate-200">{node.name}</h4>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 mt-2 flex items-center gap-1">
                             Status: <span className="text-green-600 font-medium bg-green-50 px-2 py-0.5 rounded">{node.status.toUpperCase()}</span>
                         </p>
                     </div>
@@ -110,7 +110,7 @@ export default function SystemStatus() {
                         Connection Error
                     </h3>
                     <p className="text-sm mb-4">The Frontend cannot reach the API Gateway. This usually means the backend is not running.</p>
-                    <div className="bg-white p-4 rounded-lg border border-red-100 font-mono text-xs">
+                    <div className="bg-white dark:bg-slate-900 p-4 rounded-lg border border-red-100 font-mono text-xs">
                         1. Open "start_system.bat"<br/>
                         2. Wait for "API Gateway" window to appear.<br/>
                         3. Click "Refresh Status" above.

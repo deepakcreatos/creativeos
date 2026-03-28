@@ -57,7 +57,7 @@ export function ClientDNADetail({ id }: ClientDNADetailProps) {
           </Button>
         </div>
 
-        <div className="bg-white rounded-2xl shadow-xl p-8">
+        <div className="bg-white dark:bg-slate-900 rounded-2xl shadow-xl p-8">
           {/* Title */}
           <div className="flex items-start justify-between mb-8 pb-6 border-b">
             <div>

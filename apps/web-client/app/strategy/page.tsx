@@ -45,21 +45,21 @@ export default function StrategyPage() {
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full animate-in fade-in duration-500 space-y-8">
             <div>
-                <h1 className="text-3xl font-bold font-heading text-slate-900 flex items-center gap-3">
+                <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-3">
                     <Target className="text-accent" size={32} /> Strategy Engine
                 </h1>
-                <p className="text-slate-500 mt-2">AI-powered marketing strategy generation based on your Client DNA and campaign objectives.</p>
+                <p className="text-slate-500 dark:text-slate-400 mt-2">AI-powered marketing strategy generation based on your Client DNA and campaign objectives.</p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 {/* Config Panel */}
-                <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6 space-y-6">
+                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6 space-y-6">
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-3">Campaign Objective</label>
+                        <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">Campaign Objective</label>
                         <div className="space-y-2">
                             {OBJECTIVES.map(obj => (
                                 <button key={obj} onClick={() => setForm(p => ({ ...p, objective: obj }))}
-                                    className={`w-full text-left px-4 py-3 rounded-xl border-2 text-sm font-semibold transition-all flex items-center gap-3 ${form.objective === obj ? 'border-accent bg-blue-50 text-accent' : 'border-slate-200 text-slate-600 hover:border-blue-200'}`}>
+                                    className={`w-full text-left px-4 py-3 rounded-xl border-2 text-sm font-semibold transition-all flex items-center gap-3 ${form.objective === obj ? 'border-accent bg-blue-50 text-accent' : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:border-blue-200'}`}>
                                     <ChevronRight size={16} className={form.objective === obj ? 'text-accent' : 'text-transparent'} />
                                     {obj}
                                 </button>
@@ -68,11 +68,11 @@ export default function StrategyPage() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-3">Target Channels</label>
+                        <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-3">Target Channels</label>
                         <div className="grid grid-cols-2 gap-2">
                             {CHANNELS.map(c => (
                                 <button key={c} onClick={() => toggleChannel(c)}
-                                    className={`py-2 px-3 rounded-lg border-2 text-xs font-bold transition-all ${form.channels.includes(c) ? 'border-accent bg-blue-50 text-accent' : 'border-slate-200 text-slate-500'}`}>
+                                    className={`py-2 px-3 rounded-lg border-2 text-xs font-bold transition-all ${form.channels.includes(c) ? 'border-accent bg-blue-50 text-accent' : 'border-slate-200 dark:border-slate-800 text-slate-500 dark:text-slate-400'}`}>
                                     {c}
                                 </button>
                             ))}
@@ -80,17 +80,17 @@ export default function StrategyPage() {
                     </div>
 
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">
+                        <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
                             <DollarSign size={14} className="inline" /> Budget (USD)
                         </label>
                         <input type="number" value={form.budget} onChange={e => setForm(p => ({ ...p, budget: e.target.value }))}
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm" />
+                            className="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm" />
                     </div>
 
                     <div>
-                        <label className="block text-sm font-bold text-slate-700 mb-2">Timeline (days)</label>
+                        <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Timeline (days)</label>
                         <input type="number" value={form.timeline} onChange={e => setForm(p => ({ ...p, timeline: e.target.value }))}
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm" />
+                            className="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm" />
                     </div>
 
                     <button onClick={handleGenerate} disabled={loading}
@@ -102,7 +102,7 @@ export default function StrategyPage() {
                 {/* Results Panel */}
                 <div className="lg:col-span-2 space-y-6">
                     {!strategy ? (
-                        <div className="bg-white border border-slate-200 rounded-2xl shadow-sm h-full min-h-[500px] flex items-center justify-center">
+                        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm h-full min-h-[500px] flex items-center justify-center">
                             <div className="text-center text-slate-300">
                                 <Target size={64} className="mx-auto mb-4 opacity-30" />
                                 <p className="text-lg font-semibold text-slate-400">Configure your objective and generate a strategy</p>
@@ -112,15 +112,15 @@ export default function StrategyPage() {
                     ) : (
                         <>
                             {/* Content Pillars */}
-                            <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
-                                <h2 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
+                            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6">
+                                <h2 className="font-bold text-slate-900 dark:text-white mb-4 flex items-center gap-2">
                                     <Zap size={18} className="text-accent" /> Content Pillars
                                 </h2>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                     {strategy.pillars?.map((pillar: string, i: number) => (
                                         <div key={i} className="bg-gradient-to-br from-blue-50 to-indigo-50 border border-blue-100 rounded-xl p-4">
                                             <span className="text-xs font-bold text-blue-400 uppercase tracking-widest block mb-1">Pillar {i + 1}</span>
-                                            <p className="font-bold text-slate-800 text-sm">{pillar}</p>
+                                            <p className="font-bold text-slate-800 dark:text-slate-200 text-sm">{pillar}</p>
                                         </div>
                                     ))}
                                 </div>
@@ -132,13 +132,13 @@ export default function StrategyPage() {
                                     const icons = [TrendingUp, Users, BarChart3, Globe];
                                     const IconComp = icons[i % icons.length];
                                     return (
-                                        <div key={i} className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex items-center gap-4">
+                                        <div key={i} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-5 flex items-center gap-4">
                                             <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center flex-shrink-0">
                                                 <IconComp size={22} className="text-accent" />
                                             </div>
                                             <div>
                                                 <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">KPI {i + 1}</p>
-                                                <p className="font-bold text-slate-900 text-sm">{kpi}</p>
+                                                <p className="font-bold text-slate-900 dark:text-white text-sm">{kpi}</p>
                                             </div>
                                         </div>
                                     );
@@ -147,16 +147,16 @@ export default function StrategyPage() {
 
                             {/* Budget + Timeline */}
                             <div className="grid grid-cols-2 gap-4">
-                                <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
-                                    <h3 className="font-bold text-slate-900 mb-3 flex items-center gap-2"><DollarSign size={16} className="text-green-500" /> Budget Split</h3>
+                                <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6">
+                                    <h3 className="font-bold text-slate-900 dark:text-white mb-3 flex items-center gap-2"><DollarSign size={16} className="text-green-500" /> Budget Split</h3>
                                     {strategy.budget?.breakdown && Object.entries(strategy.budget.breakdown).map(([ch, amt]) => (
                                         <div key={ch} className="flex justify-between text-sm py-1 border-b border-slate-50 last:border-0">
-                                            <span className="text-slate-600 font-medium">{ch}</span>
-                                            <span className="font-bold text-slate-900">${amt as number}</span>
+                                            <span className="text-slate-600 dark:text-slate-400 font-medium">{ch}</span>
+                                            <span className="font-bold text-slate-900 dark:text-white">${amt as number}</span>
                                         </div>
                                     ))}
                                     <div className="flex justify-between text-sm pt-2 font-bold">
-                                        <span className="text-slate-900">Total</span>
+                                        <span className="text-slate-900 dark:text-white">Total</span>
                                         <span className="text-accent">${strategy.budget?.total}</span>
                                     </div>
                                 </div>

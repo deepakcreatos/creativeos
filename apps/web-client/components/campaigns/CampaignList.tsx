@@ -73,7 +73,7 @@ export function CampaignList() {
 
         {/* Empty State */}
         {campaigns.length === 0 ? (
-          <div className="bg-white rounded-xl shadow-sm p-12 text-center">
+          <div className="bg-white dark:bg-slate-900 rounded-xl shadow-sm p-12 text-center">
             <div className="text-6xl mb-4">🚀</div>
             <h2 className="text-2xl font-semibold text-gray-900 mb-2">
               No Campaigns Yet
@@ -91,7 +91,7 @@ export function CampaignList() {
             {campaigns.map((campaign) => (
               <div
                 key={campaign.id}
-                className="bg-white rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-200"
+                className="bg-white dark:bg-slate-900 rounded-xl shadow-sm hover:shadow-md transition-shadow p-6 border border-gray-200"
               >
                 {/* Header */}
                 <div className="mb-4">

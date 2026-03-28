@@ -42,7 +42,7 @@ export function Login() {
         </div>
 
         {/* Form */}
-        <div className="bg-white/10 backdrop-blur-lg rounded-2xl p-8 shadow-xl border border-white/20">
+        <div className="bg-white dark:bg-slate-900/10 backdrop-blur-lg rounded-2xl p-8 shadow-xl border border-white/20">
           <form onSubmit={handleSubmit} className="space-y-6">
             <Input
               label="Email"
@@ -53,7 +53,7 @@ export function Login() {
                 setFormData((prev) => ({ ...prev, email: e.target.value }))
               }
               required
-              className="bg-white/90"
+              className="bg-white dark:bg-slate-900/90"
             />
 
             <Input
@@ -65,7 +65,7 @@ export function Login() {
                 setFormData((prev) => ({ ...prev, password: e.target.value }))
               }
               required
-              className="bg-white/90"
+              className="bg-white dark:bg-slate-900/90"
             />
 
             <Button type="submit" className="w-full" size="lg" disabled={loading}>

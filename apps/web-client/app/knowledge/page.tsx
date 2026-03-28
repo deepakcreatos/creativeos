@@ -19,22 +19,22 @@ export default function KnowledgeGraph() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full animate-in fade-in duration-500 space-y-8">
             <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold font-heading text-slate-900 flex items-center gap-3">
+                    <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-3">
                         <Network className="text-fuchsia-500" size={32} />
                         Knowledge Graph
                     </h1>
-                    <p className="text-slate-500 mt-2">Neo4j intelligence routing and semantic relationship mapping.</p>
+                    <p className="text-slate-500 dark:text-slate-400 mt-2">Neo4j intelligence routing and semantic relationship mapping.</p>
                 </div>
                 <button 
-                    className="bg-white border border-slate-200 hover:bg-slate-50 text-slate-700 font-bold py-2.5 px-4 rounded-xl flex items-center gap-2 transition-colors disabled:opacity-50"
+                    className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 font-bold py-2.5 px-4 rounded-xl flex items-center gap-2 transition-colors disabled:opacity-50"
                 >
                     <RefreshCw size={18} /> Sync Graph
                 </button>
             </div>
 
-            <div className="bg-white border border-slate-200 shadow-sm rounded-2xl min-h-[600px] relative overflow-hidden flex flex-col">
-                <div className="p-4 bg-slate-50 border-b border-slate-100 flex justify-between items-center z-10">
-                    <div className="flex items-center gap-2 text-sm font-bold text-slate-700">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 shadow-sm rounded-2xl min-h-[600px] relative overflow-hidden flex flex-col">
+                <div className="p-4 bg-slate-50 dark:bg-slate-950 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center z-10">
+                    <div className="flex items-center gap-2 text-sm font-bold text-slate-700 dark:text-slate-300">
                         <Database size={16} /> Neo4j Simulated Topology
                     </div>
                     <div className="flex gap-4 text-xs font-bold">
@@ -44,7 +44,7 @@ export default function KnowledgeGraph() {
                     </div>
                 </div>
 
-                <div className="flex-1 bg-slate-50/50 p-8 relative flex items-center justify-center overflow-hidden">
+                <div className="flex-1 bg-slate-50 dark:bg-slate-950/50 p-8 relative flex items-center justify-center overflow-hidden">
                     {loading ? (
                         <div className="flex flex-col items-center justify-center text-slate-400">
                             <Network size={48} className="animate-pulse mb-4 text-fuchsia-200" />

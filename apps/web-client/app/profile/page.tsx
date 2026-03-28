@@ -52,11 +52,11 @@ export default function ProfilePage() {
             {/* Header Banner */}
             <div className="relative h-40 rounded-3xl overflow-hidden mb-0 bg-gradient-to-r from-accent via-indigo-600 to-purple-700 shadow-xl">
                 <div className="absolute inset-0 opacity-20">
-                    <div className="absolute top-4 left-10 w-32 h-32 rounded-full bg-white/30 blur-2xl" />
-                    <div className="absolute bottom-2 right-20 w-48 h-48 rounded-full bg-white/20 blur-3xl" />
+                    <div className="absolute top-4 left-10 w-32 h-32 rounded-full bg-white dark:bg-slate-900/30 blur-2xl" />
+                    <div className="absolute bottom-2 right-20 w-48 h-48 rounded-full bg-white dark:bg-slate-900/20 blur-3xl" />
                 </div>
                 <div className="absolute top-4 right-6 flex gap-2">
-                    <span className="bg-white/20 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
+                    <span className="bg-white dark:bg-slate-900/20 backdrop-blur text-white text-xs font-bold px-3 py-1 rounded-full flex items-center gap-1.5">
                         <Award size={12} /> Agency Pro Plan
                     </span>
                 </div>
@@ -68,20 +68,20 @@ export default function ProfilePage() {
                     <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-accent to-purple-600 flex items-center justify-center text-white text-4xl font-bold shadow-xl border-4 border-white">
                         {profile.name.charAt(0)}
                     </div>
-                    <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center border border-slate-200 hover:bg-slate-50 transition-colors">
-                        <Camera size={14} className="text-slate-600" />
+                    <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-white dark:bg-slate-900 rounded-full shadow-lg flex items-center justify-center border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:bg-slate-950 transition-colors">
+                        <Camera size={14} className="text-slate-600 dark:text-slate-400" />
                     </button>
                 </div>
 
                 <div className="flex-1 md:pb-2">
                     <div className="flex items-center gap-3">
-                        <h1 className="text-2xl font-bold text-slate-900">{profile.name}</h1>
+                        <h1 className="text-2xl font-bold text-slate-900 dark:text-white">{profile.name}</h1>
                         <span className="bg-indigo-100 text-indigo-700 text-xs font-bold px-2 py-0.5 rounded-full">{profile.role}</span>
                         <span className="flex items-center gap-1 bg-green-100 text-green-700 text-xs font-bold px-2 py-0.5 rounded-full">
                             <div className="w-1.5 h-1.5 rounded-full bg-green-500" /> Online
                         </span>
                     </div>
-                    <p className="text-slate-500 text-sm mt-0.5">{profile.company} · {profile.location}</p>
+                    <p className="text-slate-500 dark:text-slate-400 text-sm mt-0.5">{profile.company} · {profile.location}</p>
                 </div>
 
                 <div className="flex gap-3 md:pb-2">
@@ -98,9 +98,9 @@ export default function ProfilePage() {
                 {/* Left Column */}
                 <div className="space-y-6">
                     {/* Profile Card */}
-                    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm overflow-hidden">
+                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm overflow-hidden">
                         <div className="p-6 space-y-4">
-                            <h2 className="font-bold text-slate-900 text-sm uppercase tracking-widest text-slate-400">Profile Info</h2>
+                            <h2 className="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-widest text-slate-400">Profile Info</h2>
                             {[
                                 { icon: Mail, label: 'Email', key: 'email', type: 'email' },
                                 { icon: Phone, label: 'Phone', key: 'phone', type: 'tel' },
@@ -109,17 +109,17 @@ export default function ProfilePage() {
                                 { icon: User, label: 'Location', key: 'location', type: 'text' },
                             ].map(field => (
                                 <div key={field.key} className="flex items-center gap-3">
-                                    <div className="w-9 h-9 bg-slate-100 rounded-lg flex items-center justify-center flex-shrink-0">
-                                        <field.icon size={16} className="text-slate-500" />
+                                    <div className="w-9 h-9 bg-slate-100 dark:bg-slate-800 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <field.icon size={16} className="text-slate-500 dark:text-slate-400" />
                                     </div>
                                     <div className="flex-1 min-w-0">
                                         <p className="text-[10px] text-slate-400 font-bold uppercase tracking-wider">{field.label}</p>
                                         {editing ? (
                                             <input type={field.type} value={profile[field.key as keyof typeof profile]}
                                                 onChange={e => setProfile(p => ({ ...p, [field.key]: e.target.value }))}
-                                                className="w-full text-sm text-slate-800 border-b border-indigo-400 focus:outline-none bg-transparent py-0.5" />
+                                                className="w-full text-sm text-slate-800 dark:text-slate-200 border-b border-indigo-400 focus:outline-none bg-transparent py-0.5" />
                                         ) : (
-                                            <p className="text-sm text-slate-800 font-medium truncate">{profile[field.key as keyof typeof profile]}</p>
+                                            <p className="text-sm text-slate-800 dark:text-slate-200 font-medium truncate">{profile[field.key as keyof typeof profile]}</p>
                                         )}
                                     </div>
                                 </div>
@@ -128,13 +128,13 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Bio Card */}
-                    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
-                        <h2 className="font-bold text-slate-900 text-sm uppercase tracking-widest text-slate-400 mb-3">Bio</h2>
+                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6">
+                        <h2 className="font-bold text-slate-900 dark:text-white text-sm uppercase tracking-widest text-slate-400 mb-3">Bio</h2>
                         {editing ? (
                             <textarea value={profile.bio} onChange={e => setProfile(p => ({ ...p, bio: e.target.value }))}
-                                className="w-full h-24 text-sm text-slate-700 border border-slate-200 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none" />
+                                className="w-full h-24 text-sm text-slate-700 dark:text-slate-300 border border-slate-200 dark:border-slate-800 rounded-lg p-3 focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none" />
                         ) : (
-                            <p className="text-sm text-slate-600 leading-relaxed">{profile.bio}</p>
+                            <p className="text-sm text-slate-600 dark:text-slate-400 leading-relaxed">{profile.bio}</p>
                         )}
                     </div>
 
@@ -150,8 +150,8 @@ export default function ProfilePage() {
                                 <span className="text-indigo-200">AI Credits Used</span>
                                 <span>660 / 1000</span>
                             </div>
-                            <div className="h-2 bg-white/20 rounded-full overflow-hidden">
-                                <div className="h-2 bg-white rounded-full" style={{ width: '66%' }} />
+                            <div className="h-2 bg-white dark:bg-slate-900/20 rounded-full overflow-hidden">
+                                <div className="h-2 bg-white dark:bg-slate-900 rounded-full" style={{ width: '66%' }} />
                             </div>
                         </div>
                         <div className="mt-4 flex items-center gap-2 text-xs text-indigo-200">
@@ -165,21 +165,21 @@ export default function ProfilePage() {
                     {/* Stats Grid */}
                     <div className="grid grid-cols-2 sm:grid-cols-4 gap-4">
                         {stats.map(stat => (
-                            <div key={stat.label} className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 text-center">
+                            <div key={stat.label} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-5 text-center">
                                 <div className={`w-10 h-10 ${stat.color} rounded-xl flex items-center justify-center mx-auto mb-3`}>
                                     <stat.icon size={20} />
                                 </div>
-                                <p className="text-3xl font-bold text-slate-900">{stat.value}</p>
-                                <p className="text-xs text-slate-500 mt-1 font-medium">{stat.label}</p>
+                                <p className="text-3xl font-bold text-slate-900 dark:text-white">{stat.value}</p>
+                                <p className="text-xs text-slate-500 dark:text-slate-400 mt-1 font-medium">{stat.label}</p>
                             </div>
                         ))}
                     </div>
 
                     {/* Permissions & Roles */}
-                    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6">
                         <div className="flex items-center gap-2 mb-5">
                             <Shield size={20} className="text-indigo-600" />
-                            <h2 className="font-bold text-slate-900">Permissions & Access</h2>
+                            <h2 className="font-bold text-slate-900 dark:text-white">Permissions & Access</h2>
                         </div>
                         <div className="grid grid-cols-2 gap-3">
                             {[
@@ -192,22 +192,22 @@ export default function ProfilePage() {
                                 { label: 'Team Management', granted: false },
                                 { label: 'White Label Export', granted: false },
                             ].map(perm => (
-                                <div key={perm.label} className={`flex items-center gap-3 p-3 rounded-xl border ${perm.granted ? 'border-green-100 bg-green-50' : 'border-slate-100 bg-slate-50 opacity-60'}`}>
+                                <div key={perm.label} className={`flex items-center gap-3 p-3 rounded-xl border ${perm.granted ? 'border-green-100 bg-green-50' : 'border-slate-100 dark:border-slate-800 bg-slate-50 dark:bg-slate-950 opacity-60'}`}>
                                     <div className={`w-5 h-5 rounded-full flex items-center justify-center flex-shrink-0 ${perm.granted ? 'bg-green-500' : 'bg-slate-300'}`}>
                                         {perm.granted ? <CheckCircle2 size={12} className="text-white" /> : <span className="text-white text-xs">✕</span>}
                                     </div>
-                                    <span className={`text-xs font-semibold ${perm.granted ? 'text-green-800' : 'text-slate-500'}`}>{perm.label}</span>
+                                    <span className={`text-xs font-semibold ${perm.granted ? 'text-green-800' : 'text-slate-500 dark:text-slate-400'}`}>{perm.label}</span>
                                 </div>
                             ))}
                         </div>
                     </div>
 
                     {/* Recent Activity */}
-                    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6">
                         <div className="flex items-center justify-between mb-5">
                             <div className="flex items-center gap-2">
                                 <TrendingUp size={20} className="text-indigo-600" />
-                                <h2 className="font-bold text-slate-900">Recent Activity</h2>
+                                <h2 className="font-bold text-slate-900 dark:text-white">Recent Activity</h2>
                             </div>
                             <span className="text-xs text-slate-400 font-medium">Last 7 days</span>
                         </div>
@@ -218,7 +218,7 @@ export default function ProfilePage() {
                                         <item.icon size={16} />
                                     </div>
                                     <div className="flex-1">
-                                        <p className="text-sm font-semibold text-slate-800">{item.action}</p>
+                                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">{item.action}</p>
                                         <p className="text-xs text-slate-400">{item.time}</p>
                                     </div>
                                 </div>
@@ -227,10 +227,10 @@ export default function ProfilePage() {
                     </div>
 
                     {/* Notification Preferences */}
-                    <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
+                    <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-sm p-6">
                         <div className="flex items-center gap-2 mb-5">
                             <Bell size={20} className="text-indigo-600" />
-                            <h2 className="font-bold text-slate-900">Notification Preferences</h2>
+                            <h2 className="font-bold text-slate-900 dark:text-white">Notification Preferences</h2>
                         </div>
                         <div className="space-y-3">
                             {[
@@ -241,11 +241,11 @@ export default function ProfilePage() {
                             ].map(item => (
                                 <div key={item.label} className="flex items-center justify-between py-2.5 border-b border-slate-50 last:border-0">
                                     <div>
-                                        <p className="text-sm font-semibold text-slate-800">{item.label}</p>
-                                        <p className="text-xs text-slate-500">{item.desc}</p>
+                                        <p className="text-sm font-semibold text-slate-800 dark:text-slate-200">{item.label}</p>
+                                        <p className="text-xs text-slate-500 dark:text-slate-400">{item.desc}</p>
                                     </div>
                                     <div className={`w-11 h-6 rounded-full transition-colors cursor-pointer ${item.on ? 'bg-indigo-600' : 'bg-slate-200'} flex items-center px-1`}>
-                                        <div className={`w-4 h-4 bg-white rounded-full shadow transition-transform ${item.on ? 'translate-x-5' : 'translate-x-0'}`} />
+                                        <div className={`w-4 h-4 bg-white dark:bg-slate-900 rounded-full shadow transition-transform ${item.on ? 'translate-x-5' : 'translate-x-0'}`} />
                                     </div>
                                 </div>
                             ))}

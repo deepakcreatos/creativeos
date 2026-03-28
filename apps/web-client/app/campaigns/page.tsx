@@ -78,8 +78,8 @@ export default function Campaigns() {
         {/* Left Column: Form */}
         <div className="lg:col-span-1 space-y-8">
           <div>
-            <h1 className="text-3xl font-bold font-heading text-slate-900">Campaign Generator</h1>
-            <p className="text-slate-500 mt-2">Define your campaign parameters and let AI generate comprehensive outputs.</p>
+            <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white">Campaign Generator</h1>
+            <p className="text-slate-500 dark:text-slate-400 mt-2">Define your campaign parameters and let AI generate comprehensive outputs.</p>
           </div>
 
           <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex items-center gap-4">
@@ -91,20 +91,20 @@ export default function Campaigns() {
             </div>
           </div>
 
-          <div className="bg-white border border-slate-200 rounded-xl p-6 shadow-sm space-y-6">
+          <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-6 shadow-sm space-y-6">
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Campaign Name</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Campaign Name</label>
               <input
                 type="text"
                 placeholder="Enter campaign name"
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg"
+                className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg"
                 onChange={(e) => setFormData({ ...formData, name: e.target.value })}
               />
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-1">Campaign Objective</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Campaign Objective</label>
               <select
-                className="w-full px-4 py-2 bg-slate-50 border border-slate-200 rounded-lg"
+                className="w-full px-4 py-2 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-lg"
                 onChange={(e) => setFormData({ ...formData, objective: e.target.value })}
               >
                 <option>Brand Awareness</option>
@@ -113,10 +113,10 @@ export default function Campaigns() {
               </select>
             </div>
             <div>
-              <label className="block text-sm font-medium text-slate-700 mb-2">Content Types to Generate</label>
+              <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Content Types to Generate</label>
               <div className="grid grid-cols-2 gap-3">
                 {tabs.map(tab => (
-                  <label key={tab} className="flex items-center gap-2 text-xs font-medium text-slate-600 border border-slate-100 p-2 rounded-lg cursor-pointer hover:bg-slate-50 transition-colors">
+                  <label key={tab} className="flex items-center gap-2 text-xs font-medium text-slate-600 dark:text-slate-400 border border-slate-100 dark:border-slate-800 p-2 rounded-lg cursor-pointer hover:bg-slate-50 dark:bg-slate-950 transition-colors">
                     <input type="checkbox" className="rounded text-indigo-600" defaultChecked />
                     {tab}
                   </label>
@@ -134,9 +134,9 @@ export default function Campaigns() {
             </button>
           </div>
 
-          <div className="flex items-center gap-3 bg-white p-3 border border-slate-200 rounded-xl">
+          <div className="flex items-center gap-3 bg-white dark:bg-slate-900 p-3 border border-slate-200 dark:border-slate-800 rounded-xl">
             <div className="w-2.5 h-2.5 rounded-full bg-green-500"></div>
-            <p className="text-[10px] text-slate-500 uppercase tracking-widest font-bold">AI Ready: System trained on client DNA</p>
+            <p className="text-[10px] text-slate-500 dark:text-slate-400 uppercase tracking-widest font-bold">AI Ready: System trained on client DNA</p>
           </div>
         </div>
 
@@ -144,18 +144,18 @@ export default function Campaigns() {
         <div className="lg:col-span-2 space-y-6">
           <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
             <div>
-              <h2 className="text-xl font-bold font-heading text-slate-900">Generated Outputs</h2>
-              <p className="text-sm text-slate-500">AI-generated campaign assets based on your parameters</p>
+              <h2 className="text-xl font-bold font-heading text-slate-900 dark:text-white">Generated Outputs</h2>
+              <p className="text-sm text-slate-500 dark:text-slate-400">AI-generated campaign assets based on your parameters</p>
             </div>
             {campaignData && (
               <div className="flex gap-2">
-                <button className="bg-white border border-slate-200 text-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-slate-50">
+                <button className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-slate-50 dark:bg-slate-950">
                   <Send size={14} /> Send to Scheduler
                 </button>
-                <button className="bg-white border border-slate-200 text-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-slate-50">
+                <button className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-slate-50 dark:bg-slate-950">
                   <Library size={14} /> Sync to Library
                 </button>
-                <button className="bg-white border border-slate-200 text-slate-600 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-slate-50">
+                <button className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 px-3 py-1.5 rounded-lg text-xs font-bold flex items-center gap-1.5 hover:bg-slate-50 dark:bg-slate-950">
                   <FileText size={14} /> Export Docs
                 </button>
               </div>
@@ -170,12 +170,12 @@ export default function Campaigns() {
           </div>
 
           <div className="space-y-6">
-            <div className="flex border-b border-slate-200 overflow-x-auto pb-px">
+            <div className="flex border-b border-slate-200 dark:border-slate-800 overflow-x-auto pb-px">
               {tabs.map(tab => (
                 <button
                   key={tab}
                   onClick={() => setActiveTab(tab)}
-                  className={`px-6 py-4 text-sm font-medium border-b-2 transition-all whitespace-nowrap ${activeTab === tab ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600'
+                  className={`px-6 py-4 text-sm font-medium border-b-2 transition-all whitespace-nowrap ${activeTab === tab ? 'border-indigo-600 text-indigo-600' : 'border-transparent text-slate-400 hover:text-slate-600 dark:text-slate-400'
                     }`}
                 >
                   {tab}
@@ -183,12 +183,12 @@ export default function Campaigns() {
               ))}
             </div>
 
-            <div className="bg-white border border-slate-200 rounded-xl p-8 shadow-sm min-h-[400px]">
+            <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-xl p-8 shadow-sm min-h-[400px]">
               {campaignData && activeTab === 'Strategy' && (
                 <div className="space-y-8 animate-in fade-in slide-in-from-right-4 duration-300">
                   <div>
-                    <h3 className="text-lg font-bold text-slate-900 mb-2">Campaign Strategy Overview</h3>
-                    <p className="text-slate-600 leading-relaxed">
+                    <h3 className="text-lg font-bold text-slate-900 dark:text-white mb-2">Campaign Strategy Overview</h3>
+                    <p className="text-slate-600 dark:text-slate-400 leading-relaxed">
                       This {formData.objective} campaign leverages {campaignData.contentPillars?.length || 5} core content pillars:
                       <span className="font-semibold"> {campaignData.contentPillars?.join(', ')}</span>.
                       The strategy is optimized for {formData.platforms.join(' and ')}.
@@ -202,10 +202,10 @@ export default function Campaigns() {
                       { step: 'Consideration', desc: `Deep dive into ${campaignData.contentPillars?.[1] || 'Education'}`, color: 'bg-indigo-400' },
                       { step: 'Conversion', desc: `Call to action: ${formData.objective}`, color: 'bg-green-500' },
                     ].map(item => (
-                      <div key={item.step} className="bg-slate-50 p-4 rounded-xl flex items-center gap-4 border border-slate-100">
+                      <div key={item.step} className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl flex items-center gap-4 border border-slate-100 dark:border-slate-800">
                         <div className={`w-2.5 h-2.5 rounded-full ${item.color}`}></div>
-                        <span className="text-sm font-bold text-slate-800 w-24">{item.step}</span>
-                        <span className="text-sm text-slate-500">{item.desc}</span>
+                        <span className="text-sm font-bold text-slate-800 dark:text-slate-200 w-24">{item.step}</span>
+                        <span className="text-sm text-slate-500 dark:text-slate-400">{item.desc}</span>
                       </div>
                     ))}
                   </div>
@@ -238,22 +238,22 @@ export default function Campaigns() {
               )}
             </div>
 
-            <div className="bg-slate-50 border border-slate-200 rounded-xl p-6 flex gap-4">
+            <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-6 flex gap-4">
               <Info size={24} className="text-slate-400 flex-shrink-0" />
-              <p className="text-xs text-slate-500 leading-relaxed">These outputs are static, simulated AI content designed for demo walkthroughs. In production, content would be dynamically generated based on your inputs and client DNA profile.</p>
+              <p className="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">These outputs are static, simulated AI content designed for demo walkthroughs. In production, content would be dynamically generated based on your inputs and client DNA profile.</p>
             </div>
           </div>
         </div>
       </div>
 
       {/* Campaign Mind Map Section */}
-      <div className="space-y-8 py-12 border-t border-slate-200">
+      <div className="space-y-8 py-12 border-t border-slate-200 dark:border-slate-800">
         <div>
-          <h2 className="text-2xl font-bold font-heading text-slate-900">Campaign Mind Map</h2>
-          <p className="text-slate-500">Visualize how all campaign assets connect from a central objective</p>
+          <h2 className="text-2xl font-bold font-heading text-slate-900 dark:text-white">Campaign Mind Map</h2>
+          <p className="text-slate-500 dark:text-slate-400">Visualize how all campaign assets connect from a central objective</p>
         </div>
 
-        <div className="bg-slate-50 border border-slate-200 rounded-2xl p-12 relative min-h-[600px] flex items-center justify-center overflow-hidden">
+        <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-2xl p-12 relative min-h-[600px] flex items-center justify-center overflow-hidden">
           {/* Connecting Lines (SVG) */}
           <svg className="absolute inset-0 w-full h-full pointer-events-none">
             <g stroke="#cbd5e1" strokeWidth="2" strokeDasharray="5 5">
@@ -283,10 +283,10 @@ export default function Campaigns() {
               { label: 'SOPs', icon: Library, pos: 'bottom-[-150px] right-[-150px]' },
             ].map((node, i) => (
               <div key={i} className={`absolute ${node.pos} transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center gap-2 group`}>
-                <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center text-indigo-600 shadow-md border border-slate-100 group-hover:scale-110 group-hover:shadow-lg transition-all">
+                <div className="w-20 h-20 bg-white dark:bg-slate-900 rounded-full flex items-center justify-center text-indigo-600 shadow-md border border-slate-100 dark:border-slate-800 group-hover:scale-110 group-hover:shadow-lg transition-all">
                   <node.icon size={24} />
                 </div>
-                <span className="text-xs font-bold text-slate-700">{node.label}</span>
+                <span className="text-xs font-bold text-slate-700 dark:text-slate-300">{node.label}</span>
               </div>
             ))}
           </div>
@@ -297,11 +297,11 @@ export default function Campaigns() {
           <div className="absolute top-8 left-12 flex gap-4">
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-indigo-600"></div>
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Campaign Goal</span>
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Campaign Goal</span>
             </div>
             <div className="flex items-center gap-2">
               <div className="w-3 h-3 rounded-full bg-purple-400"></div>
-              <span className="text-[10px] font-bold text-slate-500 uppercase tracking-widest">Output Branches</span>
+              <span className="text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-widest">Output Branches</span>
             </div>
           </div>
         </div>
