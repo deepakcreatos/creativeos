@@ -33,7 +33,7 @@ export default function Dashboard() {
           <button className="bg-white border border-slate-200 text-slate-900 px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-50 shadow-sm">Export Data</button>
           <Link
             href="/campaigns"
-            className="bg-[#0061FF] text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-700 shadow-lg shadow-blue-200 inline-flex items-center gap-2"
+            className="bg-accent text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-700 shadow-lg shadow-blue-200 inline-flex items-center gap-2"
           >
             + New Campaign
           </Link>
@@ -76,7 +76,7 @@ export default function Dashboard() {
         <div className="space-y-8">
           <div className="bg-white rounded-3xl border border-slate-100 shadow-sm p-8 space-y-6">
             <div className="flex items-center gap-3">
-              <div className="bg-indigo-100 text-[#0061FF] p-2 rounded-lg"><Zap size={20} /></div>
+              <div className="bg-indigo-100 text-accent p-2 rounded-lg"><Zap size={20} /></div>
               <h2 className="text-lg font-bold text-slate-900">AI Insights</h2>
             </div>
             <div className="space-y-4">
@@ -85,19 +85,19 @@ export default function Dashboard() {
                 { type: 'Alert', text: 'Client DNA for "Squadra" is incomplete. Update to improve results.' },
               ].map((insight, i) => (
                 <div key={i} className="p-4 border border-slate-50 rounded-xl bg-slate-50/50 space-y-1">
-                  <span className="text-[10px] font-bold text-[#0061FF] uppercase">{insight.type}</span>
+                  <span className="text-[10px] font-bold text-accent uppercase">{insight.type}</span>
                   <p className="text-xs text-slate-600 leading-relaxed">{insight.text}</p>
                 </div>
               ))}
             </div>
-            <button className="w-full text-xs font-bold text-[#0061FF] hover:underline">View All Insights →</button>
+            <button className="w-full text-xs font-bold text-accent hover:underline">View All Insights →</button>
           </div>
 
-          <div className="bg-[#0061FF] rounded-3xl p-8 text-white space-y-4 relative overflow-hidden shadow-xl shadow-blue-200">
+          <div className="bg-accent rounded-3xl p-8 text-white space-y-4 relative overflow-hidden shadow-xl shadow-blue-200">
             <div className="absolute top-0 right-0 w-32 h-32 bg-white/10 rounded-full -mr-16 -mt-16 blur-2xl"></div>
             <h3 className="text-lg font-bold">Pro Features</h3>
             <p className="text-blue-100 text-xs leading-relaxed">Unlock advanced reporting, unlimited team members, and white-labeled client dashboards.</p>
-            <button className="bg-white text-[#0061FF] px-4 py-2 rounded-lg font-bold text-xs">Upgrade Now</button>
+            <button className="bg-white text-accent px-4 py-2 rounded-lg font-bold text-xs">Upgrade Now</button>
           </div>
         </div>
       </div>
@@ -106,7 +106,7 @@ export default function Dashboard() {
       <div className="space-y-6">
         <div className="flex justify-between items-center px-4">
           <h2 className="text-xl font-bold text-slate-900">Active Campaign Status</h2>
-          <Link href="/campaigns" className="text-[#0061FF] text-sm font-bold hover:underline">View All</Link>
+          <Link href="/campaigns" className="text-accent text-sm font-bold hover:underline">View All</Link>
         </div>
         <div className="bg-white rounded-3xl border border-slate-100 shadow-sm overflow-hidden">
           <table className="w-full text-left text-sm">
@@ -127,7 +127,7 @@ export default function Dashboard() {
               ].map((c, i) => (
                 <tr key={i} className="hover:bg-slate-50 transition-colors cursor-pointer group">
                   <td className="px-8 py-6">
-                    <p className="font-bold text-slate-900 group-hover:text-[#0061FF] transition-colors">{c.name}</p>
+                    <p className="font-bold text-slate-900 group-hover:text-accent transition-colors">{c.name}</p>
                     <p className="text-xs text-slate-400">ID: CAM-00{i + 1}</p>
                   </td>
                   <td className="px-8 py-6">

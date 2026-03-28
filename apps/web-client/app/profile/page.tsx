@@ -50,7 +50,7 @@ export default function ProfilePage() {
     return (
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full animate-in fade-in duration-500">
             {/* Header Banner */}
-            <div className="relative h-40 rounded-3xl overflow-hidden mb-0 bg-gradient-to-r from-[#0061FF] via-indigo-600 to-purple-700 shadow-xl">
+            <div className="relative h-40 rounded-3xl overflow-hidden mb-0 bg-gradient-to-r from-accent via-indigo-600 to-purple-700 shadow-xl">
                 <div className="absolute inset-0 opacity-20">
                     <div className="absolute top-4 left-10 w-32 h-32 rounded-full bg-white/30 blur-2xl" />
                     <div className="absolute bottom-2 right-20 w-48 h-48 rounded-full bg-white/20 blur-3xl" />
@@ -65,7 +65,7 @@ export default function ProfilePage() {
             {/* Avatar + Name Row */}
             <div className="flex flex-col md:flex-row md:items-end gap-6 px-6 -mt-12 mb-8 relative z-10">
                 <div className="relative">
-                    <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-[#0061FF] to-purple-600 flex items-center justify-center text-white text-4xl font-bold shadow-xl border-4 border-white">
+                    <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-accent to-purple-600 flex items-center justify-center text-white text-4xl font-bold shadow-xl border-4 border-white">
                         {profile.name.charAt(0)}
                     </div>
                     <button className="absolute -bottom-2 -right-2 w-8 h-8 bg-white rounded-full shadow-lg flex items-center justify-center border border-slate-200 hover:bg-slate-50 transition-colors">
@@ -87,7 +87,7 @@ export default function ProfilePage() {
                 <div className="flex gap-3 md:pb-2">
                     {saved && <span className="flex items-center gap-1.5 text-green-600 text-sm font-bold"><CheckCircle2 size={16} /> Saved!</span>}
                     <button onClick={() => editing ? handleSave() : setEditing(true)} disabled={saving}
-                        className="flex items-center gap-2 bg-[#0061FF] text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-700 transition-all shadow-lg disabled:opacity-60">
+                        className="flex items-center gap-2 bg-accent text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-blue-700 transition-all shadow-lg disabled:opacity-60">
                         {saving ? <Loader2 className="animate-spin" size={16} /> : editing ? <Save size={16} /> : <Edit3 size={16} />}
                         {saving ? 'Saving...' : editing ? 'Save Changes' : 'Edit Profile'}
                     </button>

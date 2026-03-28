@@ -46,7 +46,7 @@ export default function StrategyPage() {
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full animate-in fade-in duration-500 space-y-8">
             <div>
                 <h1 className="text-3xl font-bold font-heading text-slate-900 flex items-center gap-3">
-                    <Target className="text-[#0061FF]" size={32} /> Strategy Engine
+                    <Target className="text-accent" size={32} /> Strategy Engine
                 </h1>
                 <p className="text-slate-500 mt-2">AI-powered marketing strategy generation based on your Client DNA and campaign objectives.</p>
             </div>
@@ -59,8 +59,8 @@ export default function StrategyPage() {
                         <div className="space-y-2">
                             {OBJECTIVES.map(obj => (
                                 <button key={obj} onClick={() => setForm(p => ({ ...p, objective: obj }))}
-                                    className={`w-full text-left px-4 py-3 rounded-xl border-2 text-sm font-semibold transition-all flex items-center gap-3 ${form.objective === obj ? 'border-[#0061FF] bg-blue-50 text-[#0061FF]' : 'border-slate-200 text-slate-600 hover:border-blue-200'}`}>
-                                    <ChevronRight size={16} className={form.objective === obj ? 'text-[#0061FF]' : 'text-transparent'} />
+                                    className={`w-full text-left px-4 py-3 rounded-xl border-2 text-sm font-semibold transition-all flex items-center gap-3 ${form.objective === obj ? 'border-accent bg-blue-50 text-accent' : 'border-slate-200 text-slate-600 hover:border-blue-200'}`}>
+                                    <ChevronRight size={16} className={form.objective === obj ? 'text-accent' : 'text-transparent'} />
                                     {obj}
                                 </button>
                             ))}
@@ -72,7 +72,7 @@ export default function StrategyPage() {
                         <div className="grid grid-cols-2 gap-2">
                             {CHANNELS.map(c => (
                                 <button key={c} onClick={() => toggleChannel(c)}
-                                    className={`py-2 px-3 rounded-lg border-2 text-xs font-bold transition-all ${form.channels.includes(c) ? 'border-[#0061FF] bg-blue-50 text-[#0061FF]' : 'border-slate-200 text-slate-500'}`}>
+                                    className={`py-2 px-3 rounded-lg border-2 text-xs font-bold transition-all ${form.channels.includes(c) ? 'border-accent bg-blue-50 text-accent' : 'border-slate-200 text-slate-500'}`}>
                                     {c}
                                 </button>
                             ))}
@@ -84,17 +84,17 @@ export default function StrategyPage() {
                             <DollarSign size={14} className="inline" /> Budget (USD)
                         </label>
                         <input type="number" value={form.budget} onChange={e => setForm(p => ({ ...p, budget: e.target.value }))}
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0061FF] focus:outline-none text-sm" />
+                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm" />
                     </div>
 
                     <div>
                         <label className="block text-sm font-bold text-slate-700 mb-2">Timeline (days)</label>
                         <input type="number" value={form.timeline} onChange={e => setForm(p => ({ ...p, timeline: e.target.value }))}
-                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-[#0061FF] focus:outline-none text-sm" />
+                            className="w-full px-4 py-2 border border-slate-200 rounded-lg focus:ring-2 focus:ring-accent focus:outline-none text-sm" />
                     </div>
 
                     <button onClick={handleGenerate} disabled={loading}
-                        className="w-full bg-[#0061FF] text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-all shadow-lg disabled:opacity-60">
+                        className="w-full bg-accent text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-all shadow-lg disabled:opacity-60">
                         {loading ? <><Loader2 className="animate-spin" size={18} /> Generating...</> : <><Zap size={18} /> Generate Strategy</>}
                     </button>
                 </div>
@@ -114,7 +114,7 @@ export default function StrategyPage() {
                             {/* Content Pillars */}
                             <div className="bg-white border border-slate-200 rounded-2xl shadow-sm p-6">
                                 <h2 className="font-bold text-slate-900 mb-4 flex items-center gap-2">
-                                    <Zap size={18} className="text-[#0061FF]" /> Content Pillars
+                                    <Zap size={18} className="text-accent" /> Content Pillars
                                 </h2>
                                 <div className="grid grid-cols-1 sm:grid-cols-3 gap-3">
                                     {strategy.pillars?.map((pillar: string, i: number) => (
@@ -134,7 +134,7 @@ export default function StrategyPage() {
                                     return (
                                         <div key={i} className="bg-white border border-slate-200 rounded-2xl shadow-sm p-5 flex items-center gap-4">
                                             <div className="w-12 h-12 bg-indigo-50 rounded-xl flex items-center justify-center flex-shrink-0">
-                                                <IconComp size={22} className="text-[#0061FF]" />
+                                                <IconComp size={22} className="text-accent" />
                                             </div>
                                             <div>
                                                 <p className="text-xs text-slate-400 font-bold uppercase tracking-widest">KPI {i + 1}</p>
@@ -157,10 +157,10 @@ export default function StrategyPage() {
                                     ))}
                                     <div className="flex justify-between text-sm pt-2 font-bold">
                                         <span className="text-slate-900">Total</span>
-                                        <span className="text-[#0061FF]">${strategy.budget?.total}</span>
+                                        <span className="text-accent">${strategy.budget?.total}</span>
                                     </div>
                                 </div>
-                                <div className="bg-[#0061FF] rounded-2xl shadow-lg p-6 text-white">
+                                <div className="bg-accent rounded-2xl shadow-lg p-6 text-white">
                                     <h3 className="font-bold mb-4 opacity-80">Strategy Summary</h3>
                                     <div className="space-y-2">
                                         <div><p className="text-xs opacity-60">Objective</p><p className="font-bold">{form.objective}</p></div>

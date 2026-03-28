@@ -21,11 +21,11 @@ export default function Landing() {
       {/* Hero Section */}
       <section className="pt-20 text-center px-4">
         <div className="max-w-4xl mx-auto space-y-8">
-          <div className="inline-flex items-center gap-2 bg-indigo-50 text-[#0061FF] px-4 py-2 rounded-full text-sm font-bold animate-bounce">
+          <div className="inline-flex items-center gap-2 bg-indigo-50 text-accent px-4 py-2 rounded-full text-sm font-bold animate-bounce">
             <Zap size={16} /> Optimize Campaigns by 30%
           </div>
           <h1 className="text-5xl md:text-7xl font-bold font-heading text-slate-900 leading-[1.1]">
-            Streamline Marketing Operations with a <span className="text-[#0061FF]">Smart Dashboard</span>
+            Streamline Marketing Operations with a <span className="text-accent">Smart Dashboard</span>
           </h1>
           <p className="text-slate-500 text-lg max-w-2xl mx-auto leading-relaxed">
             Manage clients, generate creative briefs, and optimize campaigns—all from one intuitive AI-powered dashboard.
@@ -33,7 +33,7 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 pt-4">
             <Link
               href="/dashboard"
-              className="bg-[#0061FF] text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 w-full sm:w-auto inline-block"
+              className="bg-accent text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all shadow-xl shadow-blue-200 w-full sm:w-auto inline-block"
             >
               Get Started
             </Link>
@@ -100,7 +100,7 @@ export default function Landing() {
             { title: 'Secure Client Data Management', desc: 'Protect sensitive client DNA with high-grade encryption and access control.', icon: ShieldCheck },
           ].map((item, i) => (
             <div key={i} className="bg-white p-10 rounded-3xl border border-slate-100 shadow-sm hover:shadow-xl hover:-translate-y-2 transition-all duration-300">
-              <div className="bg-blue-50 text-[#0061FF] w-12 h-12 rounded-xl flex items-center justify-center mb-6">
+              <div className="bg-blue-50 text-accent w-12 h-12 rounded-xl flex items-center justify-center mb-6">
                 <item.icon size={24} />
               </div>
               <h3 className="text-xl font-bold text-slate-900 mb-4">{item.title}</h3>
@@ -115,10 +115,10 @@ export default function Landing() {
         {/* Feature 1 */}
         <div className="max-w-7xl mx-auto px-4 grid grid-cols-1 lg:grid-cols-2 gap-20 items-center">
           <div className="space-y-8">
-            <div className="bg-blue-50 text-[#0061FF] w-10 h-10 rounded-lg flex items-center justify-center"><Sparkles size={20} /></div>
+            <div className="bg-blue-50 text-accent w-10 h-10 rounded-lg flex items-center justify-center"><Sparkles size={20} /></div>
             <h2 className="text-4xl font-bold text-slate-900 leading-tight">Optimize Staff Productivity & Performance with Insights</h2>
             <p className="text-slate-500 leading-relaxed">Easily track work hours, completed tasks, and campaign progress in real-time to optimize efficiency, accountability, and seamless team operations.</p>
-            <button className="bg-[#0061FF] text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all">Learn More <ArrowRight size={18} /></button>
+            <button className="bg-accent text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all">Learn More <ArrowRight size={18} /></button>
           </div>
           <div className="relative">
             <div className="bg-white rounded-3xl shadow-2xl border border-slate-100 p-8 transform rotate-2">
@@ -128,7 +128,7 @@ export default function Landing() {
               </div>
               <div className="space-y-4">
                 {[
-                  { name: 'Eleanor Pena', task: 'Ad Copy', progress: 82, color: 'bg-[#0061FF]' },
+                  { name: 'Eleanor Pena', task: 'Ad Copy', progress: 82, color: 'bg-accent' },
                   { name: 'Robert Fox', task: 'Creative Assets', progress: 45, color: 'bg-purple-500' },
                   { name: 'Jane Cooper', task: 'Client DNA', progress: 100, color: 'bg-green-500' },
                 ].map((u, i) => (
@@ -169,10 +169,10 @@ export default function Landing() {
             </div>
           </div>
           <div className="space-y-8 order-1 lg:order-2">
-            <div className="bg-blue-50 text-[#0061FF] w-10 h-10 rounded-lg flex items-center justify-center"><CheckCircle2 size={20} /></div>
+            <div className="bg-blue-50 text-accent w-10 h-10 rounded-lg flex items-center justify-center"><CheckCircle2 size={20} /></div>
             <h2 className="text-4xl font-bold text-slate-900 leading-tight">Effortless Seamless Client DNA Management</h2>
             <p className="text-slate-500 leading-relaxed">Effortlessly capture client brand voices, goals, and audiences with an intuitive system that reduces onboarding friction and improves asset relevancy.</p>
-            <button className="bg-[#0061FF] text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all">Explore DNA <ArrowRight size={18} /></button>
+            <button className="bg-accent text-white px-6 py-3 rounded-xl font-bold flex items-center gap-2 hover:bg-blue-700 transition-all">Explore DNA <ArrowRight size={18} /></button>
           </div>
         </div>
       </section>
@@ -208,14 +208,14 @@ export default function Landing() {
             ))}
           </div>
           <div className="text-center">
-            <button className="bg-[#0061FF] text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all">Load More Reviews</button>
+            <button className="bg-accent text-white px-8 py-3 rounded-xl font-bold shadow-lg hover:bg-blue-700 transition-all">Load More Reviews</button>
           </div>
         </div>
       </section>
 
       {/* Final CTA */}
       <section className="max-w-7xl mx-auto px-4 pb-32">
-        <div className="bg-[#0061FF] rounded-3xl p-12 lg:p-20 text-center text-white space-y-8 relative overflow-hidden shadow-2xl shadow-blue-300">
+        <div className="bg-accent rounded-3xl p-12 lg:p-20 text-center text-white space-y-8 relative overflow-hidden shadow-2xl shadow-blue-300">
           <div className="absolute top-0 right-0 w-96 h-96 bg-white/10 rounded-full -mr-48 -mt-48 blur-3xl"></div>
           <div className="absolute bottom-0 left-0 w-96 h-96 bg-white/10 rounded-full -ml-48 -mb-48 blur-3xl"></div>
 
@@ -225,11 +225,11 @@ export default function Landing() {
           <div className="flex flex-col sm:flex-row items-center justify-center gap-4 relative z-10">
             <Link
               href="/dashboard"
-              className="bg-white text-[#0061FF] px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all w-full sm:w-auto shadow-lg inline-block"
+              className="bg-white text-accent px-8 py-4 rounded-xl font-bold text-lg hover:bg-slate-50 transition-all w-full sm:w-auto shadow-lg inline-block"
             >
               Start Free Trial
             </Link>
-            <button className="bg-[#0061FF] border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all w-full sm:w-auto">
+            <button className="bg-accent border border-white/30 text-white px-8 py-4 rounded-xl font-bold text-lg hover:bg-blue-700 transition-all w-full sm:w-auto">
               Book Demo
             </button>
           </div>

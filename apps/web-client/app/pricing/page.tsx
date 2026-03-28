@@ -39,8 +39,8 @@ export default function Pricing() {
             ],
             cta: 'Start Free Trial',
             popular: true,
-            accent: 'border-[#0061FF] ring-4 ring-blue-50',
-            btn: 'bg-[#0061FF] text-white',
+            accent: 'border-accent ring-4 ring-blue-50',
+            btn: 'bg-accent text-white',
             href: '/auth/register'
         },
         {
@@ -72,7 +72,7 @@ export default function Pricing() {
                     <span className={`text-sm font-bold ${!isYearly ? 'text-slate-900' : 'text-slate-400'}`}>Monthly Plan</span>
                     <button
                         onClick={() => setIsYearly(!isYearly)}
-                        className="w-14 h-8 bg-[#0061FF] rounded-full relative p-1 transition-colors"
+                        className="w-14 h-8 bg-accent rounded-full relative p-1 transition-colors"
                     >
                         <div className={`w-6 h-6 bg-white rounded-full shadow-md transition-all ${isYearly ? 'translate-x-6' : 'translate-x-0'}`}></div>
                     </button>
@@ -87,7 +87,7 @@ export default function Pricing() {
                 {plans.map((plan, i) => (
                     <div key={i} className={`bg-white p-10 rounded-3xl border flex flex-col space-y-8 relative ${plan.accent}`}>
                         {plan.popular && (
-                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-[#0061FF] text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">
+                            <div className="absolute top-0 left-1/2 -translate-x-1/2 -translate-y-1/2 bg-accent text-white text-[10px] font-bold px-4 py-1 rounded-full uppercase tracking-widest shadow-lg">
                                 Most Popular
                             </div>
                         )}
@@ -103,7 +103,7 @@ export default function Pricing() {
                         <div className="space-y-4 flex-1">
                             {plan.features.map((f, j) => (
                                 <div key={j} className="flex items-center gap-3 text-sm font-medium text-slate-600">
-                                    <Check size={18} className="text-[#0061FF] flex-shrink-0" />
+                                    <Check size={18} className="text-accent flex-shrink-0" />
                                     {f}
                                 </div>
                             ))}

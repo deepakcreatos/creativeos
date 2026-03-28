@@ -83,7 +83,7 @@ export default function ApprovalGatekeeper() {
                                     value={feedback}
                                     onChange={(e) => setFeedback(e.target.value)}
                                     placeholder="Enter revision feedback for the AI (e.g., 'Make the tone more exciting')..."
-                                    className="w-full text-sm p-3 border border-slate-200 rounded-lg h-24 resize-none focus:ring-2 focus:ring-[#0061FF]/20 focus:outline-none"
+                                    className="w-full text-sm p-3 border border-slate-200 rounded-lg h-24 resize-none focus:ring-2 focus:ring-accent/20 focus:outline-none"
                                 />
                                 <button 
                                     onClick={handleRevise}

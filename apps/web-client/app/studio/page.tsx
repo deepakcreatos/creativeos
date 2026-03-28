@@ -39,7 +39,7 @@ export default function ContentStudio() {
             <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
                 <div>
                     <h1 className="text-3xl font-bold font-heading text-slate-900 flex items-center gap-3">
-                        <Wand2 className="text-[#0061FF]" size={32} />
+                        <Wand2 className="text-accent" size={32} />
                         Content Studio
                     </h1>
                     <p className="text-slate-500 mt-2">AI-powered copy and visual asset generation.</p>
@@ -55,13 +55,13 @@ export default function ContentStudio() {
                             <div className="flex bg-slate-100 p-1 rounded-xl">
                                 <button 
                                     onClick={() => setMode('copy')}
-                                    className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'copy' ? 'bg-white text-[#0061FF] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                    className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'copy' ? 'bg-white text-accent shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                                 >
                                     <Type size={16} /> Copy
                                 </button>
                                 <button 
                                     onClick={() => setMode('media')}
-                                    className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'media' ? 'bg-white text-[#0061FF] shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
+                                    className={`flex-1 flex items-center justify-center gap-2 py-2 text-sm font-bold rounded-lg transition-all ${mode === 'media' ? 'bg-white text-accent shadow-sm' : 'text-slate-500 hover:text-slate-700'}`}
                                 >
                                     <ImageIcon size={16} /> Media
                                 </button>
@@ -74,14 +74,14 @@ export default function ContentStudio() {
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
                                 placeholder={`Describe the ${mode === 'copy' ? 'social post' : 'image'} you want to generate...`}
-                                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl h-32 focus:outline-none focus:ring-2 focus:ring-[#0061FF]/20 focus:border-[#0061FF] text-sm resize-none"
+                                className="w-full p-4 bg-slate-50 border border-slate-200 rounded-xl h-32 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent text-sm resize-none"
                             />
                         </div>
 
                         <button 
                             onClick={handleGenerate}
                             disabled={generating || !prompt}
-                            className="w-full bg-[#0061FF] hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
+                            className="w-full bg-accent hover:bg-blue-700 text-white font-bold py-3 px-4 rounded-xl flex items-center justify-center gap-2 transition-all disabled:opacity-50"
                         >
                             {generating ? (
                                 <><RefreshCw className="animate-spin" size={18} /> Generating...</>
@@ -98,7 +98,7 @@ export default function ContentStudio() {
                         <div className="p-4 border-b border-slate-100 bg-slate-50/50 flex justify-between items-center">
                             <h3 className="font-bold text-slate-700">Preview Canvas</h3>
                             {result && (
-                                <button className="text-sm font-bold text-slate-500 hover:text-[#0061FF] flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
+                                <button className="text-sm font-bold text-slate-500 hover:text-accent flex items-center gap-2 bg-white px-3 py-1.5 rounded-lg border border-slate-200">
                                     <Download size={14} /> Export
                                 </button>
                             )}
@@ -118,7 +118,7 @@ export default function ContentStudio() {
                                     {result.type === 'copy' ? (
                                         <div className="bg-white border border-slate-200 p-6 rounded-2xl shadow-lg">
                                             <div className="flex items-center gap-3 mb-4">
-                                                <div className="w-10 h-10 bg-[#0061FF]/10 text-[#0061FF] rounded-full flex items-center justify-center font-bold">AI</div>
+                                                <div className="w-10 h-10 bg-accent/10 text-accent rounded-full flex items-center justify-center font-bold">AI</div>
                                                 <div>
                                                     <p className="font-bold text-slate-900 text-sm">CreativeOS AI</p>
                                                     <p className="text-xs text-slate-500">Drafted just now</p>
@@ -127,7 +127,7 @@ export default function ContentStudio() {
                                             <div className="space-y-4">
                                                 {result.data.items?.map((item: any, i: number) => (
                                                     <div key={i} className="bg-slate-50 p-4 rounded-xl border border-slate-100">
-                                                        <span className="text-xs font-bold text-[#0061FF] uppercase tracking-wider mb-2 block">{item.platform}</span>
+                                                        <span className="text-xs font-bold text-accent uppercase tracking-wider mb-2 block">{item.platform}</span>
                                                         <p className="text-slate-700 whitespace-pre-wrap text-sm">{item.text}</p>
                                                     </div>
                                                 ))}
@@ -136,7 +136,7 @@ export default function ContentStudio() {
                                     ) : (
                                         <div className="bg-white border border-slate-200 p-2 rounded-2xl shadow-lg">
                                             <div className="aspect-square bg-slate-100 rounded-xl flex items-center justify-center relative overflow-hidden group">
-                                                <div className="absolute inset-0 bg-gradient-to-tr from-[#0061FF]/20 to-purple-500/20"></div>
+                                                <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-purple-500/20"></div>
                                                 <ImageIcon size={48} className="text-slate-400 opacity-50 relative z-10" />
                                                 <div className="absolute bottom-4 left-4 right-4 bg-white/90 backdrop-blur p-4 rounded-lg shadow-sm transform translate-y-full group-hover:translate-y-0 transition-transform hidden group-hover:block z-20">
                                                     <p className="text-xs font-bold text-slate-900 mb-1">Generated Asset</p>
