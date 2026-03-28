@@ -1,74 +1,67 @@
-import { Injectable, NotFoundException, OnModuleInit } from '@nestjs/common';
+import { Injectable, NotFoundException, InternalServerErrorException, OnModuleInit } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
 
 @Injectable()
 export class DnaService implements OnModuleInit {
   private prisma: PrismaClient;
-  private defaultUserId: string;
 
   constructor() {
-    this.prisma = new PrismaClient();
+    this.prisma = new PrismaClient({
+      log: ['error', 'warn'],
+    });
   }
 
   async onModuleInit() {
     try {
       await this.prisma.$connect();
-      console.log('✅ [DNA] Database connected');
-
-      // Ensure a default user exists for saves without JWT
-      let user = await this.prisma.user.findFirst();
-      if (!user) {
-        user = await this.prisma.user.create({
-          data: {
-            email: 'demo@creativeos.ai',
-            name: 'Demo Admin',
-            passwordHash: 'hashed_pw',
-            role: 'admin',
-          },
-        });
-        console.log('✅ [DNA] Demo user created:', user.id);
-      }
-      this.defaultUserId = user.id;
+      console.log('✅ [DNA Gateway] Database connected successfully');
     } catch (e) {
-      console.error('❌ [DNA] DB connection failed:', (e as Error).message);
+      console.error('❌ [DNA Gateway] DB connection FAILED:', (e as Error).message);
+      // Don't throw — server still boots, individual requests will fail gracefully
     }
   }
 
   async create(dto: any) {
-    const userId = dto.userId || this.defaultUserId;
     try {
       const dna = await this.prisma.clientDNA.create({
         data: {
-          userId: userId,
-          clientName: dto.clientName || 'Untitled Client',
-          industry: dto.industry || 'Other',
-          brandTone: dto.brandTone || 'Professional',
-          targetAudience: dto.targetAudience || {},
-          geography: dto.geography || {},
-          psychographics: dto.psychographics || {},
-          products: dto.products || {},
-          competitors: dto.competitors || [],
+          userId: (dto.userId as string | undefined) ?? null,
+          clientName: (dto.clientName as string) || 'Untitled Client',
+          industry: (dto.industry as string) || 'Other',
+          brandTone: (dto.brandTone as string) || 'Professional',
+          targetAudience: (dto.targetAudience as object) || {},
+          geography: (dto.geography as object) || {},
+          psychographics: (dto.psychographics as object) || {},
+          products: (dto.products as object) || {},
+          competitors: (dto.competitors as object) || [],
           semanticTags: [
-            `industry:${(dto.industry || 'other').toLowerCase()}`,
-            `tone:${(dto.brandTone || 'professional').toLowerCase()}`,
+            `industry:${((dto.industry as string) || 'other').toLowerCase()}`,
+            `tone:${((dto.brandTone as string) || 'professional').toLowerCase()}`,
           ],
           version: 1,
           isActive: true,
         },
       });
-      console.log('✅ [NODE 1] Client DNA saved:', dna.id);
+      console.log('✅ [NODE 1] DNA saved:', dna.id);
       return dna;
     } catch (e) {
-      console.error('❌ [DNA] Create failed:', (e as Error).message);
-      throw e;
+      const err = e as Error;
+      console.error('❌ [DNA] Create failed:', err.message);
+      // Surface real error to help debug
+      throw new InternalServerErrorException(`DNA create failed: ${err.message}`);
     }
   }
 
   async findAll() {
-    return this.prisma.clientDNA.findMany({
-      where: { isActive: true },
-      orderBy: { createdAt: 'desc' },
-    });
+    try {
+      return await this.prisma.clientDNA.findMany({
+        where: { isActive: true },
+        orderBy: { createdAt: 'desc' },
+      });
+    } catch (e) {
+      console.error('❌ [DNA] FindAll failed:', (e as Error).message);
+      return [];
+    }
   }
 
   async findOne(id: string) {
@@ -84,9 +77,9 @@ export class DnaService implements OnModuleInit {
     return this.prisma.clientDNA.update({
       where: { id },
       data: {
-        clientName: dto.clientName || dna.clientName,
-        industry: dto.industry || dna.industry,
-        brandTone: dto.brandTone || dna.brandTone,
+        clientName: (dto.clientName as string) || dna.clientName,
+        industry: (dto.industry as string) || dna.industry,
+        brandTone: (dto.brandTone as string) || dna.brandTone,
         version: dna.version + 1,
       },
     });

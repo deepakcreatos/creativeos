@@ -1,0 +1,47 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model ClientDNA {
+  id             String   @id @default(uuid())
+  userId         String?  @map("user_id")
+  clientName     String   @map("client_name")
+  industry       String
+  targetAudience Json     @default("{}") @map("target_audience")
+  brandTone      String   @map("brand_tone")
+  geography      Json     @default("{}")
+  psychographics Json     @default("{}")
+  products       Json?
+  competitors    Json?
+  version        Int      @default(1)
+  semanticTags   String[] @default([]) @map("semantic_tags")
+  isActive       Boolean  @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("client_dna")
+}
+
+model Campaign {
+  id             String   @id @default(uuid())
+  name           String
+  objective      String
+  clientDnaId    String?  @map("client_dna_id")
+  platforms      Json     @default("[]")
+  contentPillars Json     @default("[]") @map("content_pillars")
+  dateRange      Json     @default("{}") @map("date_range")
+  status         String   @default("draft")
+  kpis           Json?
+  budget         Json?
+  isActive       Boolean  @default(true) @map("is_active")
+  createdAt      DateTime @default(now()) @map("created_at")
+  updatedAt      DateTime @updatedAt @map("updated_at")
+
+  @@map("campaigns")
+}
