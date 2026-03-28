@@ -10,7 +10,7 @@ import { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
 
 const prisma = new PrismaClient({ log: ['error', 'warn'] });
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', { apiVersion: '2025-01-27.acacia' });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', { apiVersion: '2025-01-27.acacia' as any });
 
 // ─── NODE 3: Content Engine ──────────────────────────────────────────────────
 @Controller('content')
