@@ -5,15 +5,34 @@
  * Nodes 3-13: Content, Media, Strategy, Revision, Approval, Scheduler, Analytics, Billing, Voice, Knowledge, Audit
  */
 import { Controller, Get, Post, Body, HttpCode, HttpStatus } from '@nestjs/common';
+import { OpenAI } from 'openai';
 
 // ─── NODE 3: Content Engine ──────────────────────────────────────────────────
 @Controller('content')
 export class ContentController {
   @Post('generate')
   @HttpCode(HttpStatus.CREATED)
-  generate(@Body() body: any) {
+  async generate(@Body() body: any) {
     const prompt = String(body.prompt || 'Generate content');
     const platform = String(body.platform || 'LinkedIn');
+    
+    let aiText = '';
+    try {
+      if (process.env.OPENAI_API_KEY) {
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        const completion = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          messages: [
+            { role: 'system', content: `You are an expert ${platform} marketing copywriter. Write highly engaging, conversion-optimized copy.` },
+            { role: 'user', content: `Write a post about: ${prompt}` }
+          ]
+        });
+        aiText = completion.choices[0].message.content || '';
+      }
+    } catch (e) {
+      console.warn('OpenAI failure, using fallback content.');
+    }
+
     return {
       status: 'success',
       node: 'NODE_3_CONTENT_ENGINE',
@@ -21,15 +40,10 @@ export class ContentController {
         items: [
           {
             platform,
-            text: `🚀 [AI Generated for ${platform}]\n\n${prompt}\n\n✨ Crafted by CreativeOS AI to maximize engagement and brand resonance. This content is optimized for ${platform} algorithms.\n\n#CreativeOS #AIMarketing #ContentStrategy`,
-          },
-          {
-            platform: 'Meta',
-            text: `📣 ${prompt}\n\nDiscover how we're transforming the digital landscape — one story at a time. Follow for more.\n\n#Marketing #Growth #AI`,
-          },
+            text: aiText || `🚀 [AI Generated for ${platform}]\n\n${prompt}\n\n✨ Crafted by CreativeOS to maximize engagement.`,
+          }
         ],
         generatedAt: new Date().toISOString(),
-        tokensUsed: 284,
       },
     };
   }
@@ -61,16 +75,42 @@ export class MediaController {
 export class StrategyController {
   @Post('generate')
   @HttpCode(HttpStatus.CREATED)
-  generate(@Body() body: any) {
+  async generate(@Body() body: any) {
+    const objective = String(body.objective || 'Brand Awareness');
+    const budget = Number(body.budget || 5000);
+    const platforms = body.platforms || ['LinkedIn', 'Meta'];
+    
+    let finalKpis = ['Reach: 50,000', 'Engagement Rate: 4%', 'Leads: 200', 'Conversions: 20'];
+    let finalPillars = ['Brand Authority', 'Market Education', 'Product Showcase', 'Customer Stories', 'Industry Trends'];
+
+    try {
+      if (process.env.OPENAI_API_KEY) {
+        const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        const completion = await openai.chat.completions.create({
+          model: 'gpt-4o-mini',
+          response_format: { type: 'json_object' },
+          messages: [
+            { role: 'system', content: 'You are an elite marketing strategist. Return JSON with keys "kpis" (array of strings) and "pillars" (array of strings).' },
+            { role: 'user', content: `Objective: ${objective}. Budget: $${budget}. Channels: ${platforms.join(', ')}.` }
+          ]
+        });
+        const aiJson = JSON.parse(completion.choices[0].message.content || '{}');
+        if (aiJson.kpis) finalKpis = aiJson.kpis;
+        if (aiJson.pillars) finalPillars = aiJson.pillars;
+      }
+    } catch (e) {
+      console.warn('OpenAI failure, fallback to mock strategy', e);
+    }
+
     return {
       status: 'success',
       node: 'NODE_2_STRATEGY_ENGINE',
       data: {
-        pillars: ['Brand Authority', 'Market Education', 'Product Showcase', 'Customer Stories', 'Industry Trends'],
-        channels: body.platforms || ['LinkedIn', 'Meta', 'Google'],
-        budget: { total: 5000, breakdown: { LinkedIn: 2000, Meta: 2000, Google: 1000 } },
-        timeline: '30 days',
-        kpis: ['Reach: 50,000', 'Engagement Rate: 4%', 'Leads: 200', 'Conversions: 20'],
+        pillars: finalPillars,
+        channels: platforms,
+        budget: { total: budget, breakdown: { Primary: Math.floor(budget * 0.7), Secondary: Math.floor(budget * 0.3) } },
+        timeline: body.duration || '30 days',
+        kpis: finalKpis,
         generatedAt: new Date().toISOString(),
       },
     };
