@@ -19,7 +19,9 @@ export default function BillingDashboard() {
                     revisions: Math.floor(Math.random() * 15)
                 }
             });
-            setInvoices(prev => [res.data, ...prev]);
+            // API returns { node, invoice: {...} } — safely extract invoice or use whole res
+            const invoiceData = res?.invoice ?? res?.data ?? res ?? {};
+            setInvoices(prev => [invoiceData, ...prev]);
         } catch (err) {
             console.error(err);
         } finally {
