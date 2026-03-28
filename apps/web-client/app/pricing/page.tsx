@@ -3,13 +3,40 @@
 
 import React, { useState } from 'react';
 import Link from 'next/link';
-import { Check, Info } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { Check, Info, Loader2 } from 'lucide-react';
+import { useAuth } from '@/lib/auth/AuthContext';
+import { apiClient } from '@/lib/api/client';
 
 export default function Pricing() {
     const [isYearly, setIsYearly] = useState(false);
+    const [loadingPlan, setLoadingPlan] = useState<string | null>(null);
+    const { isAuthenticated } = useAuth();
+    const router = useRouter();
+
+    const handleCheckout = async (planId: string) => {
+        if (!isAuthenticated) {
+            router.push('/auth/register');
+            return;
+        }
+
+        setLoadingPlan(planId);
+        try {
+            const res = await apiClient.post('/billing/checkout', { planId });
+            if (res.data.url) {
+                window.location.href = res.data.url;
+            }
+        } catch (error) {
+            console.error('Checkout failed', error);
+            alert('Failed to initiate checkout. Please ensure you are logged in.');
+        } finally {
+            setLoadingPlan(null);
+        }
+    };
 
     const plans = [
         {
+            id: 'price_basic',
             name: 'Basic Plan',
             desc: 'Simple tools for small teams.',
             price: isYearly ? '$22' : '$29',
@@ -23,9 +50,10 @@ export default function Pricing() {
             cta: 'Get Started',
             accent: 'border-slate-100 dark:border-slate-800',
             btn: 'bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white',
-            href: '/auth/register'
+            href: '#'
         },
         {
+            id: 'price_pro',
             name: 'Pro Plan',
             desc: 'Automation for growing agencies.',
             price: isYearly ? '$55' : '$69',
@@ -41,9 +69,10 @@ export default function Pricing() {
             popular: true,
             accent: 'border-accent ring-4 ring-blue-50',
             btn: 'bg-accent text-white',
-            href: '/auth/register'
+            href: '#'
         },
         {
+            id: 'price_enterprise',
             name: 'Enterprise Plan',
             desc: 'Full control for large scale ops.',
             price: isYearly ? '$105' : '$129',
@@ -109,9 +138,14 @@ export default function Pricing() {
                             ))}
                         </div>
 
-                        <Link href={plan.href} className={`w-full py-4 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] shadow-sm flex items-center justify-center ${plan.btn}`}>
-                            {plan.cta}
-                        </Link>
+                        <button 
+                            onClick={() => handleCheckout(plan.id)}
+                            disabled={loadingPlan === plan.id}
+                            className={`w-full py-4 rounded-xl font-bold text-sm transition-all hover:scale-[1.02] shadow-sm flex items-center justify-center gap-2 ${plan.btn}`}
+                        >
+                            {loadingPlan === plan.id ? <Loader2 size={18} className="animate-spin" /> : null}
+                            {isAuthenticated ? 'Subscribe Now' : plan.cta}
+                        </button>
                     </div>
                 ))}
             </div>

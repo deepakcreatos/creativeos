@@ -4,11 +4,13 @@
  * All remaining CreativeOS node controllers embedded in the Gateway.
  * Nodes 3-13: Content, Media, Strategy, Revision, Approval, Scheduler, Analytics, Billing, Voice, Knowledge, Audit
  */
-import { Controller, Get, Post, Body, HttpCode, HttpStatus, Req, Param, Delete, Patch } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpCode, HttpStatus, Req, Param, Delete, Patch, Headers } from '@nestjs/common';
 import { OpenAI } from 'openai';
 import { PrismaClient } from '@prisma/client';
+import Stripe from 'stripe';
 
 const prisma = new PrismaClient({ log: ['error', 'warn'] });
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', { apiVersion: '2025-01-27.acacia' });
 
 // ─── NODE 3: Content Engine ──────────────────────────────────────────────────
 @Controller('content')
@@ -310,19 +312,61 @@ export class BillingController {
     };
   }
 
-  @Post('invoice')
+  @Post('checkout')
   @HttpCode(HttpStatus.CREATED)
-  invoice(@Body() body: any) {
-    return {
-      node: 'NODE_9_BILLING',
-      invoice: {
-        id: `inv-${Date.now()}`,
-        amount: body.amount || 299,
-        currency: 'USD',
-        status: 'paid',
-        issuedAt: new Date().toISOString(),
-      },
+  async checkout(@Req() req: any, @Body() body: any) {
+    const planId = body.planId || 'price_pro_monthly';
+    const userId = req?.user?.id || 'demo-user';
+
+    if (process.env.STRIPE_SECRET_KEY && process.env.STRIPE_SECRET_KEY !== 'sk_test_placeholder') {
+      try {
+        const session = await stripe.checkout.sessions.create({
+          payment_method_types: ['card'],
+          line_items: [{ price: planId, quantity: 1 }],
+          mode: 'subscription',
+          success_url: 'https://creativeos-web-client.vercel.app/billing?success=true',
+          cancel_url: 'https://creativeos-web-client.vercel.app/pricing?canceled=true',
+          client_reference_id: userId,
+        });
+        return { status: 'success', node: 'NODE_9_BILLING', url: session.url };
+      } catch (e) {
+        console.error('Stripe Error:', e);
+        return { status: 'error', message: 'Failed to create checkout session' };
+      }
+    }
+
+    // Mock response
+    return { 
+      status: 'success', 
+      node: 'NODE_9_BILLING', 
+      url: 'https://creativeos-web-client.vercel.app/billing?success=true&mock=true',
+      message: 'Mock Checkout Session Created (No API Key)' 
     };
+  }
+
+  @Post('webhook')
+  @HttpCode(HttpStatus.OK)
+  async webhook(@Body() body: any, @Headers('stripe-signature') signature: string) {
+    // In production, you would use stripe.webhooks.constructEvent to verify signature
+    // using the raw body buffer and your webhook secret.
+    const event = body; 
+    
+    switch (event.type) {
+      case 'checkout.session.completed':
+        const session = event.data.object;
+        console.log(`Payment complete for user ${session.client_reference_id}`);
+        // Here you would find the user in DB and update their subscription status
+        break;
+      case 'customer.subscription.deleted':
+        const subscription = event.data.object;
+        console.log(`Subscription deleted: ${subscription.id}`);
+        // Handle cancellation
+        break;
+      default:
+        console.log(`Unhandled event type ${event.type}`);
+    }
+
+    return { received: true };
   }
 }
 

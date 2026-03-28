@@ -112,7 +112,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                                     ))}
 
                                     <div 
-                                        className="relative group"
+                                        className="relative group lg:hidden"
                                         onMouseEnter={() => setFeaturesOpen(true)}
                                         onMouseLeave={() => setFeaturesOpen(false)}
                                     >
@@ -187,10 +187,37 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                 </div>
             </header>
 
-            {/* Main Content */}
-            <main className="flex-1 w-full flex flex-col">
-                {children}
-            </main>
+            {/* Main Content Layout with Sidebar */}
+            <div className="flex-1 w-full max-w-[1400px] mx-auto flex">
+                {/* Persistent Left Sidebar for Authenticated Users */}
+                {mounted && isAuthenticated && (
+                    <aside className="hidden lg:flex flex-col w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto py-8 px-4 gap-1.5 shadow-sm rounded-bl-3xl">
+                        <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-3">Creative Nodes</div>
+                        {featureItems.map(item => (
+                            <Link 
+                                key={item.id} 
+                                href={item.href} 
+                                className={`group flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${isActive(item.href) ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800/50 hover:text-indigo-600'}`}
+                            >
+                                <item.icon size={18} className={isActive(item.href) ? 'text-indigo-600 dark:text-indigo-400' : 'text-slate-400 group-hover:text-indigo-600'} />
+                                {item.label}
+                            </Link>
+                        ))}
+                        
+                        <div className="mt-8 text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-3">System Hub</div>
+                        <Link href="/analytics" className={`group flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${isActive('/analytics') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 hover:text-indigo-600'}`}>
+                            <BarChart3 size={18} className={isActive('/analytics') ? 'text-indigo-600' : 'text-slate-400 group-hover:text-indigo-600'} /> Analytics Engine
+                        </Link>
+                        <Link href="/billing" className={`group flex items-center gap-3 px-4 py-3 rounded-xl font-bold transition-all ${isActive('/billing') ? 'bg-indigo-50 dark:bg-indigo-900/20 text-indigo-700 dark:text-indigo-400 shadow-sm' : 'text-slate-600 dark:text-slate-400 hover:bg-slate-50 hover:text-indigo-600'}`}>
+                            <Settings size={18} className={isActive('/billing') ? 'text-indigo-600' : 'text-slate-400 group-hover:text-indigo-600'} /> Billing Manager
+                        </Link>
+                    </aside>
+                )}
+
+                <main className="flex-1 w-full flex flex-col min-w-0">
+                    {children}
+                </main>
+            </div>
 
             {/* Footer */}
             <footer className="bg-white dark:bg-slate-900 pt-20 pb-10 border-t border-slate-100 dark:border-slate-800 mt-20">
