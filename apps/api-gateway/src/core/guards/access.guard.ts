@@ -18,7 +18,23 @@ export class AccessGuard implements CanActivate {
         const path = request.path as string;
 
         // ✅ Public routes — no token needed
-        const publicPaths = ['/api', '/api/', '/api/auth', '/api/dna', '/api/campaigns'];
+        const publicPaths = [
+          '/api', '/api/',
+          '/api/auth',
+          '/api/dna',
+          '/api/campaigns',
+          '/api/content',
+          '/api/media',
+          '/api/strategy',
+          '/api/revision',
+          '/api/approval',
+          '/api/scheduler',
+          '/api/analytics',
+          '/api/billing',
+          '/api/voice',
+          '/api/knowledge',
+          '/api/audit',
+        ];
         if (publicPaths.some(p => path === p || path.startsWith(p))) {
             request.user = { id: 'public', role: 'user', workspaceId: 'default' };
             return true;

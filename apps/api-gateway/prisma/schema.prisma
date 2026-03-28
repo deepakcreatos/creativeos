@@ -30,9 +30,10 @@ model ClientDNA {
 
 model Campaign {
   id             String   @id @default(uuid())
-  name           String
-  objective      String
+  userId         String?  @map("user_id")
   clientDnaId    String?  @map("client_dna_id")
+  name           String   @default("Untitled Campaign")
+  objective      String   @default("awareness")
   platforms      Json     @default("[]")
   contentPillars Json     @default("[]") @map("content_pillars")
   dateRange      Json     @default("{}") @map("date_range")
