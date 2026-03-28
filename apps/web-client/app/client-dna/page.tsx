@@ -16,6 +16,8 @@ export default function ClientDNA() {
         { title: 'Brand Identity', icon: Tag, color: 'text-blue-600', bg: 'bg-blue-50' },
         { title: 'Industry & Audience', icon: Users, color: 'text-purple-600', bg: 'bg-purple-50' },
         { title: 'Brand Tone', icon: Music, color: 'text-pink-600', bg: 'bg-pink-50' },
+        { title: 'Products & Deals', icon: Rocket, color: 'text-orange-600', bg: 'bg-orange-50' },
+        { title: 'Competitor Analysis', icon: Target, color: 'text-rose-600', bg: 'bg-rose-50' },
         { title: 'Platforms & Goals', icon: Target, color: 'text-indigo-600', bg: 'bg-indigo-50' },
         { title: 'Geography & Notes', icon: Globe, color: 'text-green-600', bg: 'bg-green-50' },
     ];
@@ -33,6 +35,9 @@ export default function ClientDNA() {
         customTone: '',
         selectedPlatforms: [] as string[],
         selectedGoals: [] as string[],
+        products: '',
+        usp: '',
+        competitors: '',
         geography: '',
         languages: '',
         notes: '',
@@ -76,11 +81,16 @@ export default function ClientDNA() {
                     story: formData.story,
                     tagline: formData.tagline,
                     notes: formData.notes,
+                    usp: formData.usp,
                 },
                 products: {
                     platforms: formData.selectedPlatforms,
                     goals: formData.selectedGoals,
+                    coreProducts: formData.products,
                 },
+                competitors: {
+                    list: formData.competitors,
+                }
             };
 
             await dnaApi.create(payload);
@@ -222,7 +232,34 @@ export default function ClientDNA() {
                                 </div>
                             )}
 
-                            {/* ── SECTION 4: Platforms & Goals ── */}
+                            {/* ── SECTION: Products & Deals ── */}
+                            {section.title === 'Products & Deals' && (
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Core Products / Services</label>
+                                        <textarea placeholder="List your main offerings, price points, and what problems they solve..." className="w-full h-24 px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"
+                                            value={formData.products} onChange={(e) => updateField('products', e.target.value)} />
+                                    </div>
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Unique Selling Proposition (USP)</label>
+                                        <input type="text" placeholder="Why do customers choose you over others?" className="w-full px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none"
+                                            value={formData.usp} onChange={(e) => updateField('usp', e.target.value)} />
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* ── SECTION: Competitor Analysis ── */}
+                            {section.title === 'Competitor Analysis' && (
+                                <div className="space-y-4">
+                                    <div>
+                                        <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1">Main Competitors</label>
+                                        <textarea placeholder="List top 3 competitors and what you do better than them..." className="w-full h-24 px-4 py-2 border border-slate-200 dark:border-slate-800 rounded-lg focus:ring-2 focus:ring-indigo-500 focus:outline-none resize-none"
+                                            value={formData.competitors} onChange={(e) => updateField('competitors', e.target.value)} />
+                                    </div>
+                                </div>
+                            )}
+
+                            {/* ── SECTION: Platforms & Goals ── */}
                             {section.title === 'Platforms & Goals' && (
                                 <div className="space-y-5">
                                     <div>
