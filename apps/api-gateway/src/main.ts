@@ -18,36 +18,28 @@ async function bootstrap() {
     }
     next();
   });
-  // CRITICAL FIX: The entire CreativeOS monolith runs identically inside a SINGLE 
-  // Railway Container (`sunny-strength`). Because they run natively side-by-side, 
-  // they MUST unconditionally proxy to strict internal `localhost:<port>` bindings.
-  // Using external DNS to try to proxy `DNA_SERVICE_URL` back into itself violently 
-  // causes recursive proxy death loops resulting in `504 Target Offline`.
-  const routes: Array<{ path: string, target: string, rewrite?: Record<string, string> }> = [
-    { path: '/api/dna', target: 'http://localhost:3002' },
-    { path: '/api/campaigns', target: 'http://localhost:3002' },
-    { path: '/api/strategy', target: 'http://localhost:3003', rewrite: { '^/api/strategy': '/strategy' } },
-    { path: '/api/content', target: 'http://localhost:3004', rewrite: { '^/api/content': '/content' } },
-    { path: '/api/media', target: 'http://localhost:3005', rewrite: { '^/api/media': '/media' } },
-    { path: '/api/revision', target: 'http://localhost:3006', rewrite: { '^/api/revision': '/revision' } },
-    { path: '/api/approval', target: 'http://localhost:3007', rewrite: { '^/api/approval': '/approval' } },
-    { path: '/api/scheduler', target: 'http://localhost:3008', rewrite: { '^/api/scheduler': '/scheduler' } },
-    { path: '/api/analytics', target: 'http://localhost:3009', rewrite: { '^/api/analytics': '/analytics' } },
-    { path: '/api/billing', target: 'http://localhost:3010', rewrite: { '^/api/billing': '/billing' } },
-    { path: '/api/voice', target: 'http://localhost:3011', rewrite: { '^/api/voice': '/voice' } },
-    { path: '/api/knowledge', target: 'http://localhost:3012', rewrite: { '^/api/knowledge': '/graph' } },
-    { path: '/api/audit', target: 'http://localhost:3013' },
-  ];
+  // Strict manual route interception guarantees HPM actually proxies the payload instead of skipping 
+  // it due to `pathFilter` matching bugs throwing a false-positive NestJS 404.
+  app.use((req: any, res: any, next: any) => {
+    console.log(`[GATEWAY] Intercepting: ${req.method} ${req.url}`);
 
+    if (req.url.startsWith('/api/dna') || req.url.startsWith('/api/campaigns')) {
+      return createProxyMiddleware({ target: 'http://localhost:3002', changeOrigin: true })(req, res, next);
+    }
+    if (req.url.startsWith('/api/strategy')) {
+      return createProxyMiddleware({ target: 'http://localhost:3003', changeOrigin: true, pathRewrite: { '^/api/strategy': '/strategy' } })(req, res, next);
+    }
+    if (req.url.startsWith('/api/content')) {
+      return createProxyMiddleware({ target: 'http://localhost:3004', changeOrigin: true, pathRewrite: { '^/api/content': '/content' } })(req, res, next);
+    }
+    if (req.url.startsWith('/api/media')) {
+      return createProxyMiddleware({ target: 'http://localhost:3005', changeOrigin: true, pathRewrite: { '^/api/media': '/media' } })(req, res, next);
+    }
 
-  routes.forEach(route => {
-    app.use(createProxyMiddleware({
-      pathFilter: route.path,
-      target: route.target,
-      changeOrigin: true,
-      ...(route.rewrite ? { pathRewrite: route.rewrite } : {}),
-    }));
+    // Fallback if not intercepted
+    next();
   });
+
 
   app.setGlobalPrefix('api');
   await app.listen(process.env.PORT ?? 4000, '0.0.0.0');
