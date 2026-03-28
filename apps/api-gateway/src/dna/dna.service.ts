@@ -6,7 +6,15 @@ export class DnaService implements OnModuleInit {
   private prisma: PrismaClient;
 
   constructor() {
+    // CRITICAL: Use DIRECT_URL (session pooler, port 5432) not DATABASE_URL (transaction pooler, port 6543)
+    // PgBouncer transaction mode blocks Prisma's prepared statements causing silent 500s.
+    // DIRECT_URL uses the session pooler which supports prepared statements correctly.
     this.prisma = new PrismaClient({
+      datasources: {
+        db: {
+          url: process.env.DIRECT_URL ?? process.env.DATABASE_URL,
+        },
+      },
       log: ['error', 'warn'],
     });
   }
@@ -23,31 +31,31 @@ export class DnaService implements OnModuleInit {
 
   async create(dto: any) {
     try {
-      const dna = await this.prisma.clientDNA.create({
-        data: {
-          userId: (dto.userId as string | undefined) ?? null,
-          clientName: (dto.clientName as string) || 'Untitled Client',
-          industry: (dto.industry as string) || 'Other',
-          brandTone: (dto.brandTone as string) || 'Professional',
-          targetAudience: (dto.targetAudience as object) || {},
-          geography: (dto.geography as object) || {},
-          psychographics: (dto.psychographics as object) || {},
-          products: (dto.products as object) || {},
-          competitors: (dto.competitors as object) || [],
-          semanticTags: [
-            `industry:${((dto.industry as string) || 'other').toLowerCase()}`,
-            `tone:${((dto.brandTone as string) || 'professional').toLowerCase()}`,
-          ],
-          version: 1,
-          isActive: true,
-        },
-      });
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      const inputData: any = {
+        clientName: String(dto.clientName || 'Untitled Client'),
+        industry: String(dto.industry || 'Other'),
+        brandTone: String(dto.brandTone || 'Professional'),
+        targetAudience: dto.targetAudience ?? {},
+        geography: dto.geography ?? {},
+        psychographics: dto.psychographics ?? {},
+        products: dto.products ?? {},
+        competitors: dto.competitors ?? [],
+        semanticTags: [
+          `industry:${(String(dto.industry || 'other')).toLowerCase()}`,
+          `tone:${(String(dto.brandTone || 'professional')).toLowerCase()}`,
+        ],
+        version: 1,
+        isActive: true,
+      };
+      if (dto.userId) inputData.userId = String(dto.userId);
+
+      const dna = await this.prisma.clientDNA.create({ data: inputData });
       console.log('✅ [NODE 1] DNA saved:', dna.id);
       return dna;
     } catch (e) {
       const err = e as Error;
       console.error('❌ [DNA] Create failed:', err.message);
-      // Surface real error to help debug
       throw new InternalServerErrorException(`DNA create failed: ${err.message}`);
     }
   }
