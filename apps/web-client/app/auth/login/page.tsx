@@ -8,14 +8,20 @@ import { Mail, Lock, ArrowRight, Github, Twitter } from 'lucide-react';
 
 // ... imports
 import { authApi } from '@/lib/api/client';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useAuth } from '@/lib/auth/AuthContext';
 
 export default function Login() {
     const router = useRouter();
-    const { login } = useAuth();
+    const { login, isAuthenticated } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState('');
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/dashboard');
+        }
+    }, [isAuthenticated, router]);
 
     const handleLogin = async (e: React.FormEvent) => {
         e.preventDefault();

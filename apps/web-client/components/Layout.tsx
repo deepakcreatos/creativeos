@@ -16,7 +16,8 @@ import {
     User,
     Target,
     Settings,
-    CloudLightning as Sparkles
+    CloudLightning as Sparkles,
+    Menu
 } from 'lucide-react';
 import { Page } from '../types/ui-types';
 
@@ -30,6 +31,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     const { user, isAuthenticated, logout } = useAuth();
 
     const [featuresOpen, setFeaturesOpen] = useState(false);
+    const [sidebarOpen, setSidebarOpen] = useState(true);
     const [showLogoutModal, setShowLogoutModal] = useState(false);
     const [mounted, setMounted] = useState(false);
 
@@ -84,60 +86,38 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             <header className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 sticky top-0 z-40 shadow-sm">
                 <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-20">
-                        <Link href="/" className="flex items-center gap-2 cursor-pointer flex-shrink-0">
-                            <div className="bg-accent p-1.5 rounded-lg text-white">
-                                <Sparkles size={24} />
-                            </div>
-                            <span className="text-xl md:text-2xl font-bold font-heading text-slate-900 dark:text-white tracking-tight">Creative<span className="text-accent">OS</span></span>
-                        </Link>
+                        <div className="flex items-center">
+                            {mounted && isAuthenticated && (
+                                <button 
+                                    onClick={() => setSidebarOpen(!sidebarOpen)} 
+                                    className="p-2 mr-3 hover:bg-slate-100 dark:hover:bg-slate-800 rounded-lg transition-colors hidden lg:block"
+                                >
+                                    <Menu size={24} className="text-slate-600 dark:text-slate-300" />
+                                </button>
+                            )}
+                            <Link href={mounted && isAuthenticated ? "/dashboard" : "/"} className="flex items-center gap-2 cursor-pointer flex-shrink-0">
+                                <div className="bg-accent p-1.5 rounded-lg text-white">
+                                    <Sparkles size={24} />
+                                </div>
+                                <span className="text-xl md:text-2xl font-bold font-heading text-slate-900 dark:text-white tracking-tight">Creative<span className="text-accent">OS</span></span>
+                            </Link>
+                        </div>
 
                         <nav className="hidden xl:flex space-x-6 overflow-visible flex-1 justify-center px-4 relative z-50">
-                            <Link
-                                href="/"
-                                className={`text-[13px] font-bold tracking-wide transition-colors whitespace-nowrap px-2 py-1 rounded-md hover:bg-slate-50 dark:bg-slate-950 hover:text-accent ${isActive('/') ? 'text-accent bg-blue-50/50' : 'text-slate-500 dark:text-slate-400'}`}
-                            >
-                                Home
-                            </Link>
-
-                            {mounted && isAuthenticated && (
+                            {mounted && !isAuthenticated && (
                                 <>
-                                    {mainNavItems.map((item) => (
-                                        <Link
-                                            key={item.id}
-                                            href={item.href}
-                                            className={`text-[13px] font-bold tracking-wide transition-colors whitespace-nowrap px-2 py-1 rounded-md hover:bg-slate-50 dark:bg-slate-950 hover:text-accent ${isActive(item.href) ? 'text-accent bg-blue-50/50' : 'text-slate-500 dark:text-slate-400'}`}
-                                        >
-                                            {item.label}
-                                        </Link>
-                                    ))}
-
-                                    <div 
-                                        className="relative group lg:hidden"
-                                        onMouseEnter={() => setFeaturesOpen(true)}
-                                        onMouseLeave={() => setFeaturesOpen(false)}
+                                    <Link
+                                        href="/"
+                                        className={`text-[13px] font-bold tracking-wide transition-colors whitespace-nowrap px-2 py-1 rounded-md hover:bg-slate-50 dark:bg-slate-950 hover:text-accent ${isActive('/') ? 'text-accent bg-blue-50/50' : 'text-slate-500 dark:text-slate-400'}`}
                                     >
-                                        <button className={`text-[13px] font-bold tracking-wide transition-colors whitespace-nowrap px-2 py-1 rounded-md hover:bg-slate-50 dark:bg-slate-950 hover:text-accent flex items-center gap-1 ${featuresOpen ? 'text-accent bg-blue-50/50' : 'text-slate-500 dark:text-slate-400'}`}>
-                                            Features <ChevronDown size={14} className={`transition-transform duration-200 ${featuresOpen ? 'rotate-180' : ''}`} />
-                                        </button>
-
-                                        {featuresOpen && (
-                                            <div className="absolute top-full left-1/2 -translate-x-1/2 pt-2 w-64 z-50">
-                                                <div className="bg-white dark:bg-slate-900 rounded-xl shadow-2xl shadow-blue-900/10 border border-slate-100 dark:border-slate-800 overflow-hidden py-2 animate-in fade-in slide-in-from-top-2">
-                                                    {featureItems.map(item => (
-                                                        <Link 
-                                                            key={item.id} 
-                                                            href={item.href} 
-                                                            onClick={() => setFeaturesOpen(false)} 
-                                                            className="px-4 py-3 hover:bg-slate-50 dark:bg-slate-950 flex items-center gap-3 transition-colors"
-                                                        >
-                                                            <item.icon size={16} className="text-accent" />
-                                                            <span className="text-sm font-bold text-slate-700 dark:text-slate-300">{item.label}</span>
-                                                        </Link>
-                                                    ))}
-                                                </div>
-                                            </div>
-                                        )}
-                                    </div>
+                                        Home
+                                    </Link>
+                                    <Link
+                                        href="/pricing"
+                                        className={`text-[13px] font-bold tracking-wide transition-colors whitespace-nowrap px-2 py-1 rounded-md hover:bg-slate-50 dark:bg-slate-950 hover:text-accent ${isActive('/pricing') ? 'text-accent bg-blue-50/50' : 'text-slate-500 dark:text-slate-400'}`}
+                                    >
+                                        Pricing
+                                    </Link>
                                 </>
                             )}
                         </nav>
@@ -188,9 +168,9 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </header>
 
             {/* Main Content Layout with Sidebar */}
-            <div className="flex-1 w-full max-w-[1400px] mx-auto flex">
+            <div className={`flex-1 w-full max-w-[1400px] mx-auto flex ${mounted && isAuthenticated && sidebarOpen ? '' : 'justify-center'}`}>
                 {/* Persistent Left Sidebar for Authenticated Users */}
-                {mounted && isAuthenticated && (
+                {mounted && isAuthenticated && sidebarOpen && (
                     <aside className="hidden lg:flex flex-col w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto py-8 px-4 gap-1.5 shadow-sm rounded-bl-3xl">
                         <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-3">Creative Nodes</div>
                         {featureItems.map(item => (

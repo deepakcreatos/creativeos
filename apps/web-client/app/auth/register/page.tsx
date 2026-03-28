@@ -8,12 +8,18 @@ import { User, Mail, Lock, ArrowRight, Github, Twitter } from 'lucide-react';
 
 import { authApi } from '@/lib/api/client';
 import { useAuth } from '@/lib/auth/AuthContext';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 export default function Register() {
     const router = useRouter();
-    const { register } = useAuth();
+    const { register: registerUser, isAuthenticated } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
+
+    useEffect(() => {
+        if (isAuthenticated) {
+            router.push('/dashboard');
+        }
+    }, [isAuthenticated, router]);
 
     const handleRegister = async (e: React.FormEvent) => {
         e.preventDefault();
@@ -25,7 +31,7 @@ export default function Register() {
         const password = formData.get('password') as string;
 
         try {
-            await register(name, email, password); // uses Supabase exclusively
+            await registerUser(name, email, password); // uses Supabase exclusively
             router.push('/dashboard');
         } catch (err) {
             // handle error if needed

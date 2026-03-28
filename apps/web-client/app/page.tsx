@@ -1,8 +1,10 @@
 
 "use client";
 
-import React from 'react';
+import React, { useEffect } from 'react';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
+import { useAuth } from '@/lib/auth/AuthContext';
 import {
   Rocket,
   CheckCircle2,
@@ -16,6 +18,17 @@ import {
 } from 'lucide-react';
 
 export default function Landing() {
+  const { isAuthenticated } = useAuth();
+  const router = useRouter();
+
+  useEffect(() => {
+    if (isAuthenticated) {
+      router.push('/dashboard');
+    }
+  }, [isAuthenticated, router]);
+
+  if (isAuthenticated) return null; // Prevent flash of marketing page
+
   return (
     <div className="space-y-32">
       {/* Hero Section */}
