@@ -1,5 +1,6 @@
 /** @type {import('tailwindcss').Config} */
 module.exports = {
+  darkMode: 'class',
   content: [
     "./app/**/*.{js,ts,jsx,tsx}",
     "./components/**/*.{js,ts,jsx,tsx}",
@@ -10,6 +11,9 @@ module.exports = {
         sans: ['var(--font-inter)'],
         heading: ['var(--font-space-grotesk)'],
       },
+      colors: {
+        accent: 'var(--color-accent, #0061FF)',
+      }
     },
   },
   plugins: [],

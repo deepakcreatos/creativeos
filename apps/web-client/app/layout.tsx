@@ -3,6 +3,7 @@ import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth/AuthContext";
 import { Layout } from "@/components/Layout";
+import { Providers } from "./providers";
 
 const inter = Inter({
   variable: "--font-inter",
@@ -25,15 +26,17 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} antialiased font-sans`}
+        className={`${inter.variable} ${spaceGrotesk.variable} antialiased font-sans dark:bg-slate-900 dark:text-slate-100 transition-colors duration-200`}
       >
-        <AuthProvider>
-          <Layout>
-            {children}
-          </Layout>
-        </AuthProvider>
+        <Providers>
+          <AuthProvider>
+            <Layout>
+              {children}
+            </Layout>
+          </AuthProvider>
+        </Providers>
       </body>
     </html>
   );
