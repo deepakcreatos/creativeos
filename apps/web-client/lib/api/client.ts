@@ -270,10 +270,23 @@ export const knowledgeApi = {
   }
 };
 
+
 // Node 12: Audit API
 export const auditApi = {
   getLogs: async () => {
-    // Stub
-    return [];
+    const response = await apiClient.get('/audit');
+    return response.data;
   }
 };
+
+// Node 2: Strategy API
+export const strategyApi = {
+  generate: async (data: any) => {
+    const response = await apiClient.post('/strategy/generate', data);
+    return response.data;
+  },
+  list: async () => {
+    const response = await apiClient.get('/strategy');
+    return response.data;
+  }
+};

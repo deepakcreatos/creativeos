@@ -13,10 +13,9 @@ import {
     BarChart3,
     ChevronDown,
     Globe,
-    Facebook,
-    Twitter,
-    Instagram,
-    Youtube,
+    User,
+    Target,
+    Settings,
     CloudLightning as Sparkles
 } from 'lucide-react';
 import { Page } from '../types/ui-types';
@@ -56,6 +55,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     const featureItems = [
         { id: 'client-dna', label: 'Client DNA', href: '/client-dna', icon: Dna },
         { id: 'campaigns', label: 'Campaigns', href: '/campaigns', icon: Rocket },
+        { id: 'strategy', label: 'Strategy Engine', href: '/strategy', icon: Target },
         { id: 'studio', label: 'Content Studio', href: '/studio', icon: Sparkles },
         { id: 'scheduler', label: 'Scheduler', href: '/scheduler', icon: Calendar },
         { id: 'approvals', label: 'Gatekeeper Approvals', href: '/approvals', icon: Calendar },
@@ -147,10 +147,18 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                                 <div className="w-24 h-9 bg-slate-100 animate-pulse rounded-xl"></div>
                             ) : isAuthenticated ? (
                                 <>
-                                    <div className="hidden md:flex flex-col items-end mr-2">
-                                        <p className="text-sm font-bold text-slate-900">{user?.name}</p>
-                                        <p className="text-xs text-slate-500">{user?.email}</p>
-                                    </div>
+                                    <Link href="/profile" className="hidden md:flex items-center gap-2 hover:opacity-80 transition-opacity" title="My Profile">
+                                        <div className="w-9 h-9 bg-gradient-to-br from-[#0061FF] to-purple-600 rounded-xl flex items-center justify-center text-white font-bold text-sm shadow">
+                                            {user?.name?.charAt(0) ?? 'U'}
+                                        </div>
+                                        <div className="flex flex-col items-start">
+                                            <p className="text-sm font-bold text-slate-900 leading-none">{user?.name}</p>
+                                            <p className="text-xs text-slate-400 leading-none mt-0.5">View Profile</p>
+                                        </div>
+                                    </Link>
+                                    <Link href="/settings" className="p-2 rounded-xl hover:bg-slate-100 transition-colors" title="Settings">
+                                        <Settings size={20} className="text-slate-500" />
+                                    </Link>
                                     <button
                                         onClick={() => setShowLogoutModal(true)}
                                         className="text-xs md:text-sm font-bold text-slate-900 px-4 md:px-5 py-2 md:py-2.5 bg-slate-100 hover:bg-slate-200 rounded-xl transition-colors"
