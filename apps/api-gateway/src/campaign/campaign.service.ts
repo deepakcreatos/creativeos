@@ -39,23 +39,25 @@ export class CampaignService implements OnModuleInit {
     }
   }
 
-  async findAll() {
+  async findAll(userId: string) {
     try {
-      return await this.prisma.campaign.findMany({ where: { isActive: true }, orderBy: { createdAt: 'desc' } });
+      return await this.prisma.campaign.findMany({ where: { isActive: true, userId }, orderBy: { createdAt: 'desc' } });
     } catch { return []; }
   }
 
-  async findOne(id: string) {
-    const c = await this.prisma.campaign.findUnique({ where: { id } });
-    if (!c) throw new NotFoundException(`Campaign ${id} not found`);
+  async findOne(id: string, userId: string) {
+    const c = await this.prisma.campaign.findFirst({ where: { id, userId } });
+    if (!c || !c.isActive) throw new NotFoundException(`Campaign ${id} not found or unauthorized`);
     return c;
   }
 
-  async update(id: string, dto: any) {
+  async update(id: string, dto: any, userId: string) {
+    await this.findOne(id, userId);
     return this.prisma.campaign.update({ where: { id }, data: { name: dto.name, status: dto.status } });
   }
 
-  async remove(id: string) {
+  async remove(id: string, userId: string) {
+    await this.findOne(id, userId);
     return this.prisma.campaign.update({ where: { id }, data: { isActive: false } });
   }
 }

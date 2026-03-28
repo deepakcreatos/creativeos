@@ -1,4 +1,4 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, HttpCode, HttpStatus } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, HttpCode, HttpStatus, Req } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
 
 @Controller('campaigns')
@@ -7,17 +7,17 @@ export class CampaignController {
 
   @Post()
   @HttpCode(HttpStatus.CREATED)
-  create(@Body() body: any) { return this.svc.create(body); }
+  create(@Req() req: any, @Body() body: any) { return this.svc.create({ ...body, userId: req.user.id }); }
 
   @Get()
-  findAll() { return this.svc.findAll(); }
+  findAll(@Req() req: any) { return this.svc.findAll(req.user.id); }
 
   @Get(':id')
-  findOne(@Param('id') id: string) { return this.svc.findOne(id); }
+  findOne(@Req() req: any, @Param('id') id: string) { return this.svc.findOne(id, req.user.id); }
 
   @Patch(':id')
-  update(@Param('id') id: string, @Body() body: any) { return this.svc.update(id, body); }
+  update(@Req() req: any, @Param('id') id: string, @Body() body: any) { return this.svc.update(id, body, req.user.id); }
 
   @Delete(':id')
-  remove(@Param('id') id: string) { return this.svc.remove(id); }
+  remove(@Req() req: any, @Param('id') id: string) { return this.svc.remove(id, req.user.id); }
 }

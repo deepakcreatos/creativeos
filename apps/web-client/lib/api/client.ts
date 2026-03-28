@@ -21,14 +21,24 @@ export const apiClient = axios.create({
 });
 
 // Add request interceptor for auth token + debugging
+import { createClient } from '@supabase/supabase-js';
+
+const supabaseClient = createClient(
+    process.env.NEXT_PUBLIC_SUPABASE_URL || '',
+    process.env.NEXT_PUBLIC_SUPABASE_ANON_KEY || ''
+);
+
 apiClient.interceptors.request.use(
-  (config) => {
+  async (config) => {
     console.log('📤 Request:', config.method?.toUpperCase(), config.url);
-    // Attach stored auth token if available
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || 'mock-jwt-token-for-demo';
-      if (token) {
-        config.headers['Authorization'] = `Bearer ${token}`;
+      try {
+        const { data: { session } } = await supabaseClient.auth.getSession();
+        if (session?.access_token) {
+          config.headers['Authorization'] = `Bearer ${session.access_token}`;
+        }
+      } catch (e) {
+        console.warn('Failed to retrieve Supabase session in interceptor', e);
       }
     }
     return config;

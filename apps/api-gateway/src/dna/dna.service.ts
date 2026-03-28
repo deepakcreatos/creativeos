@@ -60,10 +60,10 @@ export class DnaService implements OnModuleInit {
     }
   }
 
-  async findAll() {
+  async findAll(userId: string) {
     try {
       return await this.prisma.clientDNA.findMany({
-        where: { isActive: true },
+        where: { isActive: true, userId },
         orderBy: { createdAt: 'desc' },
       });
     } catch (e) {
@@ -72,16 +72,16 @@ export class DnaService implements OnModuleInit {
     }
   }
 
-  async findOne(id: string) {
-    const dna = await this.prisma.clientDNA.findUnique({ where: { id } });
+  async findOne(id: string, userId: string) {
+    const dna = await this.prisma.clientDNA.findFirst({ where: { id, userId } });
     if (!dna || !dna.isActive) {
-      throw new NotFoundException(`Client DNA ${id} not found`);
+      throw new NotFoundException(`Client DNA ${id} not found or unauthorized`);
     }
     return dna;
   }
 
-  async update(id: string, dto: any) {
-    const dna = await this.findOne(id);
+  async update(id: string, dto: any, userId: string) {
+    const dna = await this.findOne(id, userId);
     return this.prisma.clientDNA.update({
       where: { id },
       data: {
@@ -93,7 +93,8 @@ export class DnaService implements OnModuleInit {
     });
   }
 
-  async remove(id: string) {
+  async remove(id: string, userId: string) {
+    await this.findOne(id, userId);
     return this.prisma.clientDNA.update({
       where: { id },
       data: { isActive: false },

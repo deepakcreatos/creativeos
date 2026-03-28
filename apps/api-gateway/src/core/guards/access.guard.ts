@@ -7,6 +7,7 @@ import {
 } from '@nestjs/common';
 import { AuditService } from '../audit.service';
 import { NodeType } from '../../../../../shared/core/interfaces/node.interface';
+import * as jwt from 'jsonwebtoken';
 
 @Injectable()
 export class AccessGuard implements CanActivate {
@@ -17,23 +18,10 @@ export class AccessGuard implements CanActivate {
         const authHeader = request.headers.authorization as string | undefined;
         const path = request.path as string;
 
-        // ✅ Public routes — no token needed
+        // ✅ Public routes — severely limited
         const publicPaths = [
           '/api', '/api/',
           '/api/auth',
-          '/api/dna',
-          '/api/campaigns',
-          '/api/content',
-          '/api/media',
-          '/api/strategy',
-          '/api/revision',
-          '/api/approval',
-          '/api/scheduler',
-          '/api/analytics',
-          '/api/billing',
-          '/api/voice',
-          '/api/knowledge',
-          '/api/audit',
         ];
         if (publicPaths.some(p => path === p || path.startsWith(p))) {
             request.user = { id: 'public', role: 'user', workspaceId: 'default' };
@@ -41,38 +29,58 @@ export class AccessGuard implements CanActivate {
         }
 
         // Node 0 Step 1: Authenticate
-        if (!authHeader) {
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
             void this.auditService.log({
                 node: NodeType.ACCESS,
                 action: 'AUTHENTICATION_FAILED',
                 status: 'FAILURE',
                 userId: 'anonymous',
-                metadata: { reason: 'Missing Header' }
+                metadata: { reason: 'Missing or Invalid Header' }
             });
-            throw new UnauthorizedException('Node 0: Missing Credentials');
+            throw new UnauthorizedException('Node 0: Missing or Invalid Token format');
         }
 
-        // Node 0 Step 2: Accept any valid Bearer token format
         const token = authHeader.split(' ')[1];
-        if (!token || token.length < 5) {
-            throw new UnauthorizedException('Node 0: Invalid Token Format');
+        if (!token) throw new UnauthorizedException('Node 0: Token empty');
+
+        try {
+            // Strictly verify against Supabase Secret if present
+            const secret = process.env.SUPABASE_JWT_SECRET;
+            let payload: any;
+
+            if (secret) {
+                payload = jwt.verify(token, secret);
+            } else {
+                // Fallback for development if secret isn't loaded (extracts sub)
+                payload = jwt.decode(token);
+                if (!payload || !payload.sub) throw new Error('Malformed token signature');
+            }
+
+            request.user = {
+                id: payload.sub,
+                role: payload.role || payload.user_role || 'authenticated',
+                email: payload.email || 'unknown',
+                workspaceId: 'default'
+            };
+
+            void this.auditService.log({
+                node: NodeType.ACCESS,
+                action: 'ACCESS_GRANTED',
+                status: 'SUCCESS',
+                userId: request.user.id as string,
+                metadata: { path, method: request.method }
+            });
+
+            return true;
+        } catch (error: any) {
+            void this.auditService.log({
+                node: NodeType.ACCESS,
+                action: 'AUTHENTICATION_FAILED',
+                status: 'FAILURE',
+                userId: 'anonymous',
+                metadata: { reason: error.message }
+            });
+            throw new UnauthorizedException(`Node 0: Unauthorized - ${error.message}`);
         }
-
-        // Set mock or real user context
-        request.user = {
-            id: token.startsWith('mock') ? 'demo-user-id' : 'jwt-user',
-            role: 'admin',
-            workspaceId: 'workspace-1'
-        };
-
-        void this.auditService.log({
-            node: NodeType.ACCESS,
-            action: 'ACCESS_GRANTED',
-            status: 'SUCCESS',
-            userId: request.user.id as string,
-            metadata: { path, method: request.method }
-        });
-
-        return true;
     }
 }
