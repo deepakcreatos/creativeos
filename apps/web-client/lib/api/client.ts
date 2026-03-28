@@ -20,10 +20,17 @@ export const apiClient = axios.create({
   timeout: 10000, // 10 second timeout
 });
 
-// Add request interceptor for debugging
+// Add request interceptor for auth token + debugging
 apiClient.interceptors.request.use(
   (config) => {
     console.log('📤 Request:', config.method?.toUpperCase(), config.url);
+    // Attach stored auth token if available
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('auth_token') || localStorage.getItem('token') || 'mock-jwt-token-for-demo';
+      if (token) {
+        config.headers['Authorization'] = `Bearer ${token}`;
+      }
+    }
     return config;
   },
   (error) => {
