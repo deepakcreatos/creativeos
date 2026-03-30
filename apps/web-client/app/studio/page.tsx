@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { contentApi, mediaApi } from '@/lib/api/client';
-import { Image as ImageIcon, Type, Sparkles, Wand2, Download, Play, RefreshCw } from 'lucide-react';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
+import { Image as ImageIcon, Type, Sparkles, Wand2, Download, Play, RefreshCw, Dna } from 'lucide-react';
 
 export default function ContentStudio() {
+    const { activeClient } = useWorkspace();
     const [prompt, setPrompt] = useState('');
     const [generating, setGenerating] = useState(false);
     const [result, setResult] = useState<any>(null);
@@ -14,12 +16,17 @@ export default function ContentStudio() {
         if (!prompt) return;
         setGenerating(true);
         try {
+            // Intercept prompt securely injecting the Active Client DNA constraints natively.
+            const enhancedPrompt = activeClient 
+                ? `Write in a ${activeClient.brandTone} brand tone tailored for the ${activeClient.industry} industry. Instructions: ${prompt}`
+                : prompt;
+
             if (mode === 'copy') {
-                const res = await contentApi.generate({ prompt, platform: 'LinkedIn', blueprintId: 'demo-uuid' });
+                const res = await contentApi.generate({ prompt: enhancedPrompt, platform: 'LinkedIn', blueprintId: 'demo-uuid' });
                 setResult({ type: 'copy', data: res.data });
             } else {
                 const res = await mediaApi.generate({ 
-                    prompt, 
+                    prompt: enhancedPrompt, 
                     type: 'IMAGE', 
                     dimensions: { width: 1080, height: 1080 },
                     contentId: 'demo-content-uuid'
@@ -42,7 +49,12 @@ export default function ContentStudio() {
                         <Wand2 className="text-accent" size={32} />
                         Content Studio
                     </h1>
-                    <p className="text-slate-500 dark:text-slate-400 mt-2">AI-powered copy and visual asset generation.</p>
+                    <p className="text-slate-500 dark:text-slate-400 mt-2 flex items-center gap-2">
+                        <Dna size={16} className="text-purple-500" />
+                        {activeClient 
+                            ? `AI Engine locked to ${activeClient.clientName}'s target audience and tone.` 
+                            : 'AI-powered copy and visual asset generation.'}
+                    </p>
                 </div>
             </div>
 
@@ -76,6 +88,12 @@ export default function ContentStudio() {
                                 placeholder={`Describe the ${mode === 'copy' ? 'social post' : 'image'} you want to generate...`}
                                 className="w-full p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl h-32 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent text-sm resize-none"
                             />
+                            {activeClient && (
+                                <div className="mt-3 flex items-start gap-2 text-xs font-bold text-slate-500 bg-slate-100 dark:bg-slate-800 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700">
+                                    <Dna size={14} className="text-accent mt-0.5 flex-shrink-0" />
+                                    <p>Background instructions automatically inherit <span className="text-slate-900 dark:text-white">{activeClient.brandTone}</span> tone for <span className="text-slate-900 dark:text-white">{activeClient.industry}</span> audiences.</p>
+                                </div>
+                            )}
                         </div>
 
                         <button 
