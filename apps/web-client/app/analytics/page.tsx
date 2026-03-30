@@ -3,6 +3,7 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
 import {
     BarChart,
     Bar,
@@ -46,12 +47,26 @@ const platformData = [
 ];
 
 export default function Analytics() {
+    const { activeClient } = useWorkspace();
+
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-500 w-full">
-            <div className="flex justify-between items-end">
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-8 animate-in fade-in duration-500 min-h-screen">
+            <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
                 <div>
-                    <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white">Analytics Dashboard</h1>
-                    <p className="text-slate-500 dark:text-slate-400">Track performance metrics and AI-powered insights for your campaigns</p>
+                    <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-3">
+                        Analytics Dashboard
+                        {activeClient && (
+                            <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-xs px-2 py-1 rounded-md border border-indigo-200 dark:border-indigo-800">
+                                {activeClient.clientName}
+                            </span>
+                        )}
+                    </h1>
+                    <p className="text-slate-500 dark:text-slate-400 mt-2">
+                        {activeClient ? `Track performance metrics and AI-powered insights tailored for ${activeClient.clientName}.` : 'Track global performance metrics and cross-tenant AI insights.'}
+                    </p>
+                    {!activeClient && (
+                        <p className="text-xs text-amber-600 dark:text-amber-500 mt-2 font-semibold">⚠️ No active client selected. Showing aggregate workspace data.</p>
+                    )}
                 </div>
                 <div className="flex gap-2">
                     <button className="bg-indigo-600 text-white px-4 py-2 rounded-lg text-sm font-bold shadow-sm">Trial Active</button>
@@ -253,18 +268,34 @@ export default function Analytics() {
             </div>
 
             <div className="bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl p-8 space-y-6">
-                <div className="flex items-center gap-3">
-                    <div className="bg-indigo-100 text-indigo-600 p-2 rounded-lg">
-                        <Dna size={20} />
+                <div className="flex justify-between items-start gap-4 flex-col sm:flex-row">
+                    <div className="space-y-2">
+                        <div className="flex items-center gap-3">
+                            <div className="bg-indigo-100 text-indigo-600 p-2 rounded-lg">
+                                <Dna size={20} />
+                            </div>
+                            <h3 className="font-bold text-slate-900 dark:text-white">Context Used</h3>
+                        </div>
+                        <p className="text-xs text-slate-500 dark:text-slate-400 max-w-2xl">
+                            {activeClient 
+                                ? "Analytics benchmarks and AI anomaly segmentations are currently informed directly by the selected Client's DNA mapping." 
+                                : "Currently using generic aggregate benchmarks across the workspace."}
+                        </p>
                     </div>
-                    <h3 className="font-bold text-slate-900 dark:text-white">Context Used</h3>
                 </div>
-                <p className="text-xs text-slate-500 dark:text-slate-400">Analytics benchmarks and key segments are informed by your client's industry and goals defined in Client DNA.</p>
-                <div className="flex gap-2">
-                    {['SaaS Industry', 'Lead Generation', 'Brand Awareness'].map(tag => (
-                        <span key={tag} className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-full text-[10px] font-bold text-slate-500 dark:text-slate-400">{tag}</span>
-                    ))}
-                </div>
+                
+                {activeClient ? (
+                    <div className="flex gap-2 flex-wrap">
+                        {activeClient.industry && <span className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-full text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Industry: {activeClient.industry}</span>}
+                        {activeClient.brandTone && <span className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-full text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Tone: {activeClient.brandTone}</span>}
+                        {activeClient.products?.goals?.[0] && <span className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 px-3 py-1 rounded-full text-[10px] font-bold text-slate-500 dark:text-slate-400 uppercase tracking-wider">Goal: {activeClient.products.goals[0]}</span>}
+                    </div>
+                ) : (
+                    <div className="flex gap-2">
+                        <span className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/30 text-amber-700 dark:text-amber-500 px-3 py-1 rounded-full text-[10px] font-bold uppercase tracking-wider">No Context Locked</span>
+                    </div>
+                )}
+                
                 <Link href="/client-dna" className="text-indigo-600 text-xs font-bold hover:underline block">Edit Client DNA</Link>
             </div>
 
