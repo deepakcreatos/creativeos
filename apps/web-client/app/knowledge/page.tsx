@@ -2,9 +2,11 @@
 
 import React, { useEffect, useState } from 'react';
 import { knowledgeApi } from '@/lib/api/client';
-import { Network, Database, GitMerge, RefreshCw } from 'lucide-react';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
+import { Network, Database, GitMerge, RefreshCw, AlertCircle } from 'lucide-react';
 
 export default function KnowledgeGraph() {
+    const { activeClient } = useWorkspace();
     const [loading, setLoading] = useState(true);
 
     useEffect(() => {
@@ -16,14 +18,27 @@ export default function KnowledgeGraph() {
     }, []);
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full animate-in fade-in duration-500 space-y-8">
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in duration-500 space-y-8 min-h-screen">
             <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
                 <div>
                     <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-3">
                         <Network className="text-fuchsia-500" size={32} />
                         Knowledge Graph
+                        {activeClient && (
+                            <span className="bg-fuchsia-100 dark:bg-fuchsia-900/30 text-fuchsia-700 dark:text-fuchsia-400 text-xs px-2 py-1 rounded-md border border-fuchsia-200 dark:border-fuchsia-800 ml-2">
+                                {activeClient.clientName}
+                            </span>
+                        )}
                     </h1>
-                    <p className="text-slate-500 dark:text-slate-400 mt-2">Neo4j intelligence routing and semantic relationship mapping.</p>
+                    <p className="text-slate-500 dark:text-slate-400 mt-2">
+                        {activeClient ? `Isolated semantic vector mapping and AI relationship routes for ${activeClient.clientName}.` : 'Global Neo4j intelligence routing and semantic relationship mapping.'}
+                    </p>
+                    {!activeClient && (
+                        <div className="mt-4 flex items-center gap-2 text-amber-600 dark:text-amber-500 text-xs font-bold bg-amber-50 dark:bg-amber-900/20 px-3 py-2 rounded-lg">
+                            <AlertCircle size={16} />
+                            Viewing system-wide topology. Select a client to isolate specific brand relationship pathways.
+                        </div>
+                    )}
                 </div>
                 <button 
                     className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:bg-slate-950 text-slate-700 dark:text-slate-300 font-bold py-2.5 px-4 rounded-xl flex items-center gap-2 transition-colors disabled:opacity-50"
@@ -63,10 +78,10 @@ export default function KnowledgeGraph() {
                             </svg>
 
                             {/* Node representations */}
-                            <div className="absolute top-[20%] left-[50%] -translate-x-1/2 -translate-y-1/2 animate-in zoom-in-95 duration-500">
-                                <div className="bg-blue-500 text-white p-3 rounded-2xl shadow-lg border-2 border-white flex flex-col items-center text-center cursor-pointer hover:scale-105 transition-transform">
-                                    <span className="text-xs font-bold uppercase tracking-wider mb-1 opacity-80">DNA ROOT</span>
-                                    <span className="font-bold whitespace-nowrap">Squadra Media</span>
+                            <div className="absolute top-[20%] left-[50%] -translate-x-1/2 -translate-y-1/2 animate-in zoom-in-95 duration-500 z-10">
+                                <div className="bg-blue-600 text-white p-4 rounded-2xl shadow-lg border border-blue-400 flex flex-col items-center text-center cursor-pointer hover:scale-105 transition-transform">
+                                    <span className="text-xs font-bold uppercase tracking-wider mb-1 opacity-80">{activeClient ? 'CLIENT ROOT DNA' : 'WORKSPACE ROOT'}</span>
+                                    <span className="font-extrabold whitespace-nowrap text-lg">{activeClient ? activeClient.clientName : 'Global Node'}</span>
                                 </div>
                             </div>
 
