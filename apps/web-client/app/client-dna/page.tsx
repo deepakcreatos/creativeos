@@ -29,6 +29,10 @@ export default function ClientDNA() {
     const [isLoading, setIsLoading] = useState(false);
     const [lastSaved, setLastSaved] = useState<string | null>(null);
     const [isCreatingNew, setIsCreatingNew] = useState(false);
+    
+    // Delete Modal State
+    const [showDeleteModal, setShowDeleteModal] = useState(false);
+    const [deleteConfirmText, setDeleteConfirmText] = useState('');
 
     const defaultFormData = {
         clientName: '',
@@ -107,15 +111,22 @@ export default function ClientDNA() {
         setIsCreatingNew(false);
     };
 
-    const handleDelete = async () => {
+    const handleDeleteClick = () => {
         if (!activeClient || isCreatingNew) return;
-        if (!confirm('Are you sure you want to delete this client?')) return;
+        setDeleteConfirmText('');
+        setShowDeleteModal(true);
+    };
+
+    const confirmDelete = async () => {
+        if (!activeClient || isCreatingNew) return;
+        if (deleteConfirmText !== activeClient.clientName) return;
         
         setIsLoading(true);
         try {
             await dnaApi.delete(activeClient.id);
             await refreshClients();
             setIsCreatingNew(false);
+            setShowDeleteModal(false);
             alert('✅ Client DNA Deleted Successfully!');
         } catch (error) {
             console.error('Failed to delete Client DNA', error);
@@ -175,7 +186,7 @@ export default function ClientDNA() {
     };
 
     return (
-        <div className="flex flex-col lg:flex-row gap-8 max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in slide-in-from-bottom-4 duration-500 w-full min-h-screen">
+        <div className="flex flex-col lg:flex-row gap-8 w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in slide-in-from-bottom-4 duration-500 min-h-screen">
             
             {/* Left Sidebar: Client List */}
             <div className="w-full lg:w-72 flex-shrink-0 space-y-4">
@@ -437,7 +448,7 @@ export default function ClientDNA() {
                     <div className="flex items-center gap-4">
                         {!isCreatingNew && activeClient && (
                             <button
-                                onClick={handleDelete}
+                                onClick={handleDeleteClick}
                                 disabled={isLoading}
                                 className="text-red-500 hover:bg-red-50 dark:hover:bg-red-900/20 px-4 py-2 rounded-lg font-bold flex items-center gap-2 transition-colors"
                             >
@@ -509,6 +520,48 @@ export default function ClientDNA() {
                     </div>
                 </div>
             </div>
+
+            {/* GitHub-style Delete Modal */}
+            {showDeleteModal && activeClient && (
+                <div className="fixed inset-0 z-[100] flex items-center justify-center bg-slate-900/50 backdrop-blur-sm animate-in fade-in duration-200 px-4">
+                    <div className="bg-white dark:bg-slate-900 border border-red-200 dark:border-red-900/30 p-6 rounded-2xl shadow-2xl max-w-md w-full animate-in zoom-in-95 duration-200">
+                        <div className="flex items-center gap-3 mb-4 text-red-600 dark:text-red-500">
+                            <Trash2 size={24} />
+                            <h3 className="text-xl font-bold font-heading">Delete Client DNA</h3>
+                        </div>
+                        <p className="text-sm text-slate-600 dark:text-slate-400 mb-4">
+                            This action <strong>cannot</strong> be undone. This will permanently delete the <strong>{activeClient.clientName}</strong> profile, brand tone, and all associated AI routing paths.
+                        </p>
+                        <div className="mb-6">
+                            <label className="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">
+                                Please type <strong>{activeClient.clientName}</strong> to confirm.
+                            </label>
+                            <input 
+                                type="text"
+                                className="w-full px-4 py-2 border border-slate-300 dark:border-slate-700 rounded-lg focus:ring-2 focus:ring-red-500 focus:outline-none dark:bg-slate-800"
+                                value={deleteConfirmText}
+                                onChange={(e) => setDeleteConfirmText(e.target.value)}
+                            />
+                        </div>
+                        <div className="flex gap-3 justify-end">
+                            <button 
+                                onClick={() => setShowDeleteModal(false)}
+                                className="px-4 py-2 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-400 hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors"
+                            >
+                                Cancel
+                            </button>
+                            <button 
+                                onClick={confirmDelete}
+                                disabled={isLoading || deleteConfirmText !== activeClient.clientName}
+                                className="px-4 py-2 rounded-xl text-sm font-bold text-white bg-red-600 hover:bg-red-700 disabled:opacity-50 disabled:cursor-not-allowed shadow-lg shadow-red-200 transition-colors flex items-center gap-2"
+                            >
+                                {isLoading ? <Loader2 className="animate-spin" size={16} /> : null}
+                                I understand the consequences, delete this client
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            )}
 
         </div>
     );

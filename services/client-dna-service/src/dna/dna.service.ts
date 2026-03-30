@@ -105,18 +105,22 @@ export class DnaService implements OnModuleInit {
     });
   }
 
-  async findOne(id: string) {
-    const dna = await this.prisma.clientDNA.findUnique({
+  async findOne(id: string, userId?: string) {
+    const dna = await this.prisma.clientDNA.findFirst({
       where: { id }
     });
     if (!dna || !dna.isActive) {
       throw new NotFoundException(`Client DNA with ID ${id} not found`);
     }
+    // Strict Tenant Isolation Check
+    if (userId && dna.userId !== userId) {
+      throw new NotFoundException(`Client DNA with ID ${id} is not accessible`);
+    }
     return dna;
   }
 
-  async update(id: string, updateDnaDto: UpdateDnaDto) {
-    const dna = await this.findOne(id);
+  async update(id: string, updateDnaDto: UpdateDnaDto, userId?: string) {
+    const dna = await this.findOne(id, userId);
 
     return this.prisma.clientDNA.update({
       where: { id },
@@ -129,7 +133,8 @@ export class DnaService implements OnModuleInit {
     });
   }
 
-  async remove(id: string) {
+  async remove(id: string, userId?: string) {
+    await this.findOne(id, userId); // verify ownership first
     await this.prisma.clientDNA.update({
       where: { id },
       data: { isActive: false }

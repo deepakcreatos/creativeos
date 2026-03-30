@@ -86,7 +86,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
 
             {/* Header */}
             <header className="bg-white dark:bg-slate-900 border-b border-slate-100 dark:border-slate-800 sticky top-0 z-40 shadow-sm">
-                <div className="max-w-[1400px] mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center h-20">
                         <div className="flex items-center">
                             {mounted && isAuthenticated && (
@@ -178,10 +178,10 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
             </header>
 
             {/* Main Content Layout with Sidebar */}
-            <div className={`flex-1 w-full max-w-[1400px] mx-auto flex ${mounted && isAuthenticated && sidebarOpen ? '' : 'justify-center'}`}>
+            <div className={`flex-1 w-full mx-auto flex ${mounted && isAuthenticated && sidebarOpen ? '' : 'justify-center'}`}>
                 {/* Persistent Left Sidebar for Authenticated Users */}
                 {mounted && isAuthenticated && sidebarOpen && (
-                    <aside className="hidden lg:flex flex-col w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto py-8 px-4 gap-1.5 shadow-sm rounded-bl-3xl">
+                    <aside className="hidden lg:flex flex-col w-64 flex-shrink-0 border-r border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 sticky top-20 h-[calc(100vh-5rem)] overflow-y-auto py-8 px-4 gap-1.5 shadow-sm rounded-br-3xl">
                         <div className="text-[10px] font-bold text-slate-400 uppercase tracking-widest mb-3 px-3">Creative Nodes</div>
                         {featureItems.map(item => (
                             <Link 
@@ -204,14 +204,14 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                     </aside>
                 )}
 
-                <main className="flex-1 w-full flex flex-col min-w-0">
+                <main className="flex-1 w-full flex flex-col min-w-0 pr-4 sm:pr-6 lg:pr-8">
                     {children}
                 </main>
             </div>
 
             {/* Footer */}
             <footer className="bg-white dark:bg-slate-900 pt-20 pb-10 border-t border-slate-100 dark:border-slate-800 mt-20">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
                     <div className="flex justify-between items-center text-xs font-bold text-slate-400">
                         <div className="flex items-center gap-2 text-emerald-500">
                             <div className="w-2 h-2 rounded-full bg-emerald-500 animate-pulse"></div>
