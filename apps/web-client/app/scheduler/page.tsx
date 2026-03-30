@@ -1,20 +1,38 @@
 
 "use client";
 
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
-import { Search, ChevronLeft, ChevronRight, Plus, Info, BarChart3 } from 'lucide-react';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
+import { Search, ChevronLeft, ChevronRight, Plus, Info, BarChart3, Dna } from 'lucide-react';
 
 export default function Scheduler() {
+    const { activeClient } = useWorkspace();
     const days = Array.from({ length: 31 }, (_, i) => i + 1);
-    const platforms = ['Meta', 'Instagram', 'Google', 'LinkedIn'];
+    
+    // Default platforms fallback
+    const defaultPlatforms = ['Meta', 'Instagram', 'Google', 'LinkedIn'];
+    
+    // Initialize specific platforms inherited from the Client DNA
+    const [platforms, setPlatforms] = useState<string[]>(defaultPlatforms);
+
+    useEffect(() => {
+        if (activeClient?.products?.platforms?.length) {
+            setPlatforms(activeClient.products.platforms);
+        } else {
+            setPlatforms(defaultPlatforms);
+        }
+    }, [activeClient]);
 
     return (
-        <div className="flex flex-col lg:flex-row gap-8 max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in duration-500 w-full">
+        <div className="flex flex-col lg:flex-row gap-8 w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in duration-500 min-h-screen">
             <div className="w-full lg:w-72 space-y-6">
                 <div className="bg-white dark:bg-slate-900 p-6 rounded-xl border border-slate-200 dark:border-slate-800 shadow-sm space-y-6">
                     <div>
-                        <h3 className="font-bold text-slate-900 dark:text-white mb-4">Platform Filter</h3>
+                        <div className="flex justify-between items-center mb-4">
+                            <h3 className="font-bold text-slate-900 dark:text-white">Platform Filter</h3>
+                            {activeClient && <Dna size={14} className="text-purple-500" title="Inherited from DNA" />}
+                        </div>
                         <div className="space-y-2">
                             {platforms.map(platform => (
                                 <label key={platform} className="flex items-center gap-3 text-sm text-slate-600 dark:text-slate-400 cursor-pointer">
@@ -71,8 +89,18 @@ export default function Scheduler() {
             <div className="flex-1 space-y-6">
                 <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
                     <div>
-                        <h1 className="text-2xl font-bold font-heading text-slate-900 dark:text-white">Content Scheduler</h1>
+                        <h1 className="text-2xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-2">
+                            Content Scheduler
+                            {activeClient && (
+                                <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-xs px-2 py-1 rounded-md ml-2 border border-indigo-200 dark:border-indigo-800">
+                                    {activeClient.clientName}
+                                </span>
+                            )}
+                        </h1>
                         <p className="text-sm text-slate-500 dark:text-slate-400">Plan and schedule your content across all platforms</p>
+                        {!activeClient && (
+                            <p className="text-xs text-amber-600 dark:text-amber-500 mt-1 font-semibold">⚠️ No active client selected. Showing all global posts.</p>
+                        )}
                     </div>
                     <div className="relative w-full md:w-64">
                         <Search className="absolute left-3 top-1/2 -translate-y-1/2 text-slate-400" size={16} />
@@ -115,7 +143,9 @@ export default function Scheduler() {
 
                 <div className="space-y-4">
                     <div className="flex justify-between items-center">
-                        <h2 className="text-xl font-bold font-heading text-slate-900 dark:text-white">Scheduled Items</h2>
+                        <h2 className="text-xl font-bold font-heading text-slate-900 dark:text-white">
+                            Scheduled Items {activeClient ? `for ${activeClient.clientName}` : ''}
+                        </h2>
                         <span className="text-[10px] bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400 px-2 py-1 rounded-full font-bold">12 Items</span>
                     </div>
 
