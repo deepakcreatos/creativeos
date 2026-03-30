@@ -2,9 +2,11 @@
 
 import React, { useState } from 'react';
 import { approvalApi, revisionApi } from '@/lib/api/client';
-import { CheckCircle2, MessageSquare, AlertCircle, Clock, Send } from 'lucide-react';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
+import { CheckCircle2, MessageSquare, AlertCircle, Clock, Send, Dna } from 'lucide-react';
 
 export default function ApprovalGatekeeper() {
+    const { activeClient } = useWorkspace();
     const [feedback, setFeedback] = useState('');
     const [processing, setProcessing] = useState(false);
     const [actionLog, setActionLog] = useState<any[]>([]);
@@ -40,16 +42,30 @@ export default function ApprovalGatekeeper() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full animate-in fade-in duration-500 space-y-8">
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in duration-500 space-y-8 min-h-screen">
             <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
                 <div>
                     <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-3">
                         <CheckCircle2 className="text-green-500" size={32} />
                         Approval Gatekeeper
+                        {activeClient && (
+                            <span className="bg-green-100 dark:bg-green-900/30 text-green-700 dark:text-green-400 text-xs px-2 py-1 rounded-md ml-2 border border-green-200 dark:border-green-800">
+                                {activeClient.clientName}
+                            </span>
+                        )}
                     </h1>
-                    <p className="text-slate-500 dark:text-slate-400 mt-2">Review generated assets, request AI revisions, or lock for scheduling.</p>
+                    <p className="text-slate-500 dark:text-slate-400 mt-2 flex items-center gap-2">
+                        {activeClient ? <><Dna size={16} className="text-purple-500 flex-shrink-0" /> Reviewing pending AI assets strictly for {activeClient.clientName}.</> : 'Review generated assets, request AI revisions, or lock for scheduling.'}
+                    </p>
                 </div>
             </div>
+
+            {!activeClient && (
+                <div className="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/30 rounded-xl p-4 flex items-center gap-3 text-amber-700 dark:text-amber-500 font-bold mb-6">
+                    <AlertCircle size={20} />
+                    <p>⚠️ No Active Client Selected. You are currently viewing the global cross-tenant approval queue.</p>
+                </div>
+            )}
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
                 <div className="lg:col-span-2 space-y-6">
@@ -69,7 +85,10 @@ export default function ApprovalGatekeeper() {
                                 <div className="space-y-4 flex-1">
                                     <div>
                                         <h3 className="font-bold text-slate-900 dark:text-white">Winter Collection Launch #4</h3>
-                                        <p className="text-sm text-slate-500 dark:text-slate-400">Instagram Feed Post • Campaign: Holiday Q4</p>
+                                        <p className="text-sm text-slate-500 dark:text-slate-400 flex items-center gap-2">
+                                            Instagram Feed Post • Campaign: Holiday Q4
+                                            {activeClient && <span className="text-[10px] bg-slate-200 dark:bg-slate-800 px-1.5 py-0.5 rounded text-slate-600 dark:text-slate-400 uppercase font-bold tracking-widest">{activeClient.industry} Tone</span>}
+                                        </p>
                                     </div>
                                     <div className="bg-slate-50 dark:bg-slate-950 p-4 rounded-xl text-sm text-slate-700 dark:text-slate-300 italic border border-slate-100 dark:border-slate-800">
                                         "Discover the magic of winter with our new exclusive collection. Available now in stores and online. ❄️✨"

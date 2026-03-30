@@ -31,7 +31,7 @@ export default function Scheduler() {
                     <div>
                         <div className="flex justify-between items-center mb-4">
                             <h3 className="font-bold text-slate-900 dark:text-white">Platform Filter</h3>
-                            {activeClient && <Dna size={14} className="text-purple-500" title="Inherited from DNA" />}
+                            {activeClient && <Dna size={14} className="text-purple-500" />}
                         </div>
                         <div className="space-y-2">
                             {platforms.map(platform => (
