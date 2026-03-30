@@ -1,13 +1,15 @@
 "use client";
 
-import React, { useState } from 'react';
-import { Target, Zap, TrendingUp, Loader2, ChevronRight, BarChart3, Users, Globe, DollarSign } from 'lucide-react';
+import React, { useState, useEffect } from 'react';
+import { Target, Zap, TrendingUp, Loader2, ChevronRight, BarChart3, Users, Globe, DollarSign, Dna } from 'lucide-react';
 import { strategyApi } from '@/lib/api/client';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
 
 const OBJECTIVES = ['Brand Awareness', 'Lead Generation', 'Sales Conversion', 'Community Building', 'Product Launch'];
 const CHANNELS = ['LinkedIn', 'Meta / Instagram', 'Google Ads', 'TikTok', 'Email', 'YouTube'];
 
 export default function StrategyPage() {
+    const { activeClient } = useWorkspace();
     const [loading, setLoading] = useState(false);
     const [strategy, setStrategy] = useState<any>(null);
     const [form, setForm] = useState({
@@ -16,6 +18,16 @@ export default function StrategyPage() {
         budget: '5000',
         timeline: '30',
     });
+
+    useEffect(() => {
+        if (activeClient) {
+            setForm(prev => ({
+                ...prev,
+                objective: activeClient.products?.goals?.[0] || 'Brand Awareness',
+                channels: activeClient.products?.platforms?.length ? activeClient.products.platforms : ['LinkedIn', 'Meta / Instagram']
+            }));
+        }
+    }, [activeClient]);
 
     const toggleChannel = (c: string) =>
         setForm(prev => ({
@@ -48,7 +60,12 @@ export default function StrategyPage() {
                 <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-3">
                     <Target className="text-accent" size={32} /> Strategy Engine
                 </h1>
-                <p className="text-slate-500 dark:text-slate-400 mt-2">AI-powered marketing strategy generation based on your Client DNA and campaign objectives.</p>
+                <p className="text-slate-500 dark:text-slate-400 mt-2 flex items-center gap-2">
+                    <Dna size={16} className="text-purple-500" />
+                    {activeClient 
+                        ? `AI mapping tailored to ${activeClient.clientName}'s DNA and campaign objectives.` 
+                        : 'AI-powered marketing strategy generation based on your Client DNA and campaign objectives.'}
+                </p>
             </div>
 
             <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
@@ -94,9 +111,14 @@ export default function StrategyPage() {
                     </div>
 
                     <button onClick={handleGenerate} disabled={loading}
-                        className="w-full bg-accent text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-all shadow-lg disabled:opacity-60">
+                        className="w-full bg-accent text-white py-3 rounded-xl font-bold flex items-center justify-center gap-2 hover:bg-blue-700 transition-all shadow-lg disabled:opacity-60 mt-6 block">
                         {loading ? <><Loader2 className="animate-spin" size={18} /> Generating...</> : <><Zap size={18} /> Generate Strategy</>}
                     </button>
+                    {!activeClient && (
+                         <div className="text-xs text-amber-600 dark:text-amber-500 font-bold bg-amber-50 dark:bg-amber-900/20 p-3 rounded-lg flex gap-2">
+                             ⚠️ No Active Client properly selected to inherit full DNA params.
+                         </div>
+                    )}
                 </div>
 
                 {/* Results Panel */}
