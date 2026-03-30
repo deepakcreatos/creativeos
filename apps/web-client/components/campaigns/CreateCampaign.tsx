@@ -5,13 +5,12 @@ import { useRouter } from 'next/navigation';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Select } from '@/components/ui/select';
-import { dnaApi, campaignApi } from '@/lib/api/client';
-import { ClientDNA } from '@/types/dna';
+import { campaignApi } from '@/lib/api/client';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
 
 export function CreateCampaign() {
   const router = useRouter();
-  const [clients, setClients] = useState<ClientDNA[]>([]);
-  const [loading, setLoading] = useState(true);
+  const { clients, activeClient, isLoading: loading } = useWorkspace();
   const [submitting, setSubmitting] = useState(false);
 
   const [formData, setFormData] = useState({
@@ -26,19 +25,14 @@ export function CreateCampaign() {
   });
 
   useEffect(() => {
-    loadClients();
-  }, []);
-
-  const loadClients = async () => {
-    try {
-      const data = await dnaApi.getAll();
-      setClients(data);
-    } catch (error) {
-      console.error('Error loading clients:', error);
-    } finally {
-      setLoading(false);
+    if (activeClient) {
+      setFormData(prev => ({
+        ...prev,
+        clientDnaId: activeClient.id,
+        platforms: activeClient.products?.platforms || []
+      }));
     }
-  };
+  }, [activeClient]);
 
   const platformOptions = [
     { id: 'meta', name: 'Meta (Facebook & Instagram)', icon: '📘' },
@@ -108,7 +102,7 @@ export function CreateCampaign() {
             <p className="text-gray-600 mb-6">
               You need to create a Client DNA profile before creating campaigns
             </p>
-            <Button onClick={() => router.push('/clients/new')}>
+            <Button onClick={() => router.push('/client-dna')}>
               Create Client DNA First
             </Button>
           </div>
@@ -142,7 +136,7 @@ export function CreateCampaign() {
             {/* Campaign Name */}
             <Input
               label="Campaign Name *"
-              placeholder="e.g., Q1 2025 Brand Awareness"
+              placeholder={`e.g., ${activeClient ? activeClient.clientName + ' - ' : ''}Q1 Brand Awareness`}
               value={formData.name}
               onChange={(e) =>
                 setFormData((prev) => ({ ...prev, name: e.target.value }))

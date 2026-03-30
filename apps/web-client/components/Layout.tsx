@@ -5,6 +5,7 @@ import React, { useState, useEffect } from 'react';
 import Link from 'next/link';
 import { usePathname, useRouter } from 'next/navigation';
 import { useAuth } from '@/lib/auth/AuthContext';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
 import {
     LayoutDashboard,
     Dna,
@@ -29,6 +30,7 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
     const pathname = usePathname();
     const router = useRouter();
     const { user, isAuthenticated, logout } = useAuth();
+    const { activeClient } = useWorkspace();
 
     const [featuresOpen, setFeaturesOpen] = useState(false);
     const [sidebarOpen, setSidebarOpen] = useState(true);
@@ -95,11 +97,19 @@ export const Layout: React.FC<LayoutProps> = ({ children }) => {
                                     <Menu size={24} className="text-slate-600 dark:text-slate-300" />
                                 </button>
                             )}
-                            <Link href={mounted && isAuthenticated ? "/dashboard" : "/"} className="flex items-center gap-2 cursor-pointer flex-shrink-0">
-                                <div className="bg-accent p-1.5 rounded-lg text-white">
-                                    <Sparkles size={24} />
+                            <Link href={mounted && isAuthenticated ? "/dashboard" : "/"} className="flex flex-col md:flex-row md:items-center gap-2 cursor-pointer flex-shrink-0">
+                                <div className="flex items-center gap-2">
+                                    <div className="bg-accent p-1.5 rounded-lg text-white">
+                                        <Sparkles size={24} />
+                                    </div>
+                                    <span className="text-xl md:text-2xl font-bold font-heading text-slate-900 dark:text-white tracking-tight">Creative<span className="text-accent">OS</span></span>
                                 </div>
-                                <span className="text-xl md:text-2xl font-bold font-heading text-slate-900 dark:text-white tracking-tight">Creative<span className="text-accent">OS</span></span>
+                                {mounted && isAuthenticated && (
+                                    <span className="hidden md:flex items-center gap-2 ml-2 pl-4 border-l-2 border-slate-200 dark:border-slate-800 text-sm font-bold text-slate-500 dark:text-slate-400">
+                                        <Target size={14} className="text-accent" />
+                                        {activeClient ? activeClient.clientName : 'No Active Client'}
+                                    </span>
+                                )}
                             </Link>
                         </div>
 

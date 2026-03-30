@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import "./globals.css";
 import { AuthProvider } from "@/lib/auth/AuthContext";
+import { WorkspaceProvider } from "@/lib/workspace/WorkspaceContext";
 import { Layout } from "@/components/Layout";
 import { Providers } from "./providers";
 
@@ -32,9 +33,11 @@ export default function RootLayout({
       >
         <Providers>
           <AuthProvider>
-            <Layout>
-              {children}
-            </Layout>
+            <WorkspaceProvider>
+              <Layout>
+                {children}
+              </Layout>
+            </WorkspaceProvider>
           </AuthProvider>
         </Providers>
       </body>

@@ -3,6 +3,8 @@
 
 import React from 'react';
 import Link from 'next/link';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
+import { useAuth } from '@/lib/auth/AuthContext';
 import {
   Plus,
   ExternalLink,
@@ -21,13 +23,16 @@ import {
 } from 'lucide-react';
 
 export default function Dashboard() {
+  const { clients } = useWorkspace();
+  const { user } = useAuth();
+
   return (
     <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10 animate-in fade-in duration-500">
       {/* Welcome Bar */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
           <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white">Workspace Overview</h1>
-          <p className="text-slate-500 dark:text-slate-400">Welcome back, Admin. Here's what's happening today.</p>
+          <p className="text-slate-500 dark:text-slate-400">Welcome back, {user?.name || 'Creator'}. Here's what's happening today.</p>
         </div>
         <div className="flex gap-3">
           <button className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-50 dark:bg-slate-950 shadow-sm">Export Data</button>
@@ -51,7 +56,7 @@ export default function Dashboard() {
 
           <div className="grid grid-cols-1 sm:grid-cols-3 gap-6">
             {[
-              { label: 'Active Clients', count: 12, sub: '+2 this month', icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
+              { label: 'Active Clients', count: clients.length, sub: 'Currently managed', icon: Users, color: 'text-blue-600', bg: 'bg-blue-50' },
               { label: 'Pending Briefs', count: 4, sub: 'Due today', icon: Dna, color: 'text-purple-600', bg: 'bg-purple-50' },
               { label: 'Campaigns', count: 8, sub: 'Active now', icon: Rocket, color: 'text-green-600', bg: 'bg-green-50' },
             ].map((stat, i) => (
