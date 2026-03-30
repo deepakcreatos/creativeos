@@ -23,16 +23,18 @@ import {
 } from 'lucide-react';
 
 export default function Dashboard() {
-  const { clients } = useWorkspace();
+  const { clients, activeClient } = useWorkspace();
   const { user } = useAuth();
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10 animate-in fade-in duration-500">
+    <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-10 animate-in fade-in duration-500 min-h-screen">
       {/* Welcome Bar */}
       <div className="flex flex-col md:flex-row justify-between items-start md:items-center gap-4">
         <div>
-          <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white">Workspace Overview</h1>
-          <p className="text-slate-500 dark:text-slate-400">Welcome back, {user?.name || 'Creator'}. Here's what's happening today.</p>
+          <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white">
+            {activeClient ? `${activeClient.clientName} Dashboard` : 'Workspace Overview'}
+          </h1>
+          <p className="text-slate-500 dark:text-slate-400">Welcome back, {user?.name || 'Creator'}. Here's what's happening {activeClient ? 'with this account' : 'across your workspace'} today.</p>
         </div>
         <div className="flex gap-3">
           <button className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 text-slate-900 dark:text-white px-5 py-2.5 rounded-xl font-bold text-sm hover:bg-slate-50 dark:bg-slate-950 shadow-sm">Export Data</button>
@@ -87,7 +89,7 @@ export default function Dashboard() {
             <div className="space-y-4">
               {[
                 { type: 'Optimization', text: 'Increase budget on Meta ad set #42. It has 3.4x ROI.' },
-                { type: 'Alert', text: 'Client DNA for "Squadra" is incomplete. Update to improve results.' },
+                { type: 'Alert', text: `Client DNA for "${activeClient ? activeClient.clientName : 'Squadra'}" is incomplete. Update to improve results.` },
               ].map((insight, i) => (
                 <div key={i} className="p-4 border border-slate-50 rounded-xl bg-slate-50 dark:bg-slate-950/50 space-y-1">
                   <span className="text-[10px] font-bold text-accent uppercase">{insight.type}</span>

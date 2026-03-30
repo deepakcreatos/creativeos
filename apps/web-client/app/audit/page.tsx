@@ -1,22 +1,26 @@
 "use client";
 
 import React, { useState, useEffect } from 'react';
-import { ShieldAlert, Activity, Shield, Terminal } from 'lucide-react';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
+import { ShieldAlert, Activity, Shield, Terminal, AlertCircle } from 'lucide-react';
 
 export default function AuditLogs() {
+    const { activeClient } = useWorkspace();
     const [logs, setLogs] = useState<any[]>([]);
 
     useEffect(() => {
-        // Mock system logs representing the API gateway interceptor
+        // Mock system logs representing the API gateway interceptor. Respects active client context.
+        const baseEndpoint = activeClient ? `/api/${activeClient.id}` : '/api';
+        
         setLogs([
-            { id: 1, action: 'WRITE', endpoint: '/api/dna', user: 'ADMIN', status: 201, time: new Date(Date.now() - 1000 * 60 * 5) },
-            { id: 2, action: 'READ', endpoint: '/api/campaigns', user: 'AGENCY', status: 200, time: new Date(Date.now() - 1000 * 60 * 15) },
-            { id: 3, action: 'WRITE', endpoint: '/api/approval/request', user: 'AGENCY', status: 201, time: new Date(Date.now() - 1000 * 60 * 22) },
-            { id: 4, action: 'WRITE', endpoint: '/api/billing/invoice', user: 'SYSTEM', status: 201, time: new Date(Date.now() - 1000 * 60 * 22) },
-            { id: 5, action: 'DELETE', endpoint: '/api/dna/demo-123', user: 'CLIENT', status: 403, time: new Date(Date.now() - 1000 * 60 * 45) },
-            { id: 6, action: 'READ', endpoint: '/api/knowledge', user: 'ADMIN', status: 200, time: new Date(Date.now() - 1000 * 60 * 60) },
+            { id: 1, action: 'WRITE', endpoint: `${baseEndpoint}/dna`, user: 'ADMIN', status: 201, time: new Date(Date.now() - 1000 * 60 * 5) },
+            { id: 2, action: 'READ', endpoint: `${baseEndpoint}/campaigns`, user: 'AGENCY', status: 200, time: new Date(Date.now() - 1000 * 60 * 15) },
+            { id: 3, action: 'WRITE', endpoint: `${baseEndpoint}/approval/request`, user: 'AGENCY', status: 201, time: new Date(Date.now() - 1000 * 60 * 22) },
+            { id: 4, action: 'WRITE', endpoint: `/api/billing/invoice`, user: 'SYSTEM', status: 201, time: new Date(Date.now() - 1000 * 60 * 22) },
+            { id: 5, action: 'DELETE', endpoint: `${baseEndpoint}/dna/demo-123`, user: 'CLIENT', status: 403, time: new Date(Date.now() - 1000 * 60 * 45) },
+            { id: 6, action: 'READ', endpoint: `/api/knowledge`, user: 'ADMIN', status: 200, time: new Date(Date.now() - 1000 * 60 * 60) },
         ]);
-    }, []);
+    }, [activeClient]);
 
     const getStatusColor = (status: number) => {
         if (status >= 200 && status < 300) return 'text-green-500 bg-green-50';
@@ -25,14 +29,27 @@ export default function AuditLogs() {
     };
 
     return (
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 w-full animate-in fade-in duration-500 space-y-8">
+        <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 animate-in fade-in duration-500 space-y-8 min-h-screen">
             <div className="flex flex-col md:flex-row justify-between md:items-end gap-4">
                 <div>
                     <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-3">
                         <ShieldAlert className="text-rose-500" size={32} />
                         Audit Control
+                        {activeClient && (
+                            <span className="bg-rose-100 dark:bg-rose-900/30 text-rose-700 dark:text-rose-400 text-xs px-2 py-1 rounded-md border border-rose-200 dark:border-rose-800 ml-2">
+                                {activeClient.clientName}
+                            </span>
+                        )}
                     </h1>
-                    <p className="text-slate-500 dark:text-slate-400 mt-2">Global system observability, RBAC logging, and security tracking.</p>
+                    <p className="text-slate-500 dark:text-slate-400 mt-2">
+                        {activeClient ? `Isolated system observability, RBAC logging, and security tracking for ${activeClient.clientName}.` : 'Global workspace system observability, RBAC logging, and security tracking.'}
+                    </p>
+                    {!activeClient && (
+                         <div className="mt-4 flex items-center gap-2 text-amber-600 dark:text-amber-500 text-xs font-bold bg-amber-50 dark:bg-amber-900/20 px-3 py-2 rounded-lg">
+                             <AlertCircle size={16} />
+                             No Client DNA selected. Viewing unsecured system-wide gateway traces across all tenants.
+                         </div>
+                    )}
                 </div>
             </div>
 
@@ -61,7 +78,9 @@ export default function AuditLogs() {
                     </div>
                     <div>
                         <div className="text-lg font-bold">Audit Interceptor Active</div>
-                        <div className="text-xs text-slate-400 font-mono mt-1">Global Prefix: /api/* • All requests logged</div>
+                        <div className="text-xs text-slate-400 font-mono mt-1">
+                            {activeClient ? `Tenant Prefix: /api/${activeClient.id}/* • Only logging active tenant` : `Global Prefix: /api/* • All requests logged`}
+                        </div>
                     </div>
                 </div>
             </div>
