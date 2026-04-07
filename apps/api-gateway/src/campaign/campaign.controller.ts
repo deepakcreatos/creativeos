@@ -1,6 +1,8 @@
-import { Controller, Get, Post, Body, Param, Patch, Delete, HttpCode, HttpStatus, Req } from '@nestjs/common';
+import { Controller, Get, Post, Body, Param, Patch, Delete, HttpCode, HttpStatus, Req, UseGuards } from '@nestjs/common';
 import { CampaignService } from './campaign.service';
+import { AccessGuard } from '../core/guards/access.guard';
 
+@UseGuards(AccessGuard)
 @Controller('campaigns')
 export class CampaignController {
   constructor(private readonly svc: CampaignService) {}

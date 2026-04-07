@@ -4,7 +4,8 @@
  * All remaining CreativeOS node controllers embedded in the Gateway.
  * Nodes 3-13: Content, Media, Strategy, Revision, Approval, Scheduler, Analytics, Billing, Voice, Knowledge, Audit
  */
-import { Controller, Get, Post, Body, HttpCode, HttpStatus, Req, Param, Delete, Patch, Headers } from '@nestjs/common';
+import { Controller, Get, Post, Body, HttpCode, HttpStatus, Req, Param, Delete, Patch, Headers, UseGuards } from '@nestjs/common';
+import { AccessGuard } from '../core/guards/access.guard';
 import { OpenAI } from 'openai';
 import { PrismaClient } from '@prisma/client';
 import Stripe from 'stripe';
@@ -13,6 +14,7 @@ const prisma = new PrismaClient({ log: ['error', 'warn'] });
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY || 'sk_test_placeholder', { apiVersion: '2025-01-27.acacia' as any });
 
 // ─── NODE 3: Content Engine ──────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('content')
 export class ContentController {
   @Post('generate')
@@ -93,6 +95,7 @@ export class ContentController {
 }
 
 // ─── NODE 4: Media Engine ─────────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('media')
 export class MediaController {
   @Post('generate')
@@ -114,6 +117,7 @@ export class MediaController {
 }
 
 // ─── NODE 2: Strategy Engine ──────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('strategy')
 export class StrategyController {
   @Post('generate')
@@ -204,6 +208,7 @@ export class StrategyController {
 }
 
 // ─── NODE 5: Revision Engine ──────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('revision')
 export class RevisionController {
   @Post('process')
@@ -224,6 +229,7 @@ export class RevisionController {
 }
 
 // ─── NODE 6: Approval Service ─────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('approval')
 export class ApprovalController {
   @Get()
@@ -266,6 +272,7 @@ export class ApprovalController {
 }
 
 // ─── NODE 7: Scheduler ────────────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('scheduler')
 export class SchedulerController {
   @Get()
@@ -297,6 +304,7 @@ export class SchedulerController {
 }
 
 // ─── NODE 8: Analytics Engine ─────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('analytics')
 export class AnalyticsController {
   @Get()
@@ -335,6 +343,7 @@ export class AnalyticsController {
 }
 
 // ─── NODE 9: Billing ──────────────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('billing')
 export class BillingController {
   @Get()
@@ -407,6 +416,7 @@ export class BillingController {
 }
 
 // ─── NODE 10: Voice ───────────────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('voice')
 export class VoiceController {
   @Post('command')
@@ -423,6 +433,7 @@ export class VoiceController {
 }
 
 // ─── NODE 11: Knowledge Graph ─────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('knowledge')
 export class KnowledgeController {
   @Get()
@@ -451,6 +462,7 @@ export class KnowledgeController {
 }
 
 // ─── NODE 12: Audit ───────────────────────────────────────────────────────────
+@UseGuards(AccessGuard)
 @Controller('audit')
 export class AuditController {
   @Get()
