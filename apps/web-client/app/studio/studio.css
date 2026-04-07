@@ -35,17 +35,17 @@
 ═══════════════════════════════════════════════════════ */
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 html{scroll-behavior:smooth}
-body{
+.design-studio-root {
   font-family:'Satoshi',system-ui,sans-serif;
   background:var(--bg);
   color:var(--text);
   min-height:100vh;
   overflow-x:hidden;
-  cursor:none;
+  cursor: pointer;
 }
 
 /* Animated mesh background */
-body::before{
+.design-studio-root::before{
   content:'';
   position:fixed;inset:0;z-index:0;
   background:
@@ -56,7 +56,7 @@ body::before{
 }
 
 /* Noise texture */
-body::after{
+.design-studio-root::after{
   content:'';
   position:fixed;inset:0;z-index:0;
   background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
@@ -98,7 +98,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   display:flex;align-items:center;gap:0.5rem;
   font-size:1.3rem;font-weight:700;
   letter-spacing:-0.03em;color:var(--text);
-  text-decoration:none;cursor:none;
+  text-decoration:none;cursor: pointer;
 }
 .logo-mark{
   width:32px;height:32px;border-radius:10px;
@@ -116,7 +116,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   padding:0.45rem 1rem;
   font-family:'Satoshi',sans-serif;
   font-size:0.82rem;font-weight:600;
-  color:var(--text2);cursor:none;
+  color:var(--text2);cursor: pointer;
   transition:all 0.2s;
 }
 .btn-ghost-nav:hover{border-color:var(--accent2);color:var(--text);}
@@ -129,7 +129,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   padding:0.45rem 1.1rem;
   font-family:'Satoshi',sans-serif;
   font-size:0.82rem;font-weight:700;
-  color:var(--text);cursor:none;
+  color:var(--text);cursor: pointer;
   transition:all 0.2s;
 }
 .credits-btn:hover{border-color:var(--accent2);background:var(--surface2);}
@@ -219,7 +219,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   font-family:'Satoshi',sans-serif;
   font-size:1rem;font-weight:700;
   padding:0.9rem 2.4rem;
-  border:none;border-radius:100px;cursor:none;
+  border:none;border-radius:100px;cursor: pointer;
   box-shadow:0 8px 32px rgba(124,58,237,0.45);
   transition:transform 0.2s,box-shadow 0.2s,opacity 0.2s;
   letter-spacing:0.01em;
@@ -233,7 +233,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   font-family:'Satoshi',sans-serif;
   font-size:0.95rem;font-weight:600;
   padding:0.9rem 2rem;
-  border-radius:100px;cursor:none;
+  border-radius:100px;cursor: pointer;
   transition:all 0.2s;
 }
 .btn-secondary:hover{border-color:var(--accent2);color:var(--text);}
@@ -281,7 +281,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   position:relative;
   transform:translateY(0);
   transition:transform 0.3s,box-shadow 0.3s;
-  cursor:none;
+  cursor: pointer;
 }
 .sample-card:hover{transform:translateY(-6px);box-shadow:var(--glow);}
 .sample-card img{width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 0.5s;}
@@ -331,11 +331,11 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   display:flex;align-items:center;gap:0.75rem;
   padding:0.7rem 0.9rem;
   border-radius:var(--r);
-  cursor:none;
+  cursor: pointer;
   transition:all 0.2s;
   border:1px solid transparent;
 }
-.step-item.done{cursor:none;}
+.step-item.done{cursor: pointer;}
 .step-item.active{
   background:rgba(124,58,237,0.12);
   border-color:rgba(124,58,237,0.3);
@@ -411,7 +411,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
 }
 .field textarea{min-height:100px;line-height:1.65;}
 .field select{
-  cursor:none;
+  cursor: pointer;
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='none' stroke='%236B6884' stroke-width='2'%3E%3Cpath d='m6 9 6 6 6-6'/%3E%3C/svg%3E");
   background-repeat:no-repeat;background-position:right 1rem center;
   padding-right:2.5rem;
@@ -431,7 +431,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   border:1.5px solid var(--border);
   border-radius:var(--r);
   padding:1rem 0.75rem;
-  text-align:center;cursor:none;
+  text-align:center;cursor: pointer;
   transition:all 0.22s;user-select:none;
 }
 .style-tile:hover{border-color:var(--border2);transform:translateY(-2px);}
@@ -452,7 +452,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   background:transparent;
   font-family:'Satoshi',sans-serif;
   font-size:0.78rem;font-weight:600;
-  color:var(--text2);cursor:none;
+  color:var(--text2);cursor: pointer;
   transition:all 0.18s;user-select:none;
 }
 .chip:hover{border-color:var(--accent2);color:var(--text);}
@@ -464,7 +464,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   display:flex;align-items:center;gap:0.5rem;
   padding:0.45rem 0.9rem;border-radius:100px;
   border:1.5px solid var(--border2);
-  background:var(--surface);cursor:none;
+  background:var(--surface);cursor: pointer;
   transition:all 0.2s;
   font-size:0.78rem;font-weight:600;color:var(--text2);
 }
@@ -480,11 +480,11 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   background:var(--surface);
   border:1.5px solid var(--border2);
   border-radius:var(--r);
-  padding:0.45rem 0.85rem;cursor:none;
+  padding:0.45rem 0.85rem;cursor: pointer;
   transition:border-color 0.2s;
 }
 .cpick:hover{border-color:var(--accent2);}
-.cpick input[type=color]{width:28px;height:28px;border:none;border-radius:8px;cursor:none;padding:0;background:none;}
+.cpick input[type=color]{width:28px;height:28px;border:none;border-radius:8px;cursor: pointer;padding:0;background:none;}
 .cpick-hex{font-size:0.8rem;font-weight:700;color:var(--text2);font-family:'Satoshi',sans-serif;}
 
 /* Ratio */
@@ -493,7 +493,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   background:var(--surface);
   border:1.5px solid var(--border2);
   border-radius:var(--r);padding:1rem 0.6rem;
-  text-align:center;cursor:none;transition:all 0.2s;
+  text-align:center;cursor: pointer;transition:all 0.2s;
 }
 .ratio-card:hover{border-color:var(--border2);background:var(--surface2);}
 .ratio-card.sel{border-color:var(--accent2);background:rgba(124,58,237,0.1);}
@@ -547,7 +547,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   background:transparent;border:1px solid var(--border2);
   border-radius:100px;padding:0.35rem 0.9rem;
   font-family:'Satoshi',sans-serif;font-size:0.75rem;font-weight:600;
-  color:var(--text2);cursor:none;transition:all 0.2s;
+  color:var(--text2);cursor: pointer;transition:all 0.2s;
 }
 .pp-btn:hover{border-color:var(--accent2);color:var(--text);}
 
@@ -560,7 +560,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   padding:0.78rem 1.5rem;
   font-family:'Satoshi',sans-serif;
   font-size:0.88rem;font-weight:600;
-  color:var(--text2);cursor:none;
+  color:var(--text2);cursor: pointer;
   transition:all 0.2s;
 }
 .btn-prev-step:hover{border-color:var(--accent2);color:var(--text);}
@@ -572,7 +572,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   padding:0.82rem 2rem;
   font-family:'Satoshi',sans-serif;
   font-size:0.92rem;font-weight:700;
-  color:var(--text);cursor:none;
+  color:var(--text);cursor: pointer;
   transition:all 0.2s;
   display:flex;align-items:center;justify-content:center;gap:0.5rem;
 }
@@ -586,7 +586,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   padding:1.15rem;
   font-family:'Satoshi',sans-serif;
   font-size:1.05rem;font-weight:800;
-  color:#fff;cursor:none;
+  color:#fff;cursor: pointer;
   box-shadow:0 8px 32px rgba(124,58,237,0.45);
   transition:transform 0.2s,box-shadow 0.2s,opacity 0.2s;
   display:flex;align-items:center;justify-content:center;gap:0.7rem;
@@ -624,7 +624,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   padding:0.55rem 1.1rem;
   font-family:'Satoshi',sans-serif;
   font-size:0.8rem;font-weight:700;
-  color:var(--text2);cursor:none;
+  color:var(--text2);cursor: pointer;
   transition:all 0.2s;
 }
 .btn-result-action:hover{border-color:var(--accent2);color:var(--text);}
@@ -644,13 +644,13 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   display:flex;align-items:flex-start;gap:0.8rem;
 }
 .up-icon{font-size:1.1rem;flex-shrink:0;margin-top:0.05rem;}
-.up-body{flex:1;}
+.up-.design-studio-root {flex:1;}
 .up-label{font-size:0.67rem;font-weight:700;letter-spacing:0.09em;text-transform:uppercase;color:var(--accent3);margin-bottom:0.3rem;}
 .up-text{font-size:0.83rem;color:var(--text2);line-height:1.6;}
 .up-edit{
   margin-top:0.5rem;background:transparent;border:none;
   font-family:'Satoshi',sans-serif;font-size:0.75rem;font-weight:700;
-  color:var(--accent2);cursor:none;padding:0;
+  color:var(--accent2);cursor: pointer;padding:0;
   text-decoration:underline;text-underline-offset:2px;transition:color 0.2s;
 }
 .up-edit:hover{color:var(--accent3);}
@@ -662,7 +662,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:var(--r2);
-  overflow:hidden;cursor:none;
+  overflow:hidden;cursor: pointer;
   transition:transform 0.28s,box-shadow 0.28s;
 }
 .img-card:hover{transform:scale(1.02);box-shadow:var(--glow);}
@@ -707,7 +707,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   border:1px solid rgba(255,255,255,0.08);
   border-radius:50%;width:34px;height:34px;
   display:flex;align-items:center;justify-content:center;
-  font-size:0.9rem;cursor:none;z-index:3;
+  font-size:0.9rem;cursor: pointer;z-index:3;
   transition:all 0.2s;
 }
 .img-like-btn:hover{background:rgba(236,72,153,0.6);transform:scale(1.18);}
@@ -725,7 +725,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   flex:1;padding:0.5rem 0.5rem;
   border-radius:10px;border:none;
   font-family:'Satoshi',sans-serif;font-size:0.72rem;font-weight:700;
-  cursor:none;display:flex;align-items:center;justify-content:center;gap:0.3rem;
+  cursor: pointer;display:flex;align-items:center;justify-content:center;gap:0.3rem;
   transition:transform 0.18s;
 }
 .iha-btn:hover{transform:scale(1.04);}
@@ -740,7 +740,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   display:flex;align-items:center;justify-content:center;gap:0.55rem;
   border-radius:100px;padding:0.9rem 1.5rem;
   font-family:'Satoshi',sans-serif;font-size:0.9rem;font-weight:700;
-  cursor:none;transition:all 0.2s;border:none;
+  cursor: pointer;transition:all 0.2s;border:none;
 }
 .btn-rf-primary{background:linear-gradient(135deg,var(--accent),var(--pink));color:#fff;box-shadow:0 6px 24px rgba(124,58,237,0.35);}
 .btn-rf-primary:hover{box-shadow:0 10px 36px rgba(124,58,237,0.55);transform:translateY(-2px);}
@@ -783,18 +783,18 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   background:var(--surface);border:1px solid var(--border);
   border-radius:50%;width:34px;height:34px;
   display:flex;align-items:center;justify-content:center;
-  font-size:0.9rem;cursor:none;color:var(--text2);
+  font-size:0.9rem;cursor: pointer;color:var(--text2);
   transition:all 0.2s;
 }
 .drawer-close:hover{border-color:var(--accent2);color:var(--text);}
-.drawer-body{flex:1;overflow-y:auto;padding:1.2rem 1.5rem;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
+.drawer-.design-studio-root {flex:1;overflow-y:auto;padding:1.2rem 1.5rem;scrollbar-width:thin;scrollbar-color:var(--border2) transparent;}
 .hist-empty{text-align:center;padding:3rem 1rem;color:var(--text3);font-size:0.9rem;line-height:1.7;}
 .hist-card{
   background:var(--surface);
   border:1px solid var(--border);
   border-radius:var(--r);
   padding:1rem;margin-bottom:0.75rem;
-  cursor:none;transition:all 0.2s;
+  cursor: pointer;transition:all 0.2s;
 }
 .hist-card:hover{border-color:var(--accent2);background:var(--surface2);}
 .hc-name{font-weight:700;font-size:0.9rem;margin-bottom:0.3rem;}
@@ -812,7 +812,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   padding:0.28rem 0.75rem;
   font-family:'Satoshi',sans-serif;
   font-size:0.71rem;font-weight:700;
-  color:var(--text2);cursor:none;transition:all 0.2s;
+  color:var(--text2);cursor: pointer;transition:all 0.2s;
 }
 .hc-btn:hover{border-color:var(--accent2);color:var(--text);}
 .hc-btn.del:hover{border-color:var(--red);color:var(--red);}
@@ -854,7 +854,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   border:1.5px solid var(--border2);
   border-radius:var(--r);
   padding:1.2rem 0.8rem;
-  cursor:none;transition:all 0.22s;
+  cursor: pointer;transition:all 0.22s;
   position:relative;
 }
 .plan-card:hover{border-color:var(--accent2);background:rgba(124,58,237,0.08);}
@@ -880,7 +880,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   border:1.5px solid var(--border2);
   border-radius:100px;padding:0.7rem 2rem;
   font-family:'Satoshi',sans-serif;font-size:0.86rem;font-weight:700;
-  color:var(--text2);cursor:none;transition:all 0.2s;
+  color:var(--text2);cursor: pointer;transition:all 0.2s;
 }
 .modal-close:hover{border-color:var(--accent2);color:var(--text);}
 
@@ -910,7 +910,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
   border:1px solid rgba(255,255,255,0.1);
   border-radius:50%;width:40px;height:40px;
   display:flex;align-items:center;justify-content:center;
-  font-size:1rem;cursor:none;color:var(--text2);
+  font-size:1rem;cursor: pointer;color:var(--text2);
   transition:all 0.2s;
 }
 .lb-close:hover{background:rgba(10,10,15,0.9);color:var(--text);}
@@ -924,7 +924,7 @@ body.hovering #cur-ring{width:48px;height:48px;border-color:rgba(159,103,255,0.7
 .lb-btn{
   background:transparent;border:none;
   font-family:'Satoshi',sans-serif;font-size:0.8rem;font-weight:700;
-  color:var(--text2);cursor:none;padding:0.3rem 0.8rem;
+  color:var(--text2);cursor: pointer;padding:0.3rem 0.8rem;
   border-radius:100px;transition:all 0.2s;
 }
 .lb-btn:hover{background:rgba(124,58,237,0.25);color:var(--text);}
