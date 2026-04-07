@@ -22,4 +22,19 @@ export class CreateVisualAssetDto {
     @IsString()
     @IsOptional()
     styleOverride?: string;
+    
+    @IsString()
+    @IsOptional()
+    style?: string;
+
+    @IsOptional()
+    dimensions?: { width: number; height: number };
+
+    @IsString()
+    @IsOptional()
+    prompt?: string;
+
+    @IsString()
+    @IsOptional()
+    colorHint?: string;
 }

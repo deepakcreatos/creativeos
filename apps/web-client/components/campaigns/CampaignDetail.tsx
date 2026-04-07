@@ -85,8 +85,8 @@ export function CampaignDetail({ id }: CampaignDetailProps) {
   const objectiveInfo = getObjectiveInfo(campaign.objective);
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8">
-      <div className="max-w-7xl mx-auto px-4">
+    <div className="min-h-screen bg-gradient-to-br from-gray-50 to-blue-50 py-8 dark:from-slate-950 dark:to-slate-900 w-full animate-in fade-in duration-500">
+      <div className="w-full mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="mb-8">
           <Button variant="outline" onClick={() => router.push('/campaigns')}>

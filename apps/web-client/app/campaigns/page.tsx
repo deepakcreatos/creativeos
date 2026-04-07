@@ -14,8 +14,10 @@ import {
   Loader2
 } from 'lucide-react';
 import { campaignApi } from '@/lib/api/client';
+import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
 
 export default function Campaigns() {
+  const { activeClient } = useWorkspace();
   const [activeTab, setActiveTab] = useState('Strategy');
   const tabs = ['Strategy', 'Scripts', 'Image Prompts', 'Video Prompts', 'Email Copy', 'SOPs'];
 
@@ -42,7 +44,7 @@ export default function Campaigns() {
       const payload = {
         name: formData.name || 'Demo Campaign',
         objective: formData.objective.toLowerCase().replace(' ', '_'),
-        clientDnaId: 'demo-client-id-hardcoded-for-now', // This will 500 if FK fails. 
+        clientDnaId: activeClient ? activeClient.id : 'demo-client-id-hardcoded-for-now',
         // We need a seeding step. 
         // But for the sake of the UI responding, I'll wrap this in try/catch and show mock data if API fails (graceful degradation for demo)
         platforms: formData.platforms
@@ -73,21 +75,31 @@ export default function Campaigns() {
   };
 
   return (
-    <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 animate-in fade-in duration-500 w-full">
+    <div className="w-full mx-auto px-4 sm:px-6 lg:px-8 py-8 space-y-12 animate-in fade-in duration-500 min-h-screen">
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
         {/* Left Column: Form */}
         <div className="lg:col-span-1 space-y-8">
           <div>
-            <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white">Campaign Generator</h1>
+            <h1 className="text-3xl font-bold font-heading text-slate-900 dark:text-white flex items-center gap-2">
+              Campaign Generator
+              {activeClient && (
+                  <span className="bg-indigo-100 dark:bg-indigo-900/30 text-indigo-700 dark:text-indigo-400 text-xs px-2 py-1 rounded-md border border-indigo-200 dark:border-indigo-800 ml-2">
+                      {activeClient.clientName}
+                  </span>
+              )}
+            </h1>
             <p className="text-slate-500 dark:text-slate-400 mt-2">Define your campaign parameters and let AI generate comprehensive outputs.</p>
           </div>
 
-          <div className="bg-indigo-50 border border-indigo-100 rounded-xl p-4 flex items-center gap-4">
-            <div className="bg-indigo-600 text-white p-2 rounded-full">
-              <CheckCircle2 size={16} />
+          <div className="bg-indigo-50 dark:bg-indigo-900/20 border border-indigo-100 dark:border-indigo-800 rounded-xl p-4 flex items-center gap-4">
+            <div className={`text-white p-2 rounded-full ${activeClient ? 'bg-indigo-600' : 'bg-slate-400'}`}>
+              {activeClient ? <CheckCircle2 size={16} /> : <Info size={16} />}
             </div>
             <div className="text-sm">
-              <p className="font-bold text-indigo-900">Active Client: Squadra Media</p>
+              {activeClient ? 
+                <p className="font-bold text-indigo-900 dark:text-indigo-300">Active Client: {activeClient.clientName}</p> :
+                <p className="font-bold text-slate-700 dark:text-slate-300">Global Workspace Sandbox. No active client set.</p>
+              }
             </div>
           </div>
 

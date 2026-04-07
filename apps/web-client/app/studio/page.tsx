@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { contentApi, mediaApi } from '@/lib/api/client';
 import { useWorkspace } from '@/lib/workspace/WorkspaceContext';
-import { Image as ImageIcon, Type, Sparkles, Wand2, Download, Play, RefreshCw, Dna } from 'lucide-react';
+import { Image as ImageIcon, Type, Sparkles, Wand2, Download, Play, RefreshCw, Dna, Layout, Palette, Camera } from 'lucide-react';
 
 export default function ContentStudio() {
     const { activeClient } = useWorkspace();
@@ -11,6 +11,19 @@ export default function ContentStudio() {
     const [generating, setGenerating] = useState(false);
     const [result, setResult] = useState<any>(null);
     const [mode, setMode] = useState<'copy' | 'media'>('copy');
+
+    // Advanced Media Settings
+    const [imageStyle, setImageStyle] = useState('Photorealistic');
+    const [aspectRatio, setAspectRatio] = useState('1:1');
+    const [colorHint, setColorHint] = useState('#7C3AED');
+
+    const imageStyles = ['Photorealistic', '3D Render', 'Minimalist', 'Cyberpunk', 'Anime'];
+    const aspectRatios = [
+        { label: 'Square', value: '1:1' },
+        { label: 'Landscape', value: '16:9' },
+        { label: 'Portrait', value: '9:16' },
+        { label: 'Cinematic', value: '21:9' }
+    ];
 
     const handleGenerate = async () => {
         if (!prompt) return;
@@ -25,10 +38,22 @@ export default function ContentStudio() {
                 const res = await contentApi.generate({ prompt: enhancedPrompt, platform: 'LinkedIn', blueprintId: 'demo-uuid' });
                 setResult({ type: 'copy', data: res.data });
             } else {
+                // Note: Grok image generation was mentioned as failing. 
+                // Instruct backend to route this to DALL-E 3, Flux, or Midjourney instead.
+                const mediaPrompt = `${enhancedPrompt}. Style: ${imageStyle}. Main color scheme involves: ${colorHint}.`;
+                
+                // Map logical ratios to dimensions (approximate)
+                const dims = aspectRatio === '16:9' ? { width: 1920, height: 1080 } 
+                            : aspectRatio === '9:16' ? { width: 1080, height: 1920 } 
+                            : aspectRatio === '21:9' ? { width: 2560, height: 1080 } 
+                            : { width: 1080, height: 1080 };
+
                 const res = await mediaApi.generate({ 
-                    prompt: enhancedPrompt, 
+                    prompt: mediaPrompt, 
                     type: 'IMAGE', 
-                    dimensions: { width: 1080, height: 1080 },
+                    dimensions: dims,
+                    style: imageStyle,
+                    colorHint: colorHint,
                     contentId: 'demo-content-uuid'
                 });
                 setResult({ type: 'media', data: res.data });
@@ -80,18 +105,67 @@ export default function ContentStudio() {
                             </div>
                         </div>
 
+                        {mode === 'media' && (
+                            <div className="space-y-4 pt-2 border-t border-slate-100 dark:border-slate-800">
+                                <div>
+                                    <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1"><Camera size={14} /> Image Style</label>
+                                    <div className="flex flex-wrap gap-2">
+                                        {imageStyles.map(s => (
+                                            <button 
+                                                key={s} 
+                                                onClick={() => setImageStyle(s)}
+                                                className={`text-xs px-3 py-1.5 rounded-full font-bold border transition-colors ${imageStyle === s ? 'bg-accent/10 border-accent text-accent' : 'bg-transparent border-slate-200 dark:border-slate-700 text-slate-500 hover:border-slate-300'}`}
+                                            >
+                                                {s}
+                                            </button>
+                                        ))}
+                                    </div>
+                                </div>
+                                <div className="grid grid-cols-2 gap-4">
+                                    <div>
+                                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1"><Layout size={14} /> Aspect Ratio</label>
+                                        <div className="grid grid-cols-2 gap-2">
+                                            {aspectRatios.map(ar => (
+                                                <button
+                                                    key={ar.value}
+                                                    onClick={() => setAspectRatio(ar.value)}
+                                                    className={`text-xs p-2 rounded-lg font-bold border transition-colors ${aspectRatio === ar.value ? 'bg-accent/10 border-accent text-accent' : 'bg-transparent border-slate-200 dark:border-slate-700 text-slate-500 hover:border-slate-300'}`}
+                                                >
+                                                    {ar.value}
+                                                </button>
+                                            ))}
+                                        </div>
+                                    </div>
+                                    <div>
+                                        <label className="block text-xs font-bold text-slate-500 uppercase tracking-wider mb-2 flex items-center gap-1"><Palette size={14} /> Brand Color</label>
+                                        <div className="flex items-center gap-2 mt-1">
+                                            <input 
+                                                type="color" 
+                                                value={colorHint} 
+                                                onChange={(e) => setColorHint(e.target.value)}
+                                                className="w-10 h-10 p-0 border-0 rounded overflow-hidden cursor-pointer bg-transparent"
+                                            />
+                                            <span className="text-xs font-mono font-bold text-slate-500 uppercase">{colorHint}</span>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        )}
+
                         <div>
-                            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">Instructions</label>
+                            <label className="block text-sm font-bold text-slate-700 dark:text-slate-300 mb-2">
+                                {mode === 'copy' ? 'Content Instructions' : 'Visual Concept'}
+                            </label>
                             <textarea 
                                 value={prompt}
                                 onChange={(e) => setPrompt(e.target.value)}
                                 placeholder={`Describe the ${mode === 'copy' ? 'social post' : 'image'} you want to generate...`}
-                                className="w-full p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl h-32 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent text-sm resize-none"
+                                className="w-full p-4 bg-slate-50 dark:bg-slate-950 border border-slate-200 dark:border-slate-800 rounded-xl h-32 focus:outline-none focus:ring-2 focus:ring-accent/20 focus:border-accent text-sm resize-none transition-all"
                             />
                             {activeClient && (
                                 <div className="mt-3 flex items-start gap-2 text-xs font-bold text-slate-500 bg-slate-100 dark:bg-slate-800 p-2.5 rounded-lg border border-slate-200 dark:border-slate-700">
                                     <Dna size={14} className="text-accent mt-0.5 flex-shrink-0" />
-                                    <p>Background instructions automatically inherit <span className="text-slate-900 dark:text-white">{activeClient.brandTone}</span> tone for <span className="text-slate-900 dark:text-white">{activeClient.industry}</span> audiences.</p>
+                                    <p>Inheriting <span className="text-slate-900 dark:text-white">{activeClient.brandTone}</span> tone for <span className="text-slate-900 dark:text-white">{activeClient.industry}</span> audiences.</p>
                                 </div>
                             )}
                         </div>
@@ -152,13 +226,34 @@ export default function ContentStudio() {
                                             </div>
                                         </div>
                                     ) : (
-                                        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-2 rounded-2xl shadow-lg">
-                                            <div className="aspect-square bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center relative overflow-hidden group">
-                                                <div className="absolute inset-0 bg-gradient-to-tr from-accent/20 to-purple-500/20"></div>
-                                                <ImageIcon size={48} className="text-slate-400 opacity-50 relative z-10" />
-                                                <div className="absolute bottom-4 left-4 right-4 bg-white dark:bg-slate-900/90 backdrop-blur p-4 rounded-lg shadow-sm transform translate-y-full group-hover:translate-y-0 transition-transform hidden group-hover:block z-20">
-                                                    <p className="text-xs font-bold text-slate-900 dark:text-white mb-1">Generated Asset</p>
-                                                    <p className="text-[10px] text-slate-500 dark:text-slate-400 font-mono break-all">{result.data.url || 'asset-url-mock'}</p>
+                                        <div className="bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 p-3 rounded-2xl shadow-lg w-full">
+                                            <div 
+                                                className="bg-slate-100 dark:bg-slate-800 rounded-xl flex items-center justify-center relative overflow-hidden group mx-auto"
+                                                style={{ aspectRatio: result.data.dimensions ? `${result.data.dimensions.width}/${result.data.dimensions.height}` : aspectRatio.replace(':', '/') }}
+                                            >
+                                                {result.data.url ? (
+                                                    <img src={result.data.url} alt="Generated Asset" className="w-full h-full object-cover" />
+                                                ) : (
+                                                    <div className="absolute inset-0 bg-gradient-to-tr from-accent/10 to-purple-500/10 flex flex-col items-center justify-center space-y-4">
+                                                        <Sparkles size={48} className="text-accent/50 drop-shadow-lg" />
+                                                        <p className="text-xs font-bold text-slate-500 dark:text-slate-400 max-w-[200px] text-center">
+                                                            Awaiting backend processing. 
+                                                        </p>
+                                                    </div>
+                                                )}
+                                                <div className="absolute bottom-4 left-4 right-4 bg-white/90 dark:bg-slate-900/90 backdrop-blur p-4 rounded-lg shadow-sm transform translate-y-[120%] group-hover:translate-y-0 transition-transform duration-300 hidden group-hover:block z-20">
+                                                    <div className="flex justify-between items-start">
+                                                        <div>
+                                                            <p className="text-xs font-bold text-slate-900 dark:text-white mb-1">Asset Generated</p>
+                                                            <div className="flex gap-2">
+                                                                <span className="text-[10px] bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded font-bold text-slate-600 dark:text-slate-300">{result.data.style || imageStyle}</span>
+                                                                <span className="text-[10px] bg-slate-200 dark:bg-slate-800 px-2 py-0.5 rounded font-bold text-slate-600 dark:text-slate-300">{result.data.dimensions ? `${result.data.dimensions.width}x${result.data.dimensions.height}` : aspectRatio}</span>
+                                                            </div>
+                                                        </div>
+                                                        <button className="bg-accent text-white p-2 rounded-full hover:bg-accent/90 transition">
+                                                            <Download size={14} />
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
