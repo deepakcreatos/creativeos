@@ -11,7 +11,7 @@
     "dev:api": "cd apps/api-gateway && npm run start:dev",
     "dev:dna": "cd services/client-dna-service && npm run start:dev",
     "build": "npx prisma generate --schema=apps/api-gateway/prisma/schema.prisma && npm run build -w apps/api-gateway",
-    "start": "npx prisma db push --schema=apps/api-gateway/prisma/schema.prisma --skip-generate --accept-data-loss && npm run start:gateway",
+    "start": "npm run start:gateway",
     "start:analytics": "cd services/analytics-engine && npm run start:prod",
     "start:approval": "cd services/approval-service && npm run start:prod",
     "start:billing": "cd services/billing-service && npm run start:prod",
