@@ -25,6 +25,8 @@ model ClientDNA {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
+  campaigns      Campaign[]
+
   @@map("client_dna")
 }
 
@@ -44,6 +46,9 @@ model Campaign {
   createdAt      DateTime @default(now()) @map("created_at")
   updatedAt      DateTime @updatedAt @map("updated_at")
 
+  clientDna      ClientDNA? @relation(fields: [clientDnaId], references: [id])
+  strategies     Strategy[]
+
   @@map("campaigns")
 }
 
@@ -61,6 +66,9 @@ model Strategy {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
+  campaign   Campaign? @relation(fields: [campaignId], references: [id])
+  contentItems ContentItem[]
+
   @@map("strategies")
 }
 
@@ -77,6 +85,9 @@ model ContentItem {
   createdAt  DateTime @default(now()) @map("created_at")
   updatedAt  DateTime @updatedAt @map("updated_at")
 
+  strategy   Strategy? @relation(fields: [strategyId], references: [id])
+  scheduledPosts ScheduledPost[]
+
   @@map("content_items")
 }
 
@@ -90,6 +101,8 @@ model ScheduledPost {
   isActive     Boolean  @default(true) @map("is_active")
   createdAt    DateTime @default(now()) @map("created_at")
   updatedAt    DateTime @updatedAt @map("updated_at")
+
+  content      ContentItem? @relation(fields: [contentId], references: [id])
 
   @@map("scheduled_posts")
 }

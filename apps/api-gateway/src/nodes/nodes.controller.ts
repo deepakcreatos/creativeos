@@ -20,6 +20,22 @@ export class ContentController {
   async generate(@Req() req: any, @Body() body: any) {
     const prompt = String(body.prompt || 'Generate content');
     const platform = String(body.platform || 'LinkedIn');
+    const strategyId = body.strategyId;
+    
+    let toneContext = '';
+    let objectiveContext = '';
+
+    // PHASE A: Database Wiring - Traverse Hierarchy for DNA constraints
+    if (strategyId) {
+      const strategy = await prisma.strategy.findUnique({
+        where: { id: strategyId },
+        include: { campaign: { include: { clientDna: true } } }
+      });
+      if (strategy) objectiveContext = `Campaign Objective: ${strategy.objective}. `;
+      if (strategy?.campaign?.clientDna) {
+        toneContext = `Strict Brand Tone: ${strategy.campaign.clientDna.brandTone}. `;
+      }
+    }
     
     let aiText = '';
     try {
@@ -28,7 +44,7 @@ export class ContentController {
         const completion = await openai.chat.completions.create({
           model: 'gpt-4o-mini',
           messages: [
-            { role: 'system', content: `You are an expert ${platform} marketing copywriter. Write highly engaging, conversion-optimized copy.` },
+            { role: 'system', content: `You are an expert ${platform} marketing copywriter. Write highly engaging, conversion-optimized copy. ${objectiveContext} ${toneContext}` },
             { role: 'user', content: `Write a post about: ${prompt}` }
           ]
         });
@@ -44,6 +60,7 @@ export class ContentController {
     const contentItem = await prisma.contentItem.create({
       data: {
         userId: req?.user?.id || 'demo-user',
+        strategyId: strategyId || null,
         platform,
         copyText: finalCopy,
         status: 'draft',
@@ -105,6 +122,22 @@ export class StrategyController {
     const objective = String(body.objective || 'Brand Awareness');
     const budget = Number(body.budget || 5000);
     const platforms = body.platforms || ['LinkedIn', 'Meta'];
+    const campaignId = body.campaignId;
+    
+    let industryContext = '';
+    let toneContext = '';
+    
+    // PHASE A: Database Wiring - Fetch Hierarchical Client DNA Context
+    if (campaignId) {
+      const campaign = await prisma.campaign.findUnique({
+        where: { id: campaignId },
+        include: { clientDna: true }
+      });
+      if (campaign?.clientDna) {
+        industryContext = `Industry: ${campaign.clientDna.industry}. `;
+        toneContext = `Strict Brand Tone to adhere to: ${campaign.clientDna.brandTone}. `;
+      }
+    }
     
     let finalKpis = ['Reach: 50,000', 'Engagement Rate: 4%', 'Leads: 200', 'Conversions: 20'];
     let finalPillars = ['Brand Authority', 'Market Education', 'Product Showcase', 'Customer Stories', 'Industry Trends'];
@@ -112,12 +145,14 @@ export class StrategyController {
     try {
       if (process.env.OPENAI_API_KEY) {
         const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
+        
+        // PHASE B: Real AI Hook Integration
         const completion = await openai.chat.completions.create({
           model: 'gpt-4o-mini',
           response_format: { type: 'json_object' },
           messages: [
-            { role: 'system', content: 'You are an elite marketing strategist. Return JSON with keys "kpis" (array of strings) and "pillars" (array of strings).' },
-            { role: 'user', content: `Objective: ${objective}. Budget: $${budget}. Channels: ${platforms.join(', ')}.` }
+            { role: 'system', content: `You are an elite digital marketing strategist. ${industryContext} ${toneContext} Return raw JSON with exact keys "kpis" (array of exact string metrics) and "pillars" (array of thematic strings).` },
+            { role: 'user', content: `Objective: ${objective}. Budget: $${budget}. Target Channels: ${platforms.join(', ')}.` }
           ]
         });
         const aiJson = JSON.parse(completion.choices[0].message.content || '{}');
@@ -125,7 +160,7 @@ export class StrategyController {
         if (aiJson.pillars) finalPillars = aiJson.pillars;
       }
     } catch (e) {
-      console.warn('OpenAI failure, fallback to mock strategy', e);
+      console.warn('OpenAI failure, fallback to mock strategy', (e as Error).message);
     }
 
     const budgetBreakdown = { total: budget, breakdown: { Primary: Math.floor(budget * 0.7), Secondary: Math.floor(budget * 0.3) } };
@@ -135,6 +170,7 @@ export class StrategyController {
     const strat = await prisma.strategy.create({
       data: {
         userId: req?.user?.id || 'demo-user',
+        campaignId: campaignId || null,
         objective,
         platforms,
         pillars: finalPillars,
