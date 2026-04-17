@@ -3,16 +3,16 @@
    DESIGN TOKENS
 ═══════════════════════════════════════════════════════ */
 :root {
-  --bg:        #0A0A0F;
-  --bg2:       #0F0F18;
-  --bg3:       #141421;
-  --surface:   #1A1A2E;
-  --surface2:  #1E1E35;
-  --border:    rgba(255,255,255,0.07);
-  --border2:   rgba(255,255,255,0.12);
-  --text:      #F0EEF8;
-  --text2:     #9D9BB8;
-  --text3:     #6B6884;
+  --bg:        #F8FAFC;
+  --bg2:       #F1F5F9;
+  --bg3:       #E2E8F0;
+  --surface:   #FFFFFF;
+  --surface2:  #F8FAFC;
+  --border:    #E2E8F0;
+  --border2:   #CBD5E1;
+  --text:      #0F172A;
+  --text2:     #475569;
+  --text3:     #94A3B8;
   --accent:    #7C3AED;
   --accent2:   #9F67FF;
   --accent3:   #C4A3FF;

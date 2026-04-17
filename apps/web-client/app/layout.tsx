@@ -27,9 +27,9 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className="dark bg-slate-900" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning>
       <body
-        className={`${inter.variable} ${spaceGrotesk.variable} antialiased font-sans dark:bg-slate-900 dark:text-slate-100 transition-colors duration-200`}
+        className={`${inter.variable} ${spaceGrotesk.variable} antialiased font-sans bg-slate-50 text-slate-900 transition-colors duration-200`}
       >
         <Providers>
           <AuthProvider>

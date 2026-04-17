@@ -208,10 +208,10 @@ export default function ContentStudio() {
                                 
                                 <div className="img-grid mt-6">
                                     {result.images?.map((url: string, i: number) => (
-                                        <div key={i} className="img-card border border-slate-700 bg-slate-900 flex items-center justify-center p-8 text-center text-slate-500">
-                                            <span>Simulated Generated Render<br/>[Mock URL Connected to Railway]</span>
-                                            <div className="img-hover-actions">
-                                                <button className="iha-btn btn-dl"><Download size={14} /> Download</button>
+                                        <div key={i} className="img-card border border-slate-200 bg-white flex items-center justify-center p-0 text-center text-slate-500 overflow-hidden relative">
+                                            <img src={url} alt="Generated UI" className="w-full h-full object-cover" />
+                                            <div className="img-hover-actions absolute inset-0 bg-slate-900/50 opacity-0 hover:opacity-100 flex items-center justify-center transition-opacity">
+                                                <a href={url} download target="_blank" rel="noreferrer" className="iha-btn btn-dl bg-white text-slate-900 px-4 py-2 rounded-full font-bold flex items-center gap-2"><Download size={14} /> Download Image</a>
                                             </div>
                                         </div>
                                     ))}
